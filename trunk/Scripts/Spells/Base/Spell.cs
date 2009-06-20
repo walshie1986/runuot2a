@@ -416,7 +416,7 @@ namespace Server.Spells
 				} else
 				{
 					//m_Caster.NextSpellTime = DateTime.Now + GetCastRecovery();
-					m_Caster.NextSpellTime = m_StartCastTime + m_CastTimer.Interval;
+					//m_Caster.NextSpellTime = m_StartCastTime + m_CastTimer.Interval;
 					//m_Caster.NextSpellTime = DateTime.Now + GetDisturbRecovery();
 				}
 
@@ -518,6 +518,7 @@ namespace Server.Spells
 					SayMantra();
 
 					TimeSpan castDelay = this.GetCastDelay();
+					m_Caster.NextSpellTime = castDelay + m_StartCastTime;
 
 					if ( ShowHandMovement && m_Caster.Body.IsHuman )
 					{
