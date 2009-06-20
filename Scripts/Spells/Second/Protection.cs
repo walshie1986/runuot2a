@@ -24,25 +24,30 @@ namespace Server.Spells.Second
 		public ProtectionSpell( Mobile caster, Item scroll ) : base( caster, scroll, m_Info )
 		{
 		}
-
-		public override bool CheckCast()
+		
+		public override void OnCast()
 		{
-			if ( Core.AOS )
-				return true;
-
-			if ( m_Registry.ContainsKey( Caster ) )
-			{
-				Caster.SendLocalizedMessage( 1005559 ); // This spell is already in effect.
-				return false;
-			}
-			else if ( !Caster.CanBeginAction( typeof( DefensiveSpell ) ) )
-			{
-				Caster.SendLocalizedMessage( 1005385 ); // The spell will not adhere to you at this time.
-				return false;
-			}
-
-			return true;
+			Caster.Target = new InternalTarget( this );
 		}
+
+		// public override bool CheckCast()
+		// {
+			// if ( Core.AOS )
+				// return true;
+// 
+			// if ( m_Registry.ContainsKey( Caster ) )
+			// {
+				// Caster.SendLocalizedMessage( 1005559 ); // This spell is already in effect.
+				// return false;
+			// }
+			// /*else if ( !Caster.CanBeginAction( typeof( DefensiveSpell ) ) )
+			// {
+				// Caster.SendLocalizedMessage( 1005385 ); // The spell will not adhere to you at this time.
+				// return false;
+			// }*/
+// 
+			// return true;
+		// }
 
 		private static Hashtable m_Table = new Hashtable();
 
@@ -89,7 +94,7 @@ namespace Server.Spells.Second
 			}
 		}
 
-		public override void OnCast()
+		public void Target(Mobile m)
 		{
 			if ( Core.AOS )
 			{
@@ -100,19 +105,19 @@ namespace Server.Spells.Second
 			}
 			else
 			{
-				if ( m_Registry.ContainsKey( Caster ) )
+				if ( m_Registry.ContainsKey( m ) )
 				{
 					Caster.SendLocalizedMessage( 1005559 ); // This spell is already in effect.
 				}
-				else if ( !Caster.CanBeginAction( typeof( DefensiveSpell ) ) )
+				/*else if ( !Caster.CanBeginAction( typeof( DefensiveSpell ) ) )
 				{
 					Caster.SendLocalizedMessage( 1005385 ); // The spell will not adhere to you at this time.
-				}
+				}*/
 				else if ( CheckSequence() )
 				{
-					if ( Caster.BeginAction( typeof( DefensiveSpell ) ) )
-					{
-						double value = (int)(Caster.Skills[SkillName.EvalInt].Value + Caster.Skills[SkillName.Meditation].Value + Caster.Skills[SkillName.Inscribe].Value);
+					// if ( Caster.BeginAction( typeof( DefensiveSpell ) ) )
+					// {
+						double value = (int)(Caster.Skills[SkillName.EvalInt].Value + Caster.Skills[SkillName.Meditation].Value);
 						value /= 4;
 
 						if ( value < 0 )
@@ -120,16 +125,16 @@ namespace Server.Spells.Second
 						else if ( value > 75 )
 							value = 75.0;
 
-						Registry.Add( Caster, value );
-						new InternalTimer( Caster ).Start();
+						Registry.Add( m, value );
+						new InternalTimer( Caster, m ).Start();
 
 						Caster.FixedParticles( 0x375A, 9, 20, 5016, EffectLayer.Waist );
 						Caster.PlaySound( 0x1ED );
-					}
-					else
-					{
-						Caster.SendLocalizedMessage( 1005385 ); // The spell will not adhere to you at this time.
-					}
+					// }
+					// else
+					// {
+						// Caster.SendLocalizedMessage( 1005385 ); // The spell will not adhere to you at this time.
+					// }
 				}
 
 				FinishSequence();
@@ -140,7 +145,7 @@ namespace Server.Spells.Second
 		{
 			private Mobile m_Caster;
 
-			public InternalTimer( Mobile caster ) : base( TimeSpan.FromSeconds( 0 ) )
+			public InternalTimer( Mobile caster, Mobile m ) : base( TimeSpan.FromSeconds( 0 ) )
 			{
 				double val = caster.Skills[SkillName.Magery].Value * 2.0;
 				if ( val < 15 )
@@ -157,6 +162,29 @@ namespace Server.Spells.Second
 			{
 				ProtectionSpell.Registry.Remove( m_Caster );
 				DefensiveSpell.Nullify( m_Caster );
+			}
+		}
+		
+		public class InternalTarget : Target
+		{
+			private ProtectionSpell m_Owner;
+
+			public InternalTarget( ProtectionSpell owner ) : base( 12, false, TargetFlags.Beneficial )
+			{
+				m_Owner = owner;
+			}
+
+			protected override void OnTarget( Mobile from, object o )
+			{
+				if ( o is Mobile )
+				{
+					m_Owner.Target( (Mobile)o );
+				}
+			}
+
+			protected override void OnTargetFinish( Mobile from )
+			{
+				m_Owner.FinishSequence();
 			}
 		}
 	}

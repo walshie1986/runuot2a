@@ -267,6 +267,8 @@ namespace Server.Mobiles
 
 		if ( from == this && Backpack != null && CanSee( Backpack ) && CheckAlive( false ) )
 			list.Add( new OpenBackpackEntry( this ) );
+
+		list.Add(new HireEntry(from, this));
 	}
         #endregion 
         
