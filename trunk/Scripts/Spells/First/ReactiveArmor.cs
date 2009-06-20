@@ -28,24 +28,24 @@ namespace Server.Spells.First
 			Caster.Target = new InternalTarget( this );
 		}
 
-		public override bool CheckCast()
-		{
-			if ( Core.AOS )
-				return true;
-
-			if ( Caster.MeleeDamageAbsorb > 0 )
-			{
-				Caster.SendLocalizedMessage( 1005559 ); // This spell is already in effect.
-				return false;
-			}
-			else if ( !Caster.CanBeginAction( typeof( DefensiveSpell ) ) )
-			{
-				Caster.SendLocalizedMessage( 1005385 ); // The spell will not adhere to you at this time.
-				return false;
-			}
-
-			return true;
-		}
+		// public override bool CheckCast()
+		// {
+			// if ( Core.AOS )
+				// return true;
+// 
+			// if ( Caster.MeleeDamageAbsorb > 0 )
+			// {
+				// Caster.SendLocalizedMessage( 1005559 ); // This spell is already in effect.
+				// return false;
+			// }
+			// else if ( !Caster.CanBeginAction( typeof( DefensiveSpell ) ) )
+			// {
+				// Caster.SendLocalizedMessage( 1005385 ); // The spell will not adhere to you at this time.
+				// return false;
+			// }
+// 
+			// return true;
+		// }
 
 		private static Hashtable m_Table = new Hashtable();
 
@@ -114,7 +114,7 @@ namespace Server.Spells.First
 				{
 					//if ( Caster.BeginAction( typeof( DefensiveSpell ) ) )
 					//{
-						int value = (int)(Caster.Skills[SkillName.Magery].Value + Caster.Skills[SkillName.Meditation].Value + Caster.Skills[SkillName.Inscribe].Value);
+						int value = (int)(Caster.Skills[SkillName.Magery].Value + Caster.Skills[SkillName.Meditation].Value);
 						value /= 3;
 
 						if ( value < 0 )
