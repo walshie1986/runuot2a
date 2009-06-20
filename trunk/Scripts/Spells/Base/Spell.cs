@@ -29,7 +29,7 @@ namespace Server.Spells
 		public Item Scroll{ get{ return m_Scroll; } }
 		public DateTime StartCastTime { get { return m_StartCastTime; } }
 
-		private static TimeSpan NextSpellDelay = TimeSpan.FromSeconds( 0.5 ); //0.75
+		private static TimeSpan NextSpellDelay = T2A.NextSpellDelay;
 		private static TimeSpan AnimateDelay = TimeSpan.FromSeconds( 1.5 );
 
 		public virtual SkillName CastSkill{ get{ return SkillName.Magery; } }
