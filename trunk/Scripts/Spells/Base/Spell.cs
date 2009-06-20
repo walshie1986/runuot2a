@@ -518,7 +518,7 @@ namespace Server.Spells
 					SayMantra();
 
 					TimeSpan castDelay = this.GetCastDelay();
-					m_Caster.NextSpellTime = castDelay + m_StartCastTime;
+					m_Caster.NextSpellTime = m_StartCastTime + castDelay;
 
 					if ( ShowHandMovement && m_Caster.Body.IsHuman )
 					{
