@@ -159,6 +159,29 @@ namespace Server.Spells
 
 		public virtual bool IsCasting{ get{ return m_State == SpellState.Casting; } }
 
+		public virtual void OnCasterHurt(int damage) {
+			if ( !Caster.Player )
+				return;
+
+			if ( IsCasting )
+			{
+				object o = ProtectionSpell.Registry[m_Caster];
+				double chance;
+				if(Caster.Skills[SkillName.Magery].Fixed == 0 || damage < 0)
+					chance = 0.0;
+				else
+					chance = 1/(damage/(Caster.Skills[SkillName.Magery].Fixed / 50.0)+0.75) - 0.33333;
+				
+				if ( o != null && o is double && (double)o > chance )
+				{
+					chance = (double)o;
+				}
+				if(chance <= Utility.RandomDouble()*100.0)
+					OnCasterHurt();
+			}
+			return;
+		}
+		
 		public virtual void OnCasterHurt()
 		{
 			//Confirm: Monsters and pets cannot be disturbed.
@@ -167,14 +190,14 @@ namespace Server.Spells
 
 			if ( IsCasting )
 			{
-				object o = ProtectionSpell.Registry[m_Caster];
+				//object o = ProtectionSpell.Registry[m_Caster];
 				bool disturb = true;
 
-				if ( o != null && o is double )
-				{
-					if ( ((double)o) > Utility.RandomDouble()*100.0 )
-						disturb = false;
-				}
+				// if ( o != null && o is double )
+				// {
+					// if ( ((double)o) > Utility.RandomDouble()*100.0 )
+						// disturb = false;
+				// }
 
 				if ( disturb )
 					Disturb( DisturbType.Hurt, false, true );
