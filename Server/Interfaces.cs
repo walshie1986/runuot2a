@@ -79,6 +79,7 @@ namespace Server
 	public interface ISpell
 	{
 		bool IsCasting{ get; }
+		void OnCasterHurt(int amount);
 		void OnCasterHurt();
 		void OnCasterKilled();
 		void OnConnectionChanged();

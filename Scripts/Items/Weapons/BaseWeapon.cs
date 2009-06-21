@@ -2194,8 +2194,8 @@ namespace Server.Items
 				attacker.CheckSkill( SkillName.Tactics, 0.0, 120.0 ); // Passively check tactics for gain
 				attacker.CheckSkill( SkillName.Anatomy, 0.0, 120.0 ); // Passively check Anatomy for gain
 
-				if ( Type == WeaponType.Axe )
-					attacker.CheckSkill( SkillName.Lumberjacking, 0.0, 100.0 ); // Passively check Lumberjacking for gain
+				// if ( Type == WeaponType.Axe )
+					// attacker.CheckSkill( SkillName.Lumberjacking, 0.0, 100.0 ); // Passively check Lumberjacking for gain
 			}
 
 			/* Compute tactics modifier
@@ -2224,21 +2224,21 @@ namespace Server.Items
 			 * : 1% bonus for every 5 points of lumberjacking
 			 * : +10% bonus at Grandmaster or higher
 			 */
-			double lumberBonus;
+			double lumberBonus = 0.0;
 
-			if ( Type == WeaponType.Axe )
-			{
-				double lumberValue = attacker.Skills[SkillName.Lumberjacking].Value;
-
-				lumberBonus = (lumberValue / 5.0) / 100.0;
-
-				if ( lumberValue >= 100.0 )
-					lumberBonus += 0.1;
-			}
-			else
-			{
-				lumberBonus = 0.0;
-			}
+			// if ( Type == WeaponType.Axe )
+			// {
+				// double lumberValue = attacker.Skills[SkillName.Lumberjacking].Value;
+// 
+				// lumberBonus = (lumberValue / 5.0) / 100.0;
+// 
+				// if ( lumberValue >= 100.0 )
+					// lumberBonus += 0.1;
+			// }
+			// else
+			// {
+				// lumberBonus = 0.0;
+			// }
 
 			// New quality bonus:
 			double qualityBonus = ((int)m_Quality - 1) * 0.2;

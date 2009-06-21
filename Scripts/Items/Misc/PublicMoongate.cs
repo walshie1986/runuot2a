@@ -238,7 +238,7 @@ namespace Server.Items
 					new PMEntry( new Point3D( 1828, 2948,-20), 1012008 ), // Trinsic
 					new PMEntry( new Point3D(  643, 2067, 5 ), 1012009 ), // Skara Brae
 					new PMEntry( new Point3D( 3563, 2139, 34), 1012010 ), // Magincia
-					new PMEntry( new Point3D( 3450, 2677, 25), 1078098 )  // New Haven
+					//new PMEntry( new Point3D( 3450, 2677, 25), 1078098 )  // New Haven
 				} );
 
 		public static readonly PMList Felucca =
@@ -311,28 +311,29 @@ namespace Server.Items
 
 			if ( mobile.Player )
 			{
-				if ( Factions.Sigil.ExistsOn( mobile ) )
-				{
-					checkLists = PMList.SigilLists;
-				}
-				else if ( mobile.Kills >= 5 )
-				{
-					checkLists = PMList.RedLists;
-				}
-				else
-				{
-					int flags = mobile.NetState == null ? 0 : mobile.NetState.Flags;
-					bool young = mobile is PlayerMobile ? ((PlayerMobile)mobile).Young : false;
-
-					if ( Core.SE && (flags & 0x10) != 0 )
-						checkLists = young ? PMList.SEListsYoung : PMList.SELists;
-					else if ( Core.AOS && (flags & 0x8) != 0 )
-						checkLists = young ? PMList.AOSListsYoung : PMList.AOSLists;
-					else if ( (flags & 0x4) != 0 )
-						checkLists = young ? PMList.LBRListsYoung : PMList.LBRLists;
-					else
-						checkLists = young ? PMList.UORListsYoung : PMList.UORLists;
-				}
+				// if ( Factions.Sigil.ExistsOn( mobile ) )
+				// {
+					// checkLists = PMList.SigilLists;
+				// }
+				// else if ( mobile.Kills >= 5 )
+				// {
+					// checkLists = PMList.RedLists;
+				// }
+				// else
+				// {
+					// int flags = mobile.NetState == null ? 0 : mobile.NetState.Flags;
+					// bool young = mobile is PlayerMobile ? ((PlayerMobile)mobile).Young : false;
+// 
+					// if ( Core.SE && (flags & 0x10) != 0 )
+						// checkLists = young ? PMList.SEListsYoung : PMList.SELists;
+					// else if ( Core.AOS && (flags & 0x8) != 0 )
+						// checkLists = young ? PMList.AOSListsYoung : PMList.AOSLists;
+					// else if ( (flags & 0x4) != 0 )
+						// checkLists = young ? PMList.LBRListsYoung : PMList.LBRLists;
+					// else
+						// checkLists = young ? PMList.UORListsYoung : PMList.UORLists;
+				// }
+				checkLists = PMList.UORListsYoung;
 			}
 			else
 			{
