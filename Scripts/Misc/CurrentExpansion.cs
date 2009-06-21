@@ -15,7 +15,7 @@ namespace Server
 
 			Mobile.InsuranceEnabled = false;
 			ObjectPropertyList.Enabled = Enabled;
-			Mobile.VisibleDamageType = Enabled ? VisibleDamageType.Related : VisibleDamageType.None;
+			Mobile.VisibleDamageType = VisibleDamageType.Everyone;//Enabled ? VisibleDamageType.Related : VisibleDamageType.None;
 			Mobile.GuildClickMessage = !Enabled;
 			Mobile.AsciiClickMessage = !Enabled;
 
