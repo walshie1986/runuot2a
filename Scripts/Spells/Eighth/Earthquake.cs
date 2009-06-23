@@ -68,7 +68,7 @@ namespace Server.Spells.Eighth
 						damage = Utility.Random(14, 38);
 						if (CheckResisted( m ) )
 						{
-							damage *= 0.5;
+							damage = (int)(damage * 0.5);
 
 							m.SendLocalizedMessage( 501783 ); // You feel yourself resisting magical energy.
 						}
