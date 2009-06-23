@@ -2217,8 +2217,8 @@ namespace Server.Items
 			double anatomyValue = attacker.Skills[SkillName.Anatomy].Value;
 			double anatomyBonus = (anatomyValue / 5.0) / 100.0;
 
-			if ( anatomyValue >= 100.0 )
-				anatomyBonus += 0.1;
+			//if ( anatomyValue >= 100.0 )
+			//	anatomyBonus += 0.1;
 
 			/* Compute lumberjacking bonus
 			 * : 1% bonus for every 5 points of lumberjacking
