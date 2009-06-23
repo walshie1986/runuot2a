@@ -4,6 +4,6 @@ namespace Server
 {
 	public class T2A
 	{
-		public static TimeSpan NextSpellDelay = TimeSpan.FromSeconds( 1.25 );
+		public static TimeSpan NextSpellDelay = TimeSpan.FromSeconds( 0.5 );
 	}
 }
