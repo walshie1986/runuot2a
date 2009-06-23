@@ -83,11 +83,11 @@ namespace Server.Spells.Sixth
 					}
 					else
 					{
-						damage = Utility.Random( 23, 22 );
+						damage = Utility.Random( 14, 28 );
 
 						if ( m_Spell.CheckResisted( m_Target ) )
 						{
-							damage *= 0.75;
+							damage *= 0.5;
 
 							m_Target.SendLocalizedMessage( 501783 ); // You feel yourself resisting magical energy.
 						}

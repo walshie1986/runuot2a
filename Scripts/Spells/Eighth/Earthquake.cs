@@ -59,12 +59,19 @@ namespace Server.Spells.Eighth
 					}
 					else
 					{
-						damage = (m.Hits * 6) / 10;
+						/*damage = (m.Hits * 6) / 10;
 
 						if ( !m.Player && damage < 10 )
 							damage = 10;
 						else if ( damage > 75 )
-							damage = 75;
+							damage = 75;*/
+						damage = Utility.Random(14, 38);
+						if (CheckResisted( m ) )
+						{
+							damage *= 0.5;
+
+							m.SendLocalizedMessage( 501783 ); // You feel yourself resisting magical energy.
+						}
 					}
 
 					Caster.DoHarmful( m );

@@ -77,7 +77,7 @@ namespace Server.Spells.Seventh
 				if ( Core.AOS )
 					damage = GetNewAosDamage( 51, 1, 5, playerVsPlayer );
 				else
-					damage = Utility.Random( 27, 22 );
+					damage = Utility.Random( 11, 38 );
 
 				if ( targets.Count > 0 )
 				{

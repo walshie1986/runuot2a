@@ -54,11 +54,11 @@ namespace Server.Spells.Second
 				}
 				else
 				{
-					damage = Utility.Random( 1, 15 );
+					damage = Utility.Random( 1, 12 );
 
 					if ( CheckResisted( m ) )
 					{
-						damage *= 0.75;
+						damage *= 0.5;
 
 						m.SendLocalizedMessage( 501783 ); // You feel yourself resisting magical energy.
 					}
@@ -66,10 +66,10 @@ namespace Server.Spells.Second
 					damage *= GetDamageScalar( m );
 				}
 
-				if ( !m.InRange( Caster, 2 ) )
+				/*if ( !m.InRange( Caster, 2 ) )
 					damage *= 0.25; // 1/4 damage at > 2 tile range
 				else if ( !m.InRange( Caster, 1 ) )
-					damage *= 0.50; // 1/2 damage at 2 tile range
+					damage *= 0.50; // 1/2 damage at 2 tile range*/
 
 				if ( Core.AOS )
 				{
