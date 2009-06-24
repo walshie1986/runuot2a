@@ -165,17 +165,17 @@ namespace Server.Spells
 
 			if ( IsCasting )
 			{
-				object o = ProtectionSpell.Registry[m_Caster];
+				//object o = ProtectionSpell.Registry[m_Caster];
 				double chance;
 				if(Caster.Skills[SkillName.Magery].Fixed == 0 || damage < 0)
 					chance = 0.0;
 				else
 					chance = 1/(damage/(Caster.Skills[SkillName.Magery].Fixed / 50.0)+0.75) - 0.33333;
 				
-				if ( o != null && o is double && (double)o > chance )
-				{
-					chance = (double)o;
-				}
+				//if ( o != null && o is double && (double)o > chance )
+				//{
+				//	chance = (double)o;
+				//}
 				if(chance <= Utility.RandomDouble()*100.0)
 					OnCasterHurt();
 			}
