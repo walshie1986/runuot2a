@@ -119,6 +119,11 @@ namespace Server.Items
 		public virtual WeaponType AosType{ get{ return DefType; } }
 		public virtual WeaponAnimation AosAnimation{ get{ return DefAnimation; } }
 
+		//New dice rolling code
+		public virtual int DiceSides{ get{ return 0; } }
+		public virtual int DiceRolls{ get{ return 0; } }
+		public virtual int DiceOffset{ get{ return 0; } }
+		
 		public virtual int OldStrengthReq{ get{ return 0; } }
 		public virtual int OldDexterityReq{ get{ return 0; } }
 		public virtual int OldIntelligenceReq{ get{ return 0; } }
@@ -2043,6 +2048,9 @@ namespace Server.Items
 
 		public virtual double GetBaseDamage( Mobile attacker )
 		{
+			if( DiceSides > 0 ) {
+				return Utility.Dice( DiceRolls, DiceSides, DiceOffset );
+			}
 			int min, max;
 
 			GetBaseDamageRange( attacker, out min, out max );
