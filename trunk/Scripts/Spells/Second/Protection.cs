@@ -105,43 +105,83 @@ namespace Server.Spells.Second
 			}
 			else
 			{
-				if ( m_Registry.ContainsKey( m ) )
+				if(CheckSequence())
 				{
-					Caster.SendLocalizedMessage( 1005559 ); // This spell is already in effect.
+					if ( m.BeginAction( typeof( ProtectionSpell ) ) )
+					{
+						int val = (int)(Caster.Skills[SkillName.Magery].Value/10.0 + 1);
+						Caster.DoBeneficial( m );
+						m.VirtualArmorMod += val;
+						new InternalTimer( m, Caster, val ).Start();
+	
+						m.FixedParticles( 0x375A, 9, 20, 5016, EffectLayer.Waist );
+						m.PlaySound( 0x1ED );
+					} else {
+						Caster.SendLocalizedMessage( 1005559 ); // This spell is already in effect.
+					}
 				}
-				/*else if ( !Caster.CanBeginAction( typeof( DefensiveSpell ) ) )
-				{
-					Caster.SendLocalizedMessage( 1005385 ); // The spell will not adhere to you at this time.
-				}*/
-				else if ( CheckSequence() )
-				{
-					// if ( Caster.BeginAction( typeof( DefensiveSpell ) ) )
-					// {
-						double value = (int)(Caster.Skills[SkillName.EvalInt].Value + Caster.Skills[SkillName.Meditation].Value);
-						value /= 4;
-
-						if ( value < 0 )
-							value = 0;
-						else if ( value > 75 )
-							value = 75.0;
-
-						Registry.Add( m, value );
-						new InternalTimer( Caster, m ).Start();
-
-						Caster.FixedParticles( 0x375A, 9, 20, 5016, EffectLayer.Waist );
-						Caster.PlaySound( 0x1ED );
-					// }
-					// else
-					// {
-						// Caster.SendLocalizedMessage( 1005385 ); // The spell will not adhere to you at this time.
-					// }
-				}
+				// if ( m_Registry.ContainsKey( m ) )
+				// {
+					// Caster.SendLocalizedMessage( 1005559 ); // This spell is already in effect.
+				// }
+				// /*else if ( !Caster.CanBeginAction( typeof( DefensiveSpell ) ) )
+				// {
+					// Caster.SendLocalizedMessage( 1005385 ); // The spell will not adhere to you at this time.
+				// }*/
+				// else if ( CheckSequence() )
+				// {
+					// // if ( Caster.BeginAction( typeof( DefensiveSpell ) ) )
+					// // {
+						// double value = (int)(Caster.Skills[SkillName.EvalInt].Value + Caster.Skills[SkillName.Meditation].Value);
+						// value /= 4;
+// 
+						// if ( value < 0 )
+							// value = 0;
+						// else if ( value > 75 )
+							// value = 75.0;
+// 
+						// Registry.Add( m, value );
+						// new InternalTimer( Caster, m ).Start();
+// 
+						// Caster.FixedParticles( 0x375A, 9, 20, 5016, EffectLayer.Waist );
+						// Caster.PlaySound( 0x1ED );
+					// // }
+					// // else
+					// // {
+						// // Caster.SendLocalizedMessage( 1005385 ); // The spell will not adhere to you at this time.
+					// // }
+				// }
 
 				FinishSequence();
 			}
 		}
-
 		private class InternalTimer : Timer
+		{
+			private Mobile m_Owner;
+			private int m_Val;
+
+			public InternalTimer( Mobile target, Mobile caster, int val ) : base( TimeSpan.FromSeconds( 0 ) )
+			{
+				double time = caster.Skills[SkillName.Magery].Value * 1.2;
+				if ( time > 144 )
+					time = 144;
+				Delay = TimeSpan.FromSeconds( time );
+				Priority = TimerPriority.OneSecond;
+
+				m_Owner = target;
+				m_Val = val;
+			}
+
+			protected override void OnTick()
+			{
+				m_Owner.EndAction( typeof( ProtectionSpell ) );
+				m_Owner.VirtualArmorMod -= m_Val;
+				if ( m_Owner.VirtualArmorMod < 0 )
+					m_Owner.VirtualArmorMod = 0;
+			}
+		}
+
+		/*private class InternalTimer : Timer
 		{
 			private Mobile m_Caster;
 
@@ -163,7 +203,7 @@ namespace Server.Spells.Second
 				ProtectionSpell.Registry.Remove( m_Caster );
 				DefensiveSpell.Nullify( m_Caster );
 			}
-		}
+		}*/
 		
 		public class InternalTarget : Target
 		{
