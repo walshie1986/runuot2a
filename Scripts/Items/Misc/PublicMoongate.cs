@@ -285,7 +285,7 @@ namespace Server.Items
 				} );
 
 		public static readonly PMList[] UORLists		= new PMList[] { Trammel, Felucca };
-		public static readonly PMList[] UORListsYoung	= new PMList[] { Trammel };
+		public static readonly PMList[] UORListsYoung	= new PMList[] { Felucca };
 		public static readonly PMList[] LBRLists		= new PMList[] { Trammel, Felucca, Ilshenar };
 		public static readonly PMList[] LBRListsYoung	= new PMList[] { Trammel, Ilshenar };
 		public static readonly PMList[] AOSLists		= new PMList[] { Trammel, Felucca, Ilshenar, Malas };

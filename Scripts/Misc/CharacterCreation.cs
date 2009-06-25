@@ -437,28 +437,28 @@ namespace Server.Misc
 
 			bank.DropItem( book );
 
-			Bag bag = new Bag();
-
-			for ( int i = 0; i < 5; ++i )
-				bag.DropItem( new Moonstone( MoonstoneType.Felucca ) );
-
-			// Felucca moonstones
-			bank.DropItem( bag );
-
-			bag = new Bag();
-
-			for ( int i = 0; i < 5; ++i )
-				bag.DropItem( new Moonstone( MoonstoneType.Trammel ) );
-
-			// Trammel moonstones
-			bank.DropItem( bag );
+			// Bag bag = new Bag();
+// 
+			// for ( int i = 0; i < 5; ++i )
+				// bag.DropItem( new Moonstone( MoonstoneType.Felucca ) );
+// 
+			// // Felucca moonstones
+			// bank.DropItem( bag );
+// 
+			// bag = new Bag();
+// 
+			// for ( int i = 0; i < 5; ++i )
+				// bag.DropItem( new Moonstone( MoonstoneType.Trammel ) );
+// 
+			// // Trammel moonstones
+			// bank.DropItem( bag );
 
 			// Treasure maps
-			bank.DropItem( new TreasureMap( 1, Map.Trammel ) );
-			bank.DropItem( new TreasureMap( 2, Map.Trammel ) );
-			bank.DropItem( new TreasureMap( 3, Map.Trammel ) );
-			bank.DropItem( new TreasureMap( 4, Map.Trammel ) );
-			bank.DropItem( new TreasureMap( 5, Map.Trammel ) );
+			bank.DropItem( new TreasureMap( 1, Map.Felucca ) );
+			bank.DropItem( new TreasureMap( 2, Map.Felucca ) );
+			bank.DropItem( new TreasureMap( 3, Map.Felucca ) );
+			bank.DropItem( new TreasureMap( 4, Map.Felucca ) );
+			bank.DropItem( new TreasureMap( 5, Map.Felucca ) );
 
 			// Bag containing 50 of each reagent
 			bank.DropItem( new BagOfReagents( 50 ) );
@@ -525,7 +525,7 @@ namespace Server.Misc
 			for ( int i = 0; i < 5; ++i )
 				bank.DropItem( MakeNewbie( new RecallRune() ) );
 
-			AddPowerScrolls( bank );
+			//AddPowerScrolls( bank );
 		}
 
 		private static void AddPowerScrolls( BankBox bank )
@@ -693,7 +693,7 @@ namespace Server.Misc
 
 			//CityInfo city = GetStartLocation( args, young );
 			//CityInfo city = new CityInfo( "Britain", "Sweet Dreams Inn", 1496, 1628, 10, Map.Felucca );
-			CityInfo city = new CityInfo( "Britain", "Britain Bank", 1437, 1700, 0, Map.Trammel );
+			CityInfo city = new CityInfo( "Britain", "Britain Bank", 1437, 1700, 0, Map.Felucca );
 
 			newChar.MoveToWorld( city.Location, city.Map );
 
