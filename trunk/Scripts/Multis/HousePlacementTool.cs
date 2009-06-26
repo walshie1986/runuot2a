@@ -78,11 +78,11 @@ namespace Server.Items
 			AddButton( 10, 40, 4005, 4007, 1, GumpButtonType.Reply, 0 );
 			AddHtmlLocalized( 45, 40, 200, 20, 1060390, LabelColor, false, false ); // Classic Houses
 
-			AddButton( 10, 60, 4005, 4007, 2, GumpButtonType.Reply, 0 );
-			AddHtmlLocalized( 45, 60, 200, 20, 1060391, LabelColor, false, false ); // 2-Story Customizable Houses
+			//AddButton( 10, 60, 4005, 4007, 2, GumpButtonType.Reply, 0 );
+			//AddHtmlLocalized( 45, 60, 200, 20, 1060391, LabelColor, false, false ); // 2-Story Customizable Houses
 
-			AddButton( 10, 80, 4005, 4007, 3, GumpButtonType.Reply, 0 );
-			AddHtmlLocalized( 45, 80, 200, 20, 1060392, LabelColor, false, false ); // 3-Story Customizable Houses
+			//AddButton( 10, 80, 4005, 4007, 3, GumpButtonType.Reply, 0 );
+			//AddHtmlLocalized( 45, 80, 200, 20, 1060392, LabelColor, false, false ); // 3-Story Customizable Houses
 		}
 
 		public override void OnResponse( Server.Network.NetState sender, RelayInfo info )
@@ -97,7 +97,7 @@ namespace Server.Items
 					m_From.SendGump( new HousePlacementListGump( m_From, HousePlacementEntry.ClassicHouses ) );
 					break;
 				}
-				case 2: // 2-Story Customizable Houses
+				/*case 2: // 2-Story Customizable Houses
 				{
 					m_From.SendGump( new HousePlacementListGump( m_From, HousePlacementEntry.TwoStoryFoundations ) );
 					break;
@@ -106,7 +106,7 @@ namespace Server.Items
 				{
 					m_From.SendGump( new HousePlacementListGump( m_From, HousePlacementEntry.ThreeStoryFoundations ) );
 					break;
-				}
+				}*/
 			}
 		}
 	}
@@ -626,20 +626,20 @@ namespace Server.Items
 				new HousePlacementEntry( typeof( SmallOldHouse ),		1011306,	425,	212,	489,	244,	10,	35250,		0,	4,	0,	0x006A	),
 				new HousePlacementEntry( typeof( SmallOldHouse ),		1011307,	425,	212,	489,	244,	10,	36750,		0,	4,	0,	0x006C	),
 				new HousePlacementEntry( typeof( SmallOldHouse ),		1011308,	425,	212,	489,	244,	10,	36750,		0,	4,	0,	0x006E	),
-				new HousePlacementEntry( typeof( SmallShop ),			1011321,	425,	212,	489,	244,	10,	50500,	   -1,	4,	0,	0x00A0	),
-				new HousePlacementEntry( typeof( SmallShop ),			1011322,	425,	212,	489,	244,	10,	52500,		0,	4,	0,	0x00A2	),
-				new HousePlacementEntry( typeof( SmallTower ),			1011317,	580,	290,	667,	333,	14,	73500,		3,	4,	0,	0x0098	),
-				new HousePlacementEntry( typeof( TwoStoryVilla ),		1011319,	1100,	550,	1265,	632,	24,	113750,		3,	6,	0,	0x009E	),
-				new HousePlacementEntry( typeof( SandStonePatio ),		1011320,	850,	425,	1265,	632,	24,	76500,	   -1,	4,	0,	0x009C	),
-				new HousePlacementEntry( typeof( LogCabin ),			1011318,	1100,	550,	1265,	632,	24,	81750,		1,	6,	0,	0x009A	),
-				new HousePlacementEntry( typeof( GuildHouse ),			1011309,	1370,	685,	1576,	788,	28,	131500,	   -1,	7,	0,	0x0074	),
-				new HousePlacementEntry( typeof( TwoStoryHouse ),		1011310,	1370,	685,	1576,	788,	28,	162750,	   -3,	7,	0,	0x0076	),
-				new HousePlacementEntry( typeof( TwoStoryHouse ),		1011311,	1370,	685,	1576,	788,	28,	162000,	   -3,	7,	0,	0x0078	),
-				new HousePlacementEntry( typeof( LargePatioHouse ),		1011315,	1370,	685,	1576,	788,	28,	129250,	   -4,	7,	0,	0x008C	),
-				new HousePlacementEntry( typeof( LargeMarbleHouse ),	1011316,	1370,	685,	1576,	788,	28,	160500,	   -4,	7,	0,	0x0096	),
-				new HousePlacementEntry( typeof( Tower ),				1011312,	2119,	1059,	2437,	1218,	42,	366500,		0,	7,	0,	0x007A	),
-				new HousePlacementEntry( typeof( Keep ),				1011313,	2625,	1312,	3019,	1509,	52,	572750,		0, 11,	0,	0x007C	),
-				new HousePlacementEntry( typeof( Castle ),				1011314,	4076,	2038,	4688,	2344,	78,	865250,		0, 16,	0,	0x007E	)
+				//new HousePlacementEntry( typeof( SmallShop ),			1011321,	425,	212,	489,	244,	10,	50500,	   	-1,	4,	0,	0x00A0	),
+				//new HousePlacementEntry( typeof( SmallShop ),			1011322,	425,	212,	489,	244,	10,	52500,		0,	4,	0,	0x00A2	),
+				//new HousePlacementEntry( typeof( SmallTower ),		1011317,	580,	290,	667,	333,	14,	73500,		3,	4,	0,	0x0098	),
+				//new HousePlacementEntry( typeof( TwoStoryVilla ),		1011319,	1100,	550,	1265,	632,	24,	113750,		3,	6,	0,	0x009E	),
+				//new HousePlacementEntry( typeof( SandStonePatio ),		1011320,	850,	425,	1265,	632,	24,	76500,	   	-1,	4,	0,	0x009C	),
+				//new HousePlacementEntry( typeof( LogCabin ),			1011318,	1100,	550,	1265,	632,	24,	81750,		1,	6,	0,	0x009A	),
+				new HousePlacementEntry( typeof( GuildHouse ),			1011309,	1370,	685,	1576,	788,	28,	131500,	   	-1,	7,	0,	0x0074	),
+				new HousePlacementEntry( typeof( TwoStoryHouse ),		1011310,	1370,	685,	1576,	788,	28,	162750,	   	-3,	7,	0,	0x0076	),
+				new HousePlacementEntry( typeof( TwoStoryHouse ),		1011311,	1370,	685,	1576,	788,	28,	162000,	   	-3,	7,	0,	0x0078	),
+				new HousePlacementEntry( typeof( LargePatioHouse ),		1011315,	1370,	685,	1576,	788,	28,	129250,	   	-4,	7,	0,	0x008C	),
+				//new HousePlacementEntry( typeof( LargeMarbleHouse ),		1011316,	1370,	685,	1576,	788,	28,	160500,	   	-4,	7,	0,	0x0096	),
+				new HousePlacementEntry( typeof( Tower ),			1011312,	2119,	1059,	2437,	1218,	42,	366500,		0,	7,	0,	0x007A	),
+				new HousePlacementEntry( typeof( Keep ),			1011313,	2625,	1312,	3019,	1509,	52,	572750,		0, 	11,	0,	0x007C	),
+				new HousePlacementEntry( typeof( Castle ),			1011314,	4076,	2038,	4688,	2344,	78,	865250,		0, 	16,	0,	0x007E	)
 			};
 
 		public static HousePlacementEntry[] ClassicHouses{ get{ return m_ClassicHouses; } }
