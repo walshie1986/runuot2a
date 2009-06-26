@@ -911,7 +911,7 @@ namespace Server.Misc
 				if ( skills[i].Value < 0 || skills[i].Value > 50 )
 					return false;
 				
-				if( !Core.SE && (int)skills[i].Name > 51 ) || ( !Core.AOS && (int)skills[i].Name > 48 )
+				if(( !Core.SE && (int)skills[i].Name > 51 ) || ( !Core.AOS && (int)skills[i].Name > 48 ))
 					return false;
 
 				total += skills[i].Value;

@@ -70,8 +70,7 @@ namespace Server.Items
 			if ( Deleted )
 				return;
 
-			//if ( IsChildOf( from.Backpack ) )
-			if(false)
+			/*if ( IsChildOf( from.Backpack ) )
 			{
 				if ( from.StatCap >= m_Value )
 				{
@@ -104,7 +103,7 @@ namespace Server.Items
 					}
 				}
 			}
-			else
+			else*/
 			{
 				from.SendLocalizedMessage( 1042001 ); // That must be in your pack for you to use it.
 			}
