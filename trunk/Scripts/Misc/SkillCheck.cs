@@ -220,8 +220,8 @@ namespace Server.Misc
 				else if( skill.Base <= 65.0)
 				{
 					bool fast = false;
-					for(int i = 0; i < FastGains.length && !fast; i++)
-						if(skill.Info.SkillID == FastGains[i])
+					for(int i = 0; i < FasterGains.Length && !fast; i++)
+						if(skill.Info.SkillID == FasterGains[i])
 							fast = true;
 					if(fast)
 						toGain = Utility.Random( 4 ) + 1;
