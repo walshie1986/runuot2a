@@ -684,16 +684,16 @@ namespace Server.Misc
 			if( TestCenter.Enabled )
 				FillBankbox( newChar );
 
-			if ( young )
+			/*if ( young )
 			{
 				NewPlayerTicket ticket = new NewPlayerTicket();
 				ticket.Owner = newChar;
 				newChar.BankBox.DropItem( ticket );
-			}
+			}*/
 
-			//CityInfo city = GetStartLocation( args, young );
+			CityInfo city = GetStartLocation( args, false );
 			//CityInfo city = new CityInfo( "Britain", "Sweet Dreams Inn", 1496, 1628, 10, Map.Felucca );
-			CityInfo city = new CityInfo( "Britain", "Britain Bank", 1437, 1700, 0, Map.Felucca );
+			//CityInfo city = new CityInfo( "Britain", "Britain Bank", 1437, 1700, 0, Map.Felucca );
 
 			newChar.MoveToWorld( city.Location, city.Map );
 
@@ -909,6 +909,9 @@ namespace Server.Misc
 			for ( int i = 0; i < skills.Length; ++i )
 			{
 				if ( skills[i].Value < 0 || skills[i].Value > 50 )
+					return false;
+				
+				if( !Core.SE && (int)skills[i].Name > 51 ) || ( !Core.AOS && (int)skills[i].Name > 48 )
 					return false;
 
 				total += skills[i].Value;
