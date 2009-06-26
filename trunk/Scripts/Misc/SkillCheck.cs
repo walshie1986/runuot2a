@@ -11,6 +11,19 @@ namespace Server.Misc
 		public static TimeSpan AntiMacroExpire = TimeSpan.FromMinutes( 5.0 ); //How long do we remember targets/locations?
 		public const int Allowance = 3;	//How many times may we use the same location/target for gain
 		private const int LocationSize = 5; //The size of eeach location, make this smaller so players dont have to move as far
+		private static int[] FasterGains = new int[]
+		{
+			5,
+			25,
+			26,
+			27,
+			31,
+			40,
+			41,
+			42,
+			43,
+			46
+		};
 		private static bool[] UseAntiMacro = new bool[]
 		{
 			// true if this skill uses the anti-macro code, false if it does not
@@ -39,8 +52,8 @@ namespace Server.Misc
 			true,// Provocation = 22,
 			false,// Inscribe = 23,
 			true,// Lockpicking = 24,
-			true,// Magery = 25,
-			true,// MagicResist = 26,
+			false,// Magery = 25,
+			false,// MagicResist = 26,
 			false,// Tactics = 27,
 			true,// Snooping = 28,
 			true,// Musicianship = 29,
@@ -60,7 +73,7 @@ namespace Server.Misc
 			false,// Wrestling = 43,
 			true,// Lumberjacking = 44,
 			true,// Mining = 45,
-			true,// Meditation = 46,
+			false,// Meditation = 46,
 			true,// Stealth = 47,
 			true,// RemoveTrap = 48,
 			true,// Necromancy = 49,
@@ -202,8 +215,17 @@ namespace Server.Misc
 			{
 				int toGain = 1;
 
-				if ( skill.Base <= 10.0 )
+				if ( skill.Base <= 10.0)
 					toGain = Utility.Random( 4 ) + 1;
+				else if( skill.Base <= 65.0)
+				{
+					bool fast = false;
+					for(int i = 0; i < FastGains.length && !fast; i++)
+						if(skill.Info.SkillID == FastGains[i])
+							fast = true;
+					if(fast)
+						toGain = Utility.Random( 4 ) + 1;
+				}
 
 				Skills skills = from.Skills;
 
