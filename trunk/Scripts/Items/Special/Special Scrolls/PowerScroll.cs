@@ -256,7 +256,8 @@ namespace Server.Items
 			if ( Deleted )
 				return;
 
-			if ( IsChildOf( from.Backpack ) )
+			//if ( IsChildOf( from.Backpack ) )
+			if(false)
 			{
 				Skill skill = from.Skills[m_Skill];
 

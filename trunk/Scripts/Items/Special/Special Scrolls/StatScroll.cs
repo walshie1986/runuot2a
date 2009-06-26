@@ -70,7 +70,8 @@ namespace Server.Items
 			if ( Deleted )
 				return;
 
-			if ( IsChildOf( from.Backpack ) )
+			//if ( IsChildOf( from.Backpack ) )
+			if(false)
 			{
 				if ( from.StatCap >= m_Value )
 				{
