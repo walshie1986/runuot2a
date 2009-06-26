@@ -22,7 +22,7 @@ namespace Server.Items
 			Amount = amount;
 		}
 
-		public override void OnDoubleClick( Mobile from )
+		/*public override void OnDoubleClick( Mobile from )
 		{
 			if ( !IsChildOf( from.Backpack ) )
 			{
@@ -65,7 +65,7 @@ namespace Server.Items
 				from.LocalOverheadMessage( MessageType.Emote, 0x3B2, 1049632 ); // * You begin to swing the bola...*
 				from.NonlocalOverheadMessage( MessageType.Emote, 0x3B2, 1049633, from.Name ); // ~1_NAME~ begins to menacingly swing a bola...
 			}
-		}
+		}*/
 
 		private static void ReleaseBolaLock( object state )
 		{
