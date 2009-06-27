@@ -19,16 +19,14 @@ namespace Server.Misc
 					"A spellbook and a bag of reagents has been placed into your bank box.",
 					"Various tools have been placed into your bank.",
 					"Various raw materials like ingots, logs, feathers, hides, bottles, etc, have been placed into your bank.",
-					"5 unmarked recall runes, 5 Felucca moonstones and 5 Trammel moonstones have been placed into your bank box.",
 					"One of each level of treasure map has been placed in your bank box.",
 					"You will find 9000 silver pieces deposited into your bank box.  Spend it as you see fit and enjoy yourself!",
 					"You will find 9000 gold pieces deposited into your bank box.  Spend it as you see fit and enjoy yourself!",
-					"A bag of PowerScrolls has been placed in your bank box."
 				} :
 			new string[]
 				{	//Yes, this message is a pathetic message, It's suggested that you change it.
-					"Welcome to this shard.",
-					"Please enjoy your stay."
+					"ResurrectionUO: Australian Ultima Online Shard",
+					"This shard is currently in BETA."
 				} );
 
 		public WelcomeTimer( Mobile m ) : this( m, m_Messages.Length )
