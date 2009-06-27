@@ -97,7 +97,7 @@ namespace Server.Engines.Help
 		{
 			from.CloseGump( typeof( HelpGump ) );
 
-			bool isYoung = IsYoung( from );
+			bool isYoung = false;//IsYoung( from );
 
 			AddBackground( 50, 25, 540, 430, 2600 );
 
