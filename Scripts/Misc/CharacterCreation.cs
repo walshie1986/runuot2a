@@ -695,7 +695,7 @@ namespace Server.Misc
 			//CityInfo city = new CityInfo( "Britain", "Sweet Dreams Inn", 1496, 1628, 10, Map.Felucca );
 			//CityInfo city = new CityInfo( "Britain", "Britain Bank", 1437, 1700, 0, Map.Felucca );
 
-			newChar.MoveToWorld( city.Location, city.Map );
+			newChar.MoveToWorld( city.Location, Map.Felucca );
 
 			Console.WriteLine( "Login: {0}: New character being created (account={1})", args.State, args.Account.Username );
 			Console.WriteLine( " - Character: {0} (serial={1})", newChar.Name, newChar.Serial );
