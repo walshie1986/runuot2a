@@ -329,7 +329,7 @@ namespace Server
 		{
 			HandleClosed();
 
-			if ( restart )
+			if ( !m_Service && restart )
 				Process.Start( ExePath, Arguments );
 
 			m_Process.Kill();
@@ -357,9 +357,19 @@ namespace Server
 
 		private static AutoResetEvent m_Signal = new AutoResetEvent( true );
 		public static void Set() { m_Signal.Set(); }
+		
+		public static void ServiceMain() {
+			System.ServiceProcess.ServiceBase.Run(new WindowsService());
+		}
+		public static void StartService() {
+			m_Service = true;
+			Main(new string[0]);
+		}
 
 		public static void Main( string[] args )
 		{
+			bool isService = !Insensitive.Equals(System.IO.Directory.GetCurrentDirectory().TrimEnd('\\'), System.AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\'));
+			//Console.WriteLine("{0}, {1}, {2}", System.IO.Directory.GetCurrentDirectory(), System.AppDomain.CurrentDomain.BaseDirectory, isService);
 			AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler( CurrentDomain_UnhandledException );
 			AppDomain.CurrentDomain.ProcessExit += new EventHandler( CurrentDomain_ProcessExit );
 
@@ -378,7 +388,14 @@ namespace Server
 				else if ( Insensitive.Equals( args[i], "-vb" ) )
 					m_VBdotNET = true;
 			}
-
+			
+			System.IO.Directory.SetCurrentDirectory(System.AppDomain.CurrentDomain.BaseDirectory);
+			if(isService)
+			{
+				ServiceMain();
+				return;
+			}
+			
 			try
 			{
 				if( m_Service )
@@ -419,8 +436,8 @@ namespace Server
 
 			string s = Arguments;
 
-			if( s.Length > 0 )
-				Console.WriteLine( "Core: Running with arguments: {0}", s );
+			if( args.Length > 0 )
+				Console.WriteLine( "Core: Running with arguments: {0}", args );
 
 			m_ProcessorCount = Environment.ProcessorCount;
 
@@ -445,7 +462,7 @@ namespace Server
 				Console.WriteLine( "Scripts: One or more scripts failed to compile or no script files were found." );
 				Console.WriteLine( " - Press return to exit, or R to try again." );
 
-				if( Console.ReadKey( true ).Key != ConsoleKey.R )
+				if( m_Service || (Console.ReadKey( true ).Key != ConsoleKey.R))
 					return;
 			}
 
@@ -493,6 +510,10 @@ namespace Server
 						last = now;
 					}
 				}
+			}
+			catch( ThreadAbortException e)
+			{
+				Kill(false);
 			}
 			catch( Exception e )
 			{

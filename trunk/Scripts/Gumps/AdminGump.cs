@@ -392,18 +392,19 @@ namespace Server.Gumps
 
 					AddButtonLabeled( 20, 150, GetButtonID( 3, 200 ), "Save" );
 
+					AddButtonLabeled( 20, 180, GetButtonID( 3, 201 ), "Shutdown (With Save)" );
+					AddButtonLabeled( 20, 200, GetButtonID( 3, 202 ), "Shutdown (Without Save)" );
+					
 					if ( !Core.Service )
 					{
-						AddButtonLabeled( 20, 180, GetButtonID( 3, 201 ), "Shutdown (With Save)" );
-						AddButtonLabeled( 20, 200, GetButtonID( 3, 202 ), "Shutdown (Without Save)" );
+						AddButtonLabeled( 20, 230, GetButtonID( 3, 203 ), "Shutdown & Restart (With Save)" );
+						AddButtonLabeled( 20, 250, GetButtonID( 3, 204 ), "Shutdown & Restart (Without Save)" );
 					}
 					else
 					{
-						AddLabel( 20, 190, LabelHue, "Shutdown not available." );
+						AddLabel( 20, 240, LabelHue, "Restart not available." );
 					}
-					AddButtonLabeled( 20, 230, GetButtonID( 3, 203 ), "Shutdown & Restart (With Save)" );
-					AddButtonLabeled( 20, 250, GetButtonID( 3, 204 ), "Shutdown & Restart (Without Save)" );
-
+					
 					AddHtml( 10, 295, 400, 20, Color( Center( "Broadcast" ), LabelColor32 ), false, false );
 
 					AddTextField( 20, 320, 380, 20, 0 );
