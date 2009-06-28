@@ -8,7 +8,7 @@ namespace Server
     class WindowsService : ServiceBase
     {
 	    private Thread server;
-	    private Timer checker;
+	    //private static Thread restart;
         /// <summary>
 
         /// Public Constructor for WindowsService.
@@ -31,8 +31,6 @@ namespace Server
             this.CanPauseAndContinue = false;
             this.CanShutdown = false;
             this.CanStop = true;
-	    
-	    server = new Thread(new ThreadStart(Server.Core.StartService));
         }
 
         /// <summary>
@@ -74,13 +72,28 @@ namespace Server
         protected override void OnStart(string[] args)
         {
 		//RequestAdditionalTime(120000);
+		server = new Thread(new ThreadStart(Server.Core.StartService));
 		server.Start();
 		//Server.Core.Main(args2);
 		//if(Server.Core.Process != null && !Server.Core.Process.HasExited)
 		//	Stop();
             //base.OnStart(args);
         }
-
+	
+	/*private static void tRestartServer()
+	{	
+		//server.Abort();
+		server.Join();
+		Thread.Sleep(5000);
+		server = new Thread(new ThreadStart(Server.Core.StartService));
+		server.Start();
+	}
+	
+	public static void Restart()
+	{
+		restart = new Thread(new ThreadStart(tRestartServer));
+		restart.Start();
+	}*/
         /// <summary>
 
         /// OnStop(): Put your stop code here
