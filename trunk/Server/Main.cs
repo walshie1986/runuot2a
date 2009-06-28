@@ -329,10 +329,19 @@ namespace Server
 		{
 			HandleClosed();
 
-			if ( !m_Service && restart )
-				Process.Start( ExePath, Arguments );
-
-			m_Process.Kill();
+			if ( !m_Service ) {
+				if( restart )
+					Process.Start( ExePath, Arguments );
+				m_Process.Kill();
+			} else {
+				if( restart )
+					m_Process.Kill();
+				else {
+					System.ServiceProcess.ServiceController service = new System.ServiceProcess.ServiceController("RunUO Service");
+					if(service.Status == System.ServiceProcess.ServiceControllerStatus.Running)
+						service.Stop();
+				}
+			}	
 		}
 
 		private static void HandleClosed()
@@ -341,6 +350,7 @@ namespace Server
 				return;
 
 			m_Closing = true;
+			Set();
 
 			Console.Write( "Exiting..." );
 
@@ -462,7 +472,7 @@ namespace Server
 				Console.WriteLine( "Scripts: One or more scripts failed to compile or no script files were found." );
 				Console.WriteLine( " - Press return to exit, or R to try again." );
 
-				if( m_Service || (Console.ReadKey( true ).Key != ConsoleKey.R))
+				if( Console.ReadKey( true ).Key != ConsoleKey.R )
 					return;
 			}
 
@@ -488,7 +498,7 @@ namespace Server
 
 				int sample = 0;
 
-				while( m_Signal.WaitOne() )
+				while( !m_Closing && m_Signal.WaitOne() )
 				{
 					Mobile.ProcessDeltaQueue();
 					Item.ProcessDeltaQueue();
@@ -513,7 +523,9 @@ namespace Server
 			}
 			catch( ThreadAbortException e)
 			{
-				Kill(false);
+				Thread.ResetAbort();
+				HandleClosed();
+				//Kill(false);
 			}
 			catch( Exception e )
 			{
