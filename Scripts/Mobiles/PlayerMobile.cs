@@ -104,6 +104,7 @@ namespace Server.Mobiles
 		private Server.Guilds.RankDefinition m_GuildRank;
 
 		private int m_GuildMessageHue, m_AllianceMessageHue;
+		private Dictionary<Item, Point2D> m_ItemLocations;
 
 		#region Getters & Setters
 		public Server.Guilds.RankDefinition GuildRank
@@ -1754,7 +1755,15 @@ namespace Server.Mobiles
 		public override void Resurrect()
 		{
 			bool wasAlive = this.Alive;
-
+			if( this.m_ItemLocations == null ) {
+				return;
+			}
+			
+			foreach( Item item in this.m_ItemLocations.Keys ) {
+				item.X = this.m_ItemLocations[item].X;
+				item.Y = this.m_ItemLocations[item].Y;
+			}
+			
 			base.Resurrect();
 
 			if ( this.Alive && !wasAlive )
@@ -1804,6 +1813,15 @@ namespace Server.Mobiles
 				m_ReceivedHonorContext.OnTargetKilled();
 			if ( m_SentHonorContext != null )
 				m_SentHonorContext.OnSourceKilled();
+				List<Item> items = new List<Item>( this.Backpack.Items );
+			
+			m_ItemLocations = new Dictionary<Item, Point2D>();
+			
+			for( int i = 0; i < items.Count; i++ ) {
+				if(items[i].LootType == LootType.Blessed || items[i].LootType == LootType.Newbied || AccessLevel > AccessLevel.Player) {
+					m_ItemLocations[items[i]] = new Point2D( items[i].X, items[i].Y );
+				}
+			}
 
 			return base.OnBeforeDeath();
 		}
@@ -2077,6 +2095,7 @@ namespace Server.Mobiles
 			m_VisList = new List<Mobile>();
 			m_PermaFlags = new List<Mobile>();
 			m_AntiMacroTable = new Hashtable();
+			FollowersMax = 15;
 
 			m_BOBFilter = new Engines.BulkOrders.BOBFilter();
 
@@ -2319,6 +2338,21 @@ namespace Server.Mobiles
 
 			switch ( version )
 			{
+			case 26:
+				{
+					int itemLocationsCount = reader.ReadInt();
+
+					if( itemLocationsCount > 0 )
+					{
+						m_ItemLocations = new Dictionary<Item, Point2D>();
+
+						for( int i = 0; i < itemLocationsCount; i++ )
+						{
+							m_ItemLocations.Add( reader.ReadItem(), new Point2D( reader.ReadInt(), reader.ReadInt() ) );
+						}
+					}
+					goto case 25;
+				}
 				case 25:
 				{
 					int recipeCount = reader.ReadInt();
@@ -2598,7 +2632,22 @@ namespace Server.Mobiles
 
 			base.Serialize( writer );
 			
-			writer.Write( (int) 25 ); // version
+			writer.Write( (int) 26 ); // version
+			if( m_ItemLocations == null )
+			{
+				writer.Write( (int)0 );
+			}
+			else
+			{
+				writer.Write( m_ItemLocations.Count );
+
+				foreach( KeyValuePair<Item, Point2D> kvp in m_ItemLocations )
+				{
+					writer.Write( kvp.Key );
+					writer.Write( kvp.Value.X );
+					writer.Write( kvp.Value.Y );
+				}
+			}
 
 			if( m_AcquiredRecipes == null )
 			{
