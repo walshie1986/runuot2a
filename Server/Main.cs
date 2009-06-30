@@ -413,7 +413,7 @@ namespace Server
 					if( !Directory.Exists( "Logs" ) )
 						Directory.CreateDirectory( "Logs" );
 
-					Console.SetOut( m_MultiConOut = new MultiTextWriter( Console.Out, new FileLogger( "Logs/Console.log" ) ) );
+					Console.SetOut( m_MultiConOut = new MultiTextWriter( Console.Out, new FileLogger( "Logs/" + DateTime.Now.ToString("yyyy-MM-dd.HH-mm-ss") +".log" ) ) );
 				}
 				else
 				{
