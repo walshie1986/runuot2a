@@ -28,7 +28,7 @@ namespace Server.Misc
 			}
 
 			PackItem( new RedBook( "a book", m.Name, 20, true ) );
-			PackItem( new Gold( 100 ) ); // Starting gold can be customized here
+			PackItem( new Gold( 1000 ) ); // Starting gold can be customized here
 			PackItem( new Dagger() );
 			PackItem( new Candle() );
 		}
@@ -61,14 +61,13 @@ namespace Server.Misc
 		private static void FillBankAOS( Mobile m )
 		{
 			BankBox bank = m.BankBox;
-			m.BankBox.MaxItems = 400;
 
 			// The new AOS bankboxes don't have powerscrolls, they are automatically 'applied':
 
 			for ( int i = 0; i < PowerScroll.Skills.Length; ++i )
-				m.Skills[PowerScroll.Skills[ i ]].Cap = 100.0;
+				m.Skills[PowerScroll.Skills[ i ]].Cap = 120.0;
 
-			m.StatCap = 225;
+			m.StatCap = 250;
 
 
 			Container cont;
