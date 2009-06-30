@@ -36,6 +36,14 @@ namespace Server.Items
 			}
 		}
 
+		public override int DefaultMaxItems
+		{
+			get
+			{
+				return 400;
+			}
+		}
+
 		public override bool IsVirtualItem
 		{
 			get { return true; }
