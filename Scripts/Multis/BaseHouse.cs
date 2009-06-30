@@ -3052,9 +3052,21 @@ namespace Server.Multis
 			if ( a == null )
 				return false;
 
+            ArrayList allHouses = new ArrayList();
+
 			for ( int i = 0; i < a.Length; ++i )
-				if ( a[i] != null && HasHouse( a[i] ) )
-					return true;
+			{
+				Mobile mob = a[i];
+
+				if ( mob != null )
+					allHouses.AddRange( GetHouses( mob ) );
+			}
+           //3 means 4 house limit. Same thing with any number. You want 2 houses? Set it to 1.
+            if(allHouses.Count > 0) return true;
+
+			//for ( int i = 0; i < a.Length; ++i )
+			//	if ( a[i] != null && HasHouse( a[i] ) )
+			//		return true;
 
 			return false;
 		}
