@@ -997,7 +997,7 @@ namespace Server.Mobiles
 					strBase = this.RawStr;
 				}
 
-				return (strBase / 2) + 50 + strOffs;
+				return (strBase) + strOffs;
 			}
 		}
 
