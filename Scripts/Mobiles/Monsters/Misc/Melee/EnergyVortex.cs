@@ -25,7 +25,7 @@ namespace Server.Mobiles
 		{
 			Name = "an energy vortex";
 
-			if( Core.SE && 0.02 > Utility.RandomDouble() ) // Tested on OSI, but is this right? Who knows.
+			if( 0.02 > Utility.RandomDouble() ) // Tested on OSI, but is this right? Who knows.
 			{
 				// Llama vortex!
 				Body = 0xDC;
