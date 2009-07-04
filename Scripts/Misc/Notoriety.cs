@@ -11,6 +11,7 @@ using Server.Factions;
 using Server.Spells.Necromancy;
 using Server.Spells.Ninjitsu;
 using Server.Spells;
+using Server.Engines.XmlSpawner2;
 
 namespace Server.Misc
 {
@@ -86,6 +87,10 @@ namespace Server.Misc
 
 			if( target is BaseCreature && !((BaseCreature)target).Controlled )
 				return false; // Players cannot heal uncontrolled mobiles
+			
+			// XmlPoints challenge mod
+			if(XmlPoints.AreInAnyGame(target))
+               	return XmlPoints.AreTeamMembers(from,target);
 
 			if( from is PlayerMobile && ((PlayerMobile)from).Young && (!(target is PlayerMobile) || !((PlayerMobile)target).Young) )
 				return false; // Young players cannot perform beneficial actions towards older players
@@ -118,6 +123,9 @@ namespace Server.Misc
 
 				return true; // Uncontrolled NPCs are only restricted by the young system
 			}
+			// XmlPoints challenge mod
+			if(XmlPoints.AreChallengers(from,target))
+               return true;
 
 			Guild fromGuild = GetGuildFor( from.Guild as Guild, from );
 			Guild targetGuild = GetGuildFor( target.Guild as Guild, target );
@@ -290,6 +298,13 @@ namespace Server.Misc
 
 			if( target.Criminal )
 				return Notoriety.Criminal;
+			
+			// XmlPoints challenge mod
+			if(XmlPoints.AreTeamMembers(source,target))
+				return Notoriety.Ally;
+			else
+			if(XmlPoints.AreChallengers(source,target))
+				return Notoriety.Enemy;
 
 			Guild sourceGuild = GetGuildFor( source.Guild as Guild, source );
 			Guild targetGuild = GetGuildFor( target.Guild as Guild, target );

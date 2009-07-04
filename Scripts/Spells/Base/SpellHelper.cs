@@ -308,7 +308,7 @@ namespace Server.Spells
 				}
 			}
 
-			return 1 + (int)(caster.Skills[SkillName.Magery].Value * 0.1);
+			return (int)(caster.Skills[SkillName.Magery].Value * 0.1); //Removed + 1 because max was 10
 		}
 
 		public static Guild GetGuildFor( Mobile m )

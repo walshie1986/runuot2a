@@ -588,10 +588,15 @@ namespace Server.Items
 			{
 				return false;
 			}
+			else if (!Server.Engines.XmlSpawner2.XmlAttach.CheckCanEquip(this, from)) // XmlAttachment check for CanEquip
+			{
+				return false;
+			}
 			else
 			{
-				return base.CanEquip( from );
+				return base.CanEquip(from);
 			}
+
 		}
 
 		public virtual bool UseSkillMod{ get{ return !Core.AOS; } }
@@ -637,7 +642,8 @@ namespace Server.Items
 				m_MageMod = new DefaultSkillMod( SkillName.Magery, true, -30 + m_AosWeaponAttributes.MageWeapon );
 				from.AddSkillMod( m_MageMod );
 			}
-
+			// XmlAttachment check for OnEquip
+			Server.Engines.XmlSpawner2.XmlAttach.CheckOnEquip(this, from);
 			return true;
 		}
 
@@ -691,7 +697,9 @@ namespace Server.Items
 				m.CheckStatTimers();
 
 				m.Delta( MobileDelta.WeaponDamage );
-			}
+				}
+			// XmlAttachment check for OnRemoved
+			Server.Engines.XmlSpawner2.XmlAttach.CheckOnRemoved(this, parent);
 		}
 
 		public virtual SkillName GetUsedSkill( Mobile m, bool checkSkillAttrs )
@@ -1222,6 +1230,10 @@ namespace Server.Items
 			if ( shield != null )
 				damage = shield.OnHit( this, damage );
 
+			// XmlAttachment check for OnArmorHit
+			damage -= Server.Engines.XmlSpawner2.XmlAttach.OnArmorHit(attacker, defender, armorItem, this, damage);
+			damage -= Server.Engines.XmlSpawner2.XmlAttach.OnArmorHit(attacker, defender, shield, this, damage);
+	
 			int virtualArmor = defender.VirtualArmor + defender.VirtualArmorMod;
 
 			if ( virtualArmor > 0 )
@@ -1703,6 +1715,8 @@ namespace Server.Items
 
 				if ( AnimalForm.UnderTransformation( defender, typeof( BullFrog ) ) )
 					attacker.ApplyPoison( defender, Poison.Regular );
+				// hook for attachment OnWeaponHit method
+				Server.Engines.XmlSpawner2.XmlAttach.OnWeaponHit(this, attacker, defender, damageGiven);
 			}
 		}
 

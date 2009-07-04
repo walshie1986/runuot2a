@@ -4,6 +4,7 @@ using Server.Items;
 using Server.Mobiles;
 using Server.Network;
 using Server.Accounting;
+using Server.Engines.XmlSpawner2;
 
 namespace Server.Misc
 {
@@ -702,6 +703,9 @@ namespace Server.Misc
 			Console.WriteLine( " - Started: {0} {1} in {2}", city.City, city.Location, city.Map.ToString() );
 
 			new WelcomeTimer( newChar ).Start();
+			
+			// mod to attach the XmlPoints attachment automatically to new chars
+			XmlAttach.AttachTo(newChar, new XmlPoints());
 		}
 
 		public static bool VerifyProfession( int profession )

@@ -1217,7 +1217,14 @@ namespace Server.Items
 				}
 			}
 
-			return base.CanEquip( from );
+			// XmlAttachment check for CanEquip
+			if(!Server.Engines.XmlSpawner2.XmlAttach.CheckCanEquip(this, from))
+			{
+		        	return false;
+			} else
+			{
+				return base.CanEquip( from );
+			}
 		}
 
 		public override bool CheckPropertyConfliction( Mobile m )
@@ -1256,6 +1263,8 @@ namespace Server.Items
 					from.AddStatMod( new StatMod( StatType.Int, modName + "Int", intBonus, TimeSpan.Zero ) );
 			}
 
+			// XmlAttachment check for OnEquip
+        	Server.Engines.XmlSpawner2.XmlAttach.CheckOnEquip(this, from);
 			return base.OnEquip( from );
 		}
 
@@ -1276,7 +1285,8 @@ namespace Server.Items
 				((Mobile)parent).Delta( MobileDelta.Armor ); // Tell them armor rating has changed
 				m.CheckStatTimers();
 			}
-
+			// XmlAttachment check for OnRemoved
+			Server.Engines.XmlSpawner2.XmlAttach.CheckOnRemoved(this, parent);
 			base.OnRemoved( parent );
 		}
 

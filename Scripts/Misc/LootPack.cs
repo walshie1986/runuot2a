@@ -541,6 +541,10 @@ namespace Server
 
 		private static bool IsInTokuno( Mobile m )
 		{
+			// ARTEGORDONMOD
+            // allow lootpack construction without a mobile
+            if (m == null) return false;
+            
 			if ( m.Region.IsPartOf( "Fan Dancer's Dojo" ) )
 				return true;
 
@@ -604,12 +608,12 @@ namespace Server
 		{
 			if ( item != null )
 			{
-				if ( item is BaseWeapon && 1 > Utility.Random( 100 ) )
+				/*if ( item is BaseWeapon && 1 > Utility.Random( 100 ) ) //No FireHorns
 				{
 					item.Delete();
 					item = new FireHorn();
 					return item;
-				}
+				}*/
 
 				if ( item is BaseWeapon || item is BaseArmor || item is BaseJewel || item is BaseHat )
 				{
@@ -654,9 +658,9 @@ namespace Server
 
 							if ( 5 > Utility.Random( 100 ) )
 								weapon.Slayer = SlayerName.Silver;
-
-							if ( from != null && weapon.AccuracyLevel == 0 && weapon.DamageLevel == 0 && weapon.DurabilityLevel == 0 && weapon.Slayer == SlayerName.None && 5 > Utility.Random( 100 ) )
-								weapon.Slayer = SlayerGroup.GetLootSlayerType( from.GetType() );
+							//No slayer weapons
+							/*if ( from != null && weapon.AccuracyLevel == 0 && weapon.DamageLevel == 0 && weapon.DurabilityLevel == 0 && weapon.Slayer == SlayerName.None && 5 > Utility.Random( 100 ) )
+								weapon.Slayer = SlayerGroup.GetLootSlayerType( from.GetType() );*/
 						}
 						else if ( item is BaseArmor )
 						{

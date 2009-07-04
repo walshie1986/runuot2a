@@ -24,6 +24,7 @@ using Server.Accounting;
 using Server.Engines.CannedEvil;
 using Server.Engines.Craft;
 using Server.Spells.Spellweaving;
+using Server.Engines.XmlSpawner2;
 
 namespace Server.Mobiles
 {
@@ -1844,6 +1845,12 @@ namespace Server.Mobiles
 				}
 
 				return true;
+			} else {
+				// XmlPoints mod to give free insurance during challenge games
+               if(XmlPoints.InsuranceIsFree(this, m_InsuranceAward))
+               {
+                   return true;
+               }
 			}
 
 			return false;
@@ -1967,7 +1974,9 @@ namespace Server.Mobiles
 					Timer.DelayCall( TimeSpan.FromSeconds( 2.5 ), new TimerCallback( SendYoungDeathNotice ) );
 			}
 
-			Faction.HandleDeath( this, killer );
+			// block faction skill loss during challenge games
+			if(!XmlPoints.AreChallengers(this, killer))
+				Faction.HandleDeath( this, killer );
 
 			Server.Guilds.Guild.HandleDeath( this, killer );
 

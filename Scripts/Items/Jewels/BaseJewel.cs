@@ -131,6 +131,17 @@ namespace Server.Items
 
 				from.CheckStatTimers();
 			}
+			// XmlAttachment check for OnEquip and CanEquip
+			if(parent is Mobile)
+	    		{
+	        		if(Server.Engines.XmlSpawner2.XmlAttach.CheckCanEquip(this, (Mobile)parent))
+	        		{
+	        			Server.Engines.XmlSpawner2.XmlAttach.CheckOnEquip(this, (Mobile)parent);
+	        		} else
+	        		{
+	        			((Mobile)parent).AddToBackpack(this);
+	        		}
+	    		}
 		}
 
 		public override void OnRemoved( object parent )
@@ -149,6 +160,8 @@ namespace Server.Items
 
 				from.CheckStatTimers();
 			}
+			// XmlAttachment check for OnRemoved
+			Server.Engines.XmlSpawner2.XmlAttach.CheckOnRemoved(this, parent);
 		}
 
 		public BaseJewel( Serial serial ) : base( serial )
