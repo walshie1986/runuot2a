@@ -13,12 +13,12 @@ namespace Server.Items
 		public override int BaseEnergyResistance{ get{ return 2; } }
 
 		public override int InitMinHits{ get{ return 35; } }
-		public override int InitMaxHits{ get{ return 60; } }
+		public override int InitMaxHits{ get{ return 45; } }
 
 		public override int AosStrReq{ get{ return 60; } }
 		public override int OldStrReq{ get{ return 20; } }
 
-		public override int ArmorBase{ get{ return 28; } }
+		public override int ArmorBase{ get{ return 23; } }
 
 		public override ArmorMaterialType MaterialType{ get{ return ArmorMaterialType.Chainmail; } }
 

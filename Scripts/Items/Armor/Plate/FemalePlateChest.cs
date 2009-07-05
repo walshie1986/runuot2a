@@ -22,7 +22,7 @@ namespace Server.Items
 
 		public override bool AllowMaleWearer{ get{ return false; } }
 
-		public override int ArmorBase{ get{ return 30; } }
+		public override int ArmorBase{ get{ return 20; } }
 
 		public override ArmorMaterialType MaterialType{ get{ return ArmorMaterialType.Plate; } }
 
