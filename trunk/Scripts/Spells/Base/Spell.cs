@@ -19,7 +19,6 @@ namespace Server.Spells
 		private SpellInfo m_Info;
 		private SpellState m_State;
 		private DateTime m_StartCastTime;
-		private bool triggerDelay = false;
 
 		public SpellState State{ get{ return m_State; } set{ m_State = value; } }
 		public Mobile Caster{ get{ return m_Caster; } }
@@ -436,7 +435,7 @@ namespace Server.Spells
 				OnDisturb( type, true );
 
 				if(type == DisturbType.EquipRequest) {
-					m_Caster.NextSpellTime = DateTime.Now;
+					m_Caster.NextSpellTime = DateTime.Now - TimeSpan.FromSeconds(0.5);
 				} else
 				{
 					//m_Caster.NextSpellTime = DateTime.Now + GetCastRecovery();
@@ -525,19 +524,14 @@ namespace Server.Spells
 			{
 				m_Caster.SendLocalizedMessage( 502643 ); // You can not cast a spell while frozen.
 			}
-			else if(triggerDelay && m_Caster.NextSpellTime + TimeSpan.FromSeconds(2.2) > DateTime.Now)
+			else if ( CheckNextSpellTime && DateTime.Now < m_Caster.NextSpellTime + TimeSpan.FromSeconds(0.5) )
 			{
-				triggerDelay = false;
-				m_Caster.NextSpellTime = DateTime.Now + TimeSpan.FromSeconds(0.5); //Add a 0.5 second delay
-				m_Caster.SendLocalizedMessage( 502644 ); // You have not yet recovered from casting a spell.
-			}
-			else if ( CheckNextSpellTime && DateTime.Now < m_Caster.NextSpellTime )
-			{
+				if( m_Caster.NextSpellTime > DateTime.Now )
+					m_Caster.NextSpellTime = DateTime.Now; //Add a 0.5 second delay
 				m_Caster.SendLocalizedMessage( 502644 ); // You have not yet recovered from casting a spell.
 			}
 			else if ( m_Caster.Mana >= ScaleMana( GetMana() ) )
 			{
-				triggerDelay = false;
 				if ( m_Caster.Spell == null && m_Caster.CheckSpellCast( this ) && CheckCast() && m_Caster.Region.OnBeginSpellCast( m_Caster, this ) )
 				{
 					m_State = SpellState.Casting;
@@ -549,7 +543,7 @@ namespace Server.Spells
 					SayMantra();
 
 					TimeSpan castDelay = this.GetCastDelay();
-					m_Caster.NextSpellTime = m_StartCastTime + castDelay;
+					m_Caster.NextSpellTime = m_StartCastTime + castDelay - TimeSpan.FromSeconds(0.5);
 
 					if ( ShowHandMovement && m_Caster.Body.IsHuman )
 					{
@@ -902,8 +896,7 @@ namespace Server.Spells
 					m_Spell.m_CastTimer = null;
 					m_Spell.m_Caster.OnSpellCast( m_Spell );
 					m_Spell.m_Caster.Region.OnSpellCast( m_Spell.m_Caster, m_Spell );
-					m_Spell.m_Caster.NextSpellTime = DateTime.Now;// Spell.NextSpellDelay;
-					m_Spell.triggerDelay = true;
+					m_Spell.m_Caster.NextSpellTime = DateTime.Now + TimeSpan.FromSeconds(1.7);// Spell.NextSpellDelay;
 					//m_Spell.m_Caster.NextSpellTime = DateTime.Now + m_Spell.GetCastRecovery();
 
 					Target originalTarget = m_Spell.m_Caster.Target;
