@@ -384,12 +384,13 @@ namespace Server.Spells
 				}
 			}
 
-			if( to is BaseCreature && !((BaseCreature)to).Controlled && ((BaseCreature)to).InitialInnocent )
-				return true;
+			//if( to is BaseCreature && !((BaseCreature)to).Controlled && ((BaseCreature)to).InitialInnocent )
+			//	return true;
 
-			int noto = Notoriety.Compute( from, to );
+			//int noto = Notoriety.Compute( from, to );
 
-			return (noto != Notoriety.Innocent || from.Kills >= 5);
+			//return (noto != Notoriety.Innocent || from.Kills >= 5);
+			return true;
 		}
 
 		private static int[] m_Offsets = new int[]
