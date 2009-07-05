@@ -20,7 +20,7 @@ namespace Server.Items
 
 		public override int OldDexBonus{ get{ return -2; } }
 
-		public override int ArmorBase{ get{ return 40; } }
+		public override int ArmorBase{ get{ return 30; } }
 
 		public override ArmorMaterialType MaterialType{ get{ return ArmorMaterialType.Plate; } }
 

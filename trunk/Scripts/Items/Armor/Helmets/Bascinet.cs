@@ -11,8 +11,8 @@ namespace Server.Items
 		public override int BasePoisonResistance{ get{ return 2; } }
 		public override int BaseEnergyResistance{ get{ return 2; } }
 
-		public override int InitMinHits{ get{ return 40; } }
-		public override int InitMaxHits{ get{ return 50; } }
+		public override int InitMinHits{ get{ return 100; } }
+		public override int InitMaxHits{ get{ return 115; } }
 
 		public override int AosStrReq{ get{ return 40; } }
 		public override int OldStrReq{ get{ return 10; } }
