@@ -19,6 +19,10 @@ namespace Server.Items
 		public override int OldMinDamage{ get{ return 4; } }
 		public override int OldMaxDamage{ get{ return 16; } }
 		public override int OldSpeed{ get{ return 45; } }
+				
+		public override int DiceRolls{ get{ return 4; } }
+		public override int DiceSides{ get{ return 4; } }
+		public override int DiceOffset{ get{ return 0; } }
 
 		public override int InitMinHits{ get{ return 31; } }
 		public override int InitMaxHits{ get{ return 60; } }
