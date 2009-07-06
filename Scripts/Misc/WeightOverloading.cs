@@ -86,23 +86,48 @@ namespace Server.Misc
 				}
 			}
 
-			if ( ((from.Stam * 100) / Math.Max( from.StamMax, 1 )) < 10 )
-				--from.Stam;
+			/*if ( ((from.Stam * 100) / Math.Max( from.StamMax, 1 )) < 10 )
+				--from.Stam;*/
 
-			if ( from.Stam == 0 )
-			{
-				from.SendLocalizedMessage( 500110 ); // You are too fatigued to move.
-				e.Blocked = true;
-				return;
-			}
+			//New code for mount stam
 
 			if ( from is PlayerMobile )
 			{
 				int amt = ( from.Mounted ? 48 : 16 );
 				PlayerMobile pm = (PlayerMobile)from;
-
-				if ( (++pm.StepsTaken % amt) == 0 )
-					--from.Stam;
+				
+				if( from.Mounted && from.Mount is BaseCreature ) {
+					BaseCreature mount = (BaseCreature)from.Mount;
+					if( mount.Stam == 0 )
+					{
+						from.SendLocalizedMessage( 500108 ); // Your mount is too fatigued to move.
+						e.Blocked = true;
+						return;
+					} else if((++pm.StepsTaken % amt) == 0 ) {
+						--mount.Stam;
+						if(mount.Stam < mount.StamMax*0.08)
+							from.SendLocalizedMessage( 500133 ); // Your mount is very fatigued.
+					}
+				} else if(from.Mounted && from.Mount is EtherealMount ) {
+					if( pm.EthyStam == 0 )
+					{
+						from.SendLocalizedMessage( 500108 ); // Your mount is too fatigued to move.
+						e.Blocked = true;
+						return;
+					} else if((++pm.StepsTaken % amt) == 0 ) {
+						--pm.EthyStam;
+						if(pm.EthyStam < pm.EthyMaxStam*0.08)
+							from.SendLocalizedMessage( 500133 ); // Your mount is very fatigued.
+					}
+				} else {
+					if ( (++pm.StepsTaken % amt) == 0 )
+						--from.Stam;
+				}
+			} else if( from.Stam == 0 )
+			{
+				from.SendLocalizedMessage( 500110 ); // You are too fatigued to move.
+				e.Blocked = true;
+				return;
 			}
 
 			Spells.Ninjitsu.DeathStrike.AddStep( from );

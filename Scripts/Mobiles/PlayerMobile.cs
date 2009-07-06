@@ -99,6 +99,8 @@ namespace Server.Mobiles
 		private TimeSpan m_NpcGuildGameTime;
 		private PlayerFlag m_Flags;
 		private int m_StepsTaken;
+		private int m_EthyStam;
+		private int m_EthyMaxStam;
 		private int m_Profession;
 
 		private DateTime m_LastOnline;
@@ -139,7 +141,61 @@ namespace Server.Mobiles
 			get{ return m_Profession; }
 			set{ m_Profession = value; }
 		}
+		
+		public int EthyMaxStam
+		{
+			get
+			{
+				if(Mount is EtherealMount)
+					return m_EthyMaxStam;
+				else 
+					return 100;
+			}
+			set
+			{
+				m_EthyMaxStam = value;
+			}
+		}
 
+		/// <summary>
+		/// Gets or sets the current etheral mount stamina of the Mobile. This value ranges from 0 to 100, inclusive.
+		/// </summary>
+		[CommandProperty( AccessLevel.GameMaster )]
+		public int EthyStam
+		{
+			get
+			{
+				if(m_EthyStam > EthyMaxStam)
+					return EthyMaxStam;
+				else
+					return m_EthyStam;
+			}
+			set
+			{
+				if( value < 0 )
+				{
+					value = 0;
+				}
+				else if( value >= EthyMaxStam )
+				{
+					value = EthyMaxStam;
+				}
+				
+				if( value < EthyMaxStam)
+				{
+					Stam = Stam;
+				}
+				m_EthyStam = value;
+			}
+		}
+		
+		public override bool NeedsStamRegen
+		{
+			get {
+				return EthyStam < EthyMaxStam;
+			}
+		}
+		
 		public int StepsTaken
 		{
 			get{ return m_StepsTaken; }
@@ -2328,6 +2384,12 @@ namespace Server.Mobiles
 
 			switch ( version )
 			{
+				case 26:
+				{
+						m_EthyStam = reader.ReadInt();
+						m_EthyMaxStam = reader.ReadInt();
+						goto case 25;
+				}
 				case 25:
 				{
 					int recipeCount = reader.ReadInt();
@@ -2607,7 +2669,10 @@ namespace Server.Mobiles
 
 			base.Serialize( writer );
 			
-			writer.Write( (int) 25 ); // version
+			writer.Write( (int) 26 ); // version
+			
+			writer.Write( m_EthyStam );
+			writer.Write( EthyMaxStam );
 
 			if( m_AcquiredRecipes == null )
 			{

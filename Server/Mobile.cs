@@ -7450,7 +7450,7 @@ namespace Server
 						m_StamTimer.Stop();
 				}
 
-				if( value < StamMax )
+				if( value < StamMax || NeedsStamRegen )
 				{
 					if( CanRegenStam )
 					{
@@ -7472,6 +7472,13 @@ namespace Server
 					Delta( MobileDelta.Stam );
 					OnStamChange( oldValue );
 				}
+			}
+		}
+		
+		public virtual bool NeedsStamRegen
+		{
+			get{
+				return false;
 			}
 		}
 
@@ -10544,7 +10551,7 @@ namespace Server
 				DisplayPaperdollTo( this );
 		}
 
-		private static int m_BodyWeight = 14;
+		private static int m_BodyWeight = 10;
 
 		public static int BodyWeight { get { return m_BodyWeight; } set { m_BodyWeight = value; } }
 
