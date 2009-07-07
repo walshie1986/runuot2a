@@ -58,7 +58,7 @@ namespace Server.Items
 
 			CureLevelInfo[] info = LevelInfo;
 
-			for ( int i = 0; i < info.Length; ++i )
+			/*for ( int i = 0; i < info.Length; ++i )
 			{
 				CureLevelInfo li = info[i];
 
@@ -67,7 +67,8 @@ namespace Server.Items
 					cure = true;
 					break;
 				}
-			}
+			}*/
+			cure = Poison.CanCure(info.Length - 3, from.Poison);
 
 			if ( cure && from.CurePoison( from ) )
 			{

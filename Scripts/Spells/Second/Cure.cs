@@ -39,10 +39,11 @@ namespace Server.Spells.Second
 
 				if ( p != null )
 				{
-					int chanceToCure = 10000 + (int)(Caster.Skills[SkillName.Magery].Value * 75) - ((p.Level + 1) * (Core.AOS ? (p.Level < 4 ? 3300 : 3100) : 1750));
-					chanceToCure /= 100;
+					//int chanceToCure = 10000 + (int)(Caster.Skills[SkillName.Magery].Value * 75) - ((p.Level + 1) * (Core.AOS ? (p.Level < 4 ? 3300 : 3100) : 1750));
+					//chanceToCure /= 100;
 
-					if ( chanceToCure > Utility.Random( 100 ) )
+					//if ( chanceToCure > Utility.Random( 100 ) )
+					if(Poison.CanCure(1, p))
 					{
 						if ( m.CurePoison( Caster ) )
 						{
