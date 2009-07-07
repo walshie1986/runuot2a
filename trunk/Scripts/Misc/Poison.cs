@@ -24,11 +24,11 @@ namespace Server
 			}
 			else
 			{
-				Register( new PoisonImpl( "Lesser",		0, 0, 26,  2.500, 3.5, 2.5, 10, 2 ) ); //4 3.0  Remove minimum damage
-				Register( new PoisonImpl( "Regular",	1, 0, 26,  3.125, 3.5, 3.0, 10, 2 ) ); //5 3.0
-				Register( new PoisonImpl( "Greater",	2, 0, 26,  6.250, 3.5, 4.0, 10, 2 ) ); //6 3.0
-				Register( new PoisonImpl( "Deadly",		3, 0, 26, 12.500, 3.5, 5.0, 10, 2 ) ); //7 4.0
-				Register( new PoisonImpl( "Lethal",		4, 0, 26, 25.000, 3.5, 5.0, 10, 2 ) ); //9 5.0
+				Register( new PoisonImpl( "Lesser",		0, 0, 26,  2.00, 3.5, 5.0, 12, 2 ) ); //4 3.0  Remove minimum damage
+				Register( new PoisonImpl( "Regular",	1, 0, 26,  5.0, 3.5, 5.0, 12, 2 ) ); //5 3.0
+				Register( new PoisonImpl( "Greater",	2, 0, 26,  15.0, 3.5, 5.0, 12, 2 ) ); //6 3.0
+				Register( new PoisonImpl( "Deadly",		3, 0, 26, 10.00, 3.5, 5.0, 12, 2 ) ); //7 4.0
+				Register( new PoisonImpl( "Lethal",		4, 0, 26, 35.000, 3.5, 5.0, 12, 2 ) ); //9 5.0
 			}
 		}
 
@@ -37,6 +37,19 @@ namespace Server
 			Poison newPoison = ( oldPoison == null ? null : GetPoison( oldPoison.Level + 1 ) );
 
 			return ( newPoison == null ? oldPoison : newPoison );
+		}
+		
+		public static bool CanCure( int level, Poison p ) {
+			if(level == 0)
+				if(fp.Level > 0)
+					return false;
+			else if(level == 1)
+				if(p.Level > 3 || (p.Level == 3 && Utility.RandomBool()))
+					return false;
+			else
+				if(p.Level == 4 && Utility.RandomBool())
+					return false;
+			return true;
 		}
 
 		// Info
@@ -125,8 +138,8 @@ namespace Server
 
 					if ( damage < m_Poison.m_Minimum )
 						damage = m_Poison.m_Minimum;
-					else if ( damage > m_Poison.m_Maximum )
-						damage = m_Poison.m_Maximum;
+					//else if ( damage > m_Poison.m_Maximum )
+					//	damage = m_Poison.m_Maximum;
 
 					m_LastDamage = damage;
 				}
@@ -138,6 +151,12 @@ namespace Server
 				if ( honorTarget != null && honorTarget.ReceivedHonorContext != null )
 					honorTarget.ReceivedHonorContext.OnTargetPoisoned();
 
+				if(m_Poison.Level >= 3)
+				{
+					if(m_Mobile.Hits <= m_Mobile.HitsMax*0.25)
+						m_Mobile.Stam *= 0.50;
+				}
+					
 				AOS.Damage( m_Mobile, m_From, damage, 0, 0, 0, 100, 0 );
 
 				if ( (m_Index % m_Poison.m_MessageInterval) == 0 )
