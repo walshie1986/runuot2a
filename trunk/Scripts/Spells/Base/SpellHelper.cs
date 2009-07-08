@@ -539,11 +539,11 @@ namespace Server.Spells
 		private static bool[,] m_Rules = new bool[,]
 			{
 						/*T2A(Fel)		Ilshenar		Wind(Tram),	Wind(Fel),	Dungeons(Fel),	Solen(Tram),	Solen(Fel), CrystalCave(Malas),	Gauntlet(Malas),	Gauntlet(Ferry),	Stronghold,		ChampionSpawn, Dungeons(Tokuno[Malas]) */
-/* Recall From */		{ false,		true,			true,			false,		false,			true,			false,		false,				false,				false,				true,			true,			true	 },
-/* Recall To */			{ false,		false,			false,			false,		false,			false,			false,		false,				false,				false,				false,			false,			false	 },
-/* Gate From */			{ false,		false,			false,			false,		false,			false,			false,		false,				false,				false,				false,			false,			false	 },
-/* Gate To */			{ false,		false,			false,			false,		false,			false,			false,		false,				false,				false,				false,			false,			false	 },
-/* Mark In */			{ false,		false,			false,			false,		false,			false,			false,		false,				false,				false,				false,			false,			false	 },
+/* Recall From */		{ true,		true,			true,			false,		true,			true,			false,		false,				false,				false,				true,			true,			true	 },
+/* Recall To */			{ true,		false,			false,			false,		true,			false,			false,		false,				false,				false,				false,			false,			false	 },
+/* Gate From */			{ true,		false,			false,			false,		true,			false,			false,		false,				false,				false,				false,			false,			false	 },
+/* Gate To */			{ true,		false,			false,			false,		true,			false,			false,		false,				false,				false,				false,			false,			false	 },
+/* Mark In */			{ true,		false,			false,			false,		true,			false,			false,		false,				false,				false,				false,			false,			false	 },
 /* Tele From */			{ true,			true,			true,			true,		true,			true,			true,		false,				true,				true,				false,			true,			true	 },
 /* Tele To */			{ true,			true,			true,			true,		true,			true,			true,		false,				true,				false,				false, 			true,			true	 },
 			};
@@ -599,7 +599,10 @@ namespace Server.Spells
 
 			for( int i = 0; isValid && i < m_Validators.Length; ++i )
 				isValid = (m_Rules[v, i] || !m_Validators[i]( map, loc ));
-
+			
+			if(IsFeluccaT2A(map, loc) ^ IsFeluccaT2A(caster.Map, caster.Location ))
+				isValid = false;
+			
 			if( !isValid && caster != null )
 				SendInvalidMessage( caster, type );
 
