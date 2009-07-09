@@ -37,6 +37,19 @@ namespace Server
 		{
 			return this.Name;
 		}
+		
+		public static bool CanCure( int level, Poison p ) {
+			if(level == 0)
+				if(p.Level > 0)
+					return false;
+			else if(level == 1)
+				if(p.Level > 3 || (p.Level == 3 && Utility.RandomBool()))
+					return false;
+			else
+				if(p.Level == 4 && Utility.RandomBool())
+					return false;
+			return true;
+		}
 
 
 		private static ArrayList m_Poisons = new ArrayList();
