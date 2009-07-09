@@ -38,19 +38,6 @@ namespace Server
 
 			return ( newPoison == null ? oldPoison : newPoison );
 		}
-		
-		public static bool CanCure( int level, Poison p ) {
-			if(level == 0)
-				if(fp.Level > 0)
-					return false;
-			else if(level == 1)
-				if(p.Level > 3 || (p.Level == 3 && Utility.RandomBool()))
-					return false;
-			else
-				if(p.Level == 4 && Utility.RandomBool())
-					return false;
-			return true;
-		}
 
 		// Info
 		private string m_Name;
@@ -154,7 +141,7 @@ namespace Server
 				if(m_Poison.Level >= 3)
 				{
 					if(m_Mobile.Hits <= m_Mobile.HitsMax*0.25)
-						m_Mobile.Stam *= 0.50;
+						m_Mobile.Stam /= 2;
 				}
 					
 				AOS.Damage( m_Mobile, m_From, damage, 0, 0, 0, 100, 0 );
