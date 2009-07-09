@@ -20,6 +20,7 @@ namespace Server.Items
 		public override WeaponAnimation DefAnimation{ get{ return WeaponAnimation.ShootXBow; } }
 
 		public override SkillName AccuracySkill{ get{ return SkillName.Archery; } }
+		public override double AccuracySkillBonus { get { return 4.675; } }
 
 		public BaseRanged( int itemID ) : base( itemID )
 		{

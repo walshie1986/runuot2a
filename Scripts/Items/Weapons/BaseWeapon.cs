@@ -147,6 +147,7 @@ namespace Server.Items
 		public override int EnergyResistance{ get{ return m_AosWeaponAttributes.ResistEnergyBonus; } }
 
 		public virtual SkillName AccuracySkill { get { return SkillName.Tactics; } }
+		public virtual double AccuracySkillBonus { get { return 5; } }
 		#endregion
 
 		#region Getters & Setters
@@ -402,12 +403,12 @@ namespace Server.Items
 						}
 						else if ( m_SkillMod == null && Parent is Mobile )
 						{
-							m_SkillMod = new DefaultSkillMod( AccuracySkill, true, (int)m_AccuracyLevel * 5 );
+							m_SkillMod = new DefaultSkillMod( AccuracySkill, true, (int)m_AccuracyLevel * AccuracySkillBonus );
 							((Mobile)Parent).AddSkillMod( m_SkillMod );
 						}
 						else if ( m_SkillMod != null )
 						{
-							m_SkillMod.Value = (int)m_AccuracyLevel * 5;
+							m_SkillMod.Value = (int)m_AccuracyLevel * AccuracySkillBonus;
 						}
 					}
 
@@ -630,7 +631,7 @@ namespace Server.Items
 				if ( m_SkillMod != null )
 					m_SkillMod.Remove();
 
-				m_SkillMod = new DefaultSkillMod( AccuracySkill, true, (int)m_AccuracyLevel * 5 );
+				m_SkillMod = new DefaultSkillMod( AccuracySkill, true, (int)m_AccuracyLevel * AccuracySkillBonus );
 				from.AddSkillMod( m_SkillMod );
 			}
 
@@ -2725,7 +2726,7 @@ namespace Server.Items
 
 					if ( UseSkillMod && m_AccuracyLevel != WeaponAccuracyLevel.Regular && Parent is Mobile )
 					{
-						m_SkillMod = new DefaultSkillMod( AccuracySkill, true, (int)m_AccuracyLevel * 5 );
+						m_SkillMod = new DefaultSkillMod( AccuracySkill, true, (int)m_AccuracyLevel * AccuracySkillBonus );
 						((Mobile)Parent).AddSkillMod( m_SkillMod );
 					}
 
@@ -2855,7 +2856,7 @@ namespace Server.Items
 
 					if ( UseSkillMod && m_AccuracyLevel != WeaponAccuracyLevel.Regular && Parent is Mobile )
 					{
-						m_SkillMod = new DefaultSkillMod( AccuracySkill, true, (int)m_AccuracyLevel * 5);
+						m_SkillMod = new DefaultSkillMod( AccuracySkill, true, (int)m_AccuracyLevel * AccuracySkillBonus);
 						((Mobile)Parent).AddSkillMod( m_SkillMod );
 					}
 
