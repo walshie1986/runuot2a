@@ -1816,9 +1816,14 @@ namespace Server.Mobiles
 
 			if ( this.Alive && !wasAlive )
 			{
-				Item deathRobe = new DeathRobe();
+				bool found = true;
+				Item deathRobe = Backpack.FindItemByType(typeof(DeathRobe), false);
+				if(deathRobe == null) {
+					deathRobe = new DeathRobe();
+					found = false;
+				}
 
-				if ( !EquipItem( deathRobe ) )
+				if ( !EquipItem( deathRobe ) && !found )
 					deathRobe.Delete();
 			}
 		}
