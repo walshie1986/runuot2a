@@ -3,6 +3,7 @@ using Server;
 using Server.Network;
 using Server.Mobiles;
 using Server.Engines.PartySystem;
+using Server.Commands;
 
 namespace Server.Misc
 {
@@ -15,6 +16,14 @@ namespace Server.Misc
 			PacketHandlers.Register( 0xF0, 0, false, new OnPacketReceive( DecodeBundledPacket ) );
 
 			Register( 0x00, true, new OnPacketReceive( QueryPartyLocations ) );
+			
+			EventSink.Login += new LoginEventHandler( EventSink_Login );
+		}
+		
+		private static void EventSink_Login( LoginEventArgs args )
+		{
+			args.Mobile.NetState.Send(new RazorFeatures());
+			(new LightTimer(args.Mobile)).Start();
 		}
 
 		public static void QueryPartyLocations( NetState state, PacketReader pvSrc )
@@ -102,6 +111,54 @@ namespace Server.Misc
 			}
 
 			m_Stream.Write( (int) 0 );
+		}
+	}
+	
+	public class RazorFeatures : ProtocolExtension
+	{
+		[Flags]
+		private enum RazorFlags {
+			None					= 0x00000000,
+			WeatherFilter			= 0x00000001,
+			LightFilter				= 0x00000002,
+			SmartLT					= 0x00000004,
+			RangeCheckLT			= 0x00000008,
+			AutoOpenDoors			= 0x00000010,
+			UnequipBeforeCast		= 0x00000020,
+			AutoPotionEquip			= 0x00000040,
+			BlockHealPoisoned		= 0x00000080,
+			LoopingMacros			= 0x00000100,
+			UseOnceAgent			= 0x00000200,
+			RestockAgent			= 0x00000400,
+			SellAgent				= 0x00000800,
+			BuyAgent				= 0x00001000,
+			PotionHotkeys			= 0x00002000,
+			RandomTargets			= 0x00004000,
+			ClosestTargets			= 0x00008000,
+			OverheadHealth			= 0x00010000,
+		}
+		
+		public RazorFeatures() : base( 0xfe, 12 )
+		{
+			RazorFlags flags = RazorFlags.WeatherFilter | RazorFlags.LightFilter | RazorFlags.BlockHealPoisoned | RazorFlags.RangeCheckLT;
+			m_Stream.Write( (int) 0);
+			m_Stream.Write( (int) flags );
+		}
+	}
+	
+	internal class LightTimer : Timer
+	{
+		private Mobile m_Mobile;
+		
+		public LightTimer(Mobile m) : base( TimeSpan.FromSeconds(30) )
+		{
+			m_Mobile = m;
+		}
+		
+		protected override void OnTick()
+		{
+			m_Mobile.CheckLightLevels(true);
+			Stop();
 		}
 	}
 }
