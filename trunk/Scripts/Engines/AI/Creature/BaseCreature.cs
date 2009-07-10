@@ -269,7 +269,7 @@ namespace Server.Mobiles
 		public virtual int FactionSilverWorth{ get{ return 30; } }
 
 		#region Bonding
-		public const bool BondingEnabled = true;
+		public const bool BondingEnabled = false;
 
 		public virtual bool IsBondable{ get{ return ( BondingEnabled && !Summoned ); } }
 		public virtual TimeSpan BondingDelay{ get{ return TimeSpan.FromDays( 7.0 ); } }
