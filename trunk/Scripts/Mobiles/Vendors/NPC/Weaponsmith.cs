@@ -78,7 +78,8 @@ namespace Server.Mobiles
 
 		public override bool SupportsBulkOrders( Mobile from )
 		{
-			return ( from is PlayerMobile && Core.AOS && from.Skills[SkillName.Blacksmith].Base > 0 );
+			return false;
+			//return ( from is PlayerMobile && Core.AOS && from.Skills[SkillName.Blacksmith].Base > 0 );
 		}
 
 		public override TimeSpan GetNextBulkOrder( Mobile from )
