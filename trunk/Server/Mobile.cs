@@ -9601,7 +9601,7 @@ namespace Server
 		public void DefaultMobileInit()
 		{
 			m_StatCap = 225;
-			m_FollowersMax = 15;
+			m_FollowersMax = 50;
 			m_Skills = new Skills( this );
 			m_Items = new List<Item>();
 			m_StatMods = new List<StatMod>();
