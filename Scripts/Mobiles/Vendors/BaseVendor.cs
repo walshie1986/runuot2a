@@ -42,7 +42,7 @@ namespace Server.Mobiles
 
 		public virtual NpcGuild NpcGuild { get { return NpcGuild.None; } }
 
-		public virtual bool IsInvulnerable { get { return true; } }
+		public virtual bool IsInvulnerable { get { return false; } }
 
 		public override bool ShowFameTitle { get { return false; } }
 
