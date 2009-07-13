@@ -196,6 +196,10 @@ namespace Server.Mobiles
 			}
 		}
 		
+		public override void StamTick() {
+			EthyStam++;
+		}
+		
 		public int StepsTaken
 		{
 			get{ return m_StepsTaken; }
