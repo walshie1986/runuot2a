@@ -1955,8 +1955,10 @@ namespace Server
 
 			protected override void OnTick()
 			{
-				if( m_Owner.CanRegenStam )// m_Owner.Alive )
+				if( m_Owner.CanRegenStam ) {// m_Owner.Alive )
 					m_Owner.Stam++;
+					m_Owner.StamTick();
+				}
 
 				Delay = Interval = Mobile.GetStamRegenRate( m_Owner );
 			}
@@ -7481,6 +7483,8 @@ namespace Server
 				return false;
 			}
 		}
+		
+		public virtual void StamTick() {}
 
 		/// <summary>
 		/// Overridable. Gets the maximum stamina of the Mobile. By default, this returns: <c><see cref="Dex" /></c>
