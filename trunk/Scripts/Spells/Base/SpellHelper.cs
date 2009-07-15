@@ -600,7 +600,7 @@ namespace Server.Spells
 			for( int i = 0; isValid && i < m_Validators.Length; ++i )
 				isValid = (m_Rules[v, i] || !m_Validators[i]( map, loc ));
 			
-			if(IsFeluccaT2A(map, loc) ^ IsFeluccaT2A(caster.Map, caster.Location ))
+			if(caster != null && (IsFeluccaT2A(map, loc) ^ IsFeluccaT2A(caster.Map, caster.Location )))
 				isValid = false;
 			
 			if( !isValid && caster != null )
