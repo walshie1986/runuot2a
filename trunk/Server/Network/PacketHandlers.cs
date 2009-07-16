@@ -1057,9 +1057,6 @@ namespace Server.Network
 			int x = pvSrc.ReadInt16(), y = pvSrc.ReadInt16(), z = pvSrc.ReadInt16();
 			int graphic = pvSrc.ReadInt16();
 
-			if ( targetID == unchecked( (int) 0xDEADBEEF ) )
-				return;
-
 			Mobile from = state.Mobile;
 
 			Target t = from.Target;
@@ -1073,7 +1070,7 @@ namespace Server.Network
 				}
 
 				try {
-					if ( x == -1 && y == -1 && !serial.IsValid )
+					if (( x == -1 && y == -1 && !serial.IsValid ) || ( targetID == unchecked( (int) 0xDEADBEEF ) ))
 					{
 						// User pressed escape
 						t.Cancel( from, TargetCancelType.Canceled );
