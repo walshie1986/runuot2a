@@ -14,9 +14,9 @@ namespace Server.Items
 
 		public override bool RequireFreeHand{ get{ return false; } }
 
-		private static bool LeveledExplosion = false; // Should explosion potions explode other nearby potions?
+		private static bool LeveledExplosion = true; // Should explosion potions explode other nearby potions?
 		private static bool InstantExplosion = false; // Should explosion potions explode on impact?
-		private const int   ExplosionRange   = 2;     // How long is the blast radius?
+		private const int   ExplosionRange   = 3;     // How long is the blast radius?
 
 		public BaseExplosionPotion( PotionEffect effect ) : base( 0xF0D, effect )
 		{
