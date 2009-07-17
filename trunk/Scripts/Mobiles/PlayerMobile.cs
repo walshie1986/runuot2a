@@ -197,6 +197,8 @@ namespace Server.Mobiles
 		}
 		
 		public override void StamTick() {
+			if( Mounted && Mount is EtherealMount )
+				return;
 			EthyStam++;
 		}
 		
