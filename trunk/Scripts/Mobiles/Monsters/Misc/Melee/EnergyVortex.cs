@@ -11,8 +11,8 @@ namespace Server.Mobiles
 		public override bool DeleteCorpseOnDeath { get { return Summoned; } }
 		public override bool AlwaysMurderer{ get{ return true; } } // Or Llama vortices will appear gray.
 
-		public override double DispelDifficulty { get { return 80.0; } }
-		public override double DispelFocus { get { return 20.0; } }
+		public override double DispelDifficulty { get { return 110.0; } }
+		public override double DispelFocus { get { return 45.0; } }
 
 		public override double GetFightModeRanking( Mobile m, FightMode acqType, bool bPlayerOnly )
 		{
