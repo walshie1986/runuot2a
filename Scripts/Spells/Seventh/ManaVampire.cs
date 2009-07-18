@@ -91,7 +91,7 @@ namespace Server.Spells.Seventh
 
 		public override double GetResistPercent( Mobile target )
 		{
-			if( target is PlayerMobile )
+			if( target is Server.Mobiles.PlayerMobile )
 			{
 				return 98.0;
 			}
