@@ -56,6 +56,7 @@ namespace Server.Misc
 			String userName = state.Account.Username.ToString();
 			if(m_NegTimers.ContainsKey(userName))
 			{
+				state.Mobile.SendAsciiMessage(0x35, "Client verfication complete");
 				m_NegTimers[userName].Stop();
 				m_NegTimers.Remove(userName);
 			}
@@ -185,7 +186,7 @@ namespace Server.Misc
 	{
 		private Mobile m_Mobile;
 		
-		public LightTimer(Mobile m) : base( TimeSpan.FromSeconds(30) )
+		public LightTimer(Mobile m) : base( TimeSpan.FromSeconds(10) )
 		{
 			m_Mobile = m;
 		}
@@ -203,10 +204,10 @@ namespace Server.Misc
 		private int count;
 		private Dictionary<string, NegotiateTimer> list;
 		
-		public NegotiateTimer(Mobile m, Dictionary<string, NegotiateTimer> list) : base( TimeSpan.FromSeconds(10) )
+		public NegotiateTimer(Mobile m, Dictionary<string, NegotiateTimer> list) : base( TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(10) )
 		{
 			m_Mobile = m;
-			count = 6;
+			count = 3;
 			this.list = list;
 		}
 		
@@ -221,7 +222,7 @@ namespace Server.Misc
 			} else
 			{
 				//Warn
-				m_Mobile.SendAsciiMessage("You are either not using Razor or have not enabled 'Negotiate features with server'. Please rectify this and reconnect");
+				m_Mobile.SendAsciiMessage(0x21, "You are either not using Razor or have not enabled 'Negotiate features with server'. Please rectify this and reconnect");
 			}
 		}
 	}
