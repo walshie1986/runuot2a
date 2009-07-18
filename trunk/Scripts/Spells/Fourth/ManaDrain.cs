@@ -90,10 +90,14 @@ namespace Server.Spells.Fourth
 				{
 					if ( CheckResisted( m ) )
 						m.SendLocalizedMessage( 501783 ); // You feel yourself resisting magical energy.
-					else if ( m.Mana >= 100 )
+					/*else if ( m.Mana >= 100 )
 						m.Mana -= Utility.Random( 1, 100 );
 					else
-						m.Mana -= Utility.Random( 1, m.Mana );
+						m.Mana -= Utility.Random( 1, m.Mana );*/
+					else
+					{
+						m.Mana -= Math.Min(100, Utility.Dice(10, 10, 0));
+					}
 
 					m.FixedParticles( 0x374A, 10, 15, 5032, EffectLayer.Head );
 					m.PlaySound( 0x1F8 );
@@ -105,7 +109,11 @@ namespace Server.Spells.Fourth
 
 		public override double GetResistPercent( Mobile target )
 		{
-			return 99.0;
+			if(target is PlayerMobile )
+			{
+				return 99.0;
+			}
+			return base.GetResistPercent( target );
 		}
 
 		private class InternalTarget : Target
