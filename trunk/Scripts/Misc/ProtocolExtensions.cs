@@ -24,7 +24,7 @@ namespace Server.Misc
 			EventSink.Logout += new LogoutEventHandler( EventSink_Logout );
 		}
 		
-		private static void EventSink_Login( LogoutEventArgs args )
+		private static void EventSink_Logout( LogoutEventArgs args )
 		{
 			Mobile mobile = args.Mobile;
 			if(m_NegTimers.ContainsKey(mobile.Account.Username.ToString()))
