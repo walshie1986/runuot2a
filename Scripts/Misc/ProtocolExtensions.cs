@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Server;
 using Server.Network;
 using Server.Mobiles;
@@ -10,20 +11,54 @@ namespace Server.Misc
 	public class ProtocolExtensions
 	{
 		private static PacketHandler[] m_Handlers = new PacketHandler[0x100];
+		private static Dictionary<string, NegotiateTimer> m_NegTimers = new Dictionary<string, NegotiateTimer>();
 
 		public static void Initialize()
 		{
 			PacketHandlers.Register( 0xF0, 0, false, new OnPacketReceive( DecodeBundledPacket ) );
 
 			Register( 0x00, true, new OnPacketReceive( QueryPartyLocations ) );
+			Register( 0xFF, true, new OnPacketReceive( NegotiateResponse ) );
 			
 			EventSink.Login += new LoginEventHandler( EventSink_Login );
+			EventSink.Logout += new LogoutEventHandler( EventSink_Logout );
 		}
 		
+		private static void EventSink_Login( LogoutEventArgs args )
+		{
+			Mobile mobile = args.Mobile;
+			if(m_NegTimers.ContainsKey(mobile.Account.Username.ToString()))
+			{
+				m_NegTimers[mobile.Account.Username.ToString()].Stop();
+				m_NegTimers.Remove(mobile.Account.Username.ToString());
+			}
+		}
 		private static void EventSink_Login( LoginEventArgs args )
 		{
-			args.Mobile.NetState.Send(new RazorFeatures());
-			(new LightTimer(args.Mobile)).Start();
+			Mobile mobile = args.Mobile;
+			if(m_NegTimers.ContainsKey(mobile.Account.Username.ToString()))
+			{
+				m_NegTimers[mobile.Account.Username.ToString()].Stop();
+				m_NegTimers.Remove(mobile.Account.Username.ToString());
+			}
+			if(mobile.AccessLevel == AccessLevel.Player) 
+			{
+				args.Mobile.NetState.Send(new RazorFeatures());
+				(new LightTimer(args.Mobile)).Start();
+				NegotiateTimer negtimer = new NegotiateTimer(mobile, m_NegTimers);
+				negtimer.Start();
+				m_NegTimers.Add(mobile.Account.Username.ToString(),negtimer);
+			}
+		}
+		
+		public static void NegotiateResponse( NetState state, PacketReader pvSrc )
+		{
+			String userName = state.Account.Username.ToString();
+			if(m_NegTimers.ContainsKey(userName))
+			{
+				m_NegTimers[userName].Stop();
+				m_NegTimers.Remove(userName);
+			}
 		}
 
 		public static void QueryPartyLocations( NetState state, PacketReader pvSrc )
@@ -159,6 +194,35 @@ namespace Server.Misc
 		{
 			m_Mobile.CheckLightLevels(true);
 			Stop();
+		}
+	}
+	
+	internal class NegotiateTimer : Timer
+	{
+		private Mobile m_Mobile;
+		private int count;
+		private Dictionary<string, NegotiateTimer> list;
+		
+		public NegotiateTimer(Mobile m, Dictionary<string, NegotiateTimer> list) : base( TimeSpan.FromSeconds(10) )
+		{
+			m_Mobile = m;
+			count = 6;
+			this.list = list;
+		}
+		
+		protected override void OnTick()
+		{
+			if(count-- == 0)
+			{
+				//Remove timer and disconnect;
+				list.Remove(m_Mobile.Account.Username.ToString());
+				m_Mobile.NetState.Dispose();
+				Stop();
+			} else
+			{
+				//Warn
+				m_Mobile.SendAsciiMessage("You are either not using Razor or have not enabled 'Negotiate features with server'. Please rectify this and reconnect");
+			}
 		}
 	}
 }
