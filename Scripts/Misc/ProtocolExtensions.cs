@@ -213,11 +213,13 @@ namespace Server.Misc
 		
 		protected override void OnTick()
 		{
-			if(count-- == 0)
+			
+			if(m_Mobile.NetState == null || count-- == 0)
 			{
 				//Remove timer and disconnect;
 				list.Remove(m_Mobile.Account.Username.ToString());
-				m_Mobile.NetState.Dispose();
+				if(m_Mobile.NetState != null)
+					m_Mobile.NetState.Dispose();
 				Stop();
 			} else
 			{
