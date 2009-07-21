@@ -235,7 +235,7 @@ namespace Server.Items
 			int alchemyBonus = 0;
 
 			if ( direct )
-				alchemyBonus = (int)(from.Skills.Alchemy.Value / (Core.AOS ? 5 : 10));
+				alchemyBonus = 0; //(int)(from.Skills.Alchemy.Value / (Core.AOS ? 5 : 10));
 
 			IPooledEnumerable eable = LeveledExplosion ? map.GetObjectsInRange( loc, ExplosionRange ) : map.GetMobilesInRange( loc, ExplosionRange );
 			ArrayList toExplode = new ArrayList();
