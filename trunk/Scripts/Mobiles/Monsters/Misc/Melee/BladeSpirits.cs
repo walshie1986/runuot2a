@@ -46,14 +46,14 @@ namespace Server.Mobiles
 			SetResistance( ResistanceType.Poison, 100 );
 			SetResistance( ResistanceType.Energy, 20, 30 );
 
-			SetSkill( SkillName.MagicResist, 0 );
+			SetSkill( SkillName.MagicResist, 70 );
 			SetSkill( SkillName.Tactics, 90.0 );
 			SetSkill( SkillName.Wrestling, 90.0 );
 
 			Fame = 0;
 			Karma = 0;
 
-			VirtualArmor = 40;
+			VirtualArmor = 0;
 			ControlSlots = ( Core.SE ) ? 2 : 1;
 		}
 
