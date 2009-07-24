@@ -697,7 +697,7 @@ namespace Server.Items
 		{
 			if ( !CanLoot( from, item ) )
 			{
-				if ( m_Owner == null || !m_Owner.Player )
+				/*if ( m_Owner == null || !m_Owner.Player )
 					from.SendLocalizedMessage( 1005035 ); // You did not earn the right to loot this creature!
 				else
 					from.SendLocalizedMessage( 1010049 ); // You may not loot this corpse.
@@ -709,7 +709,7 @@ namespace Server.Items
 				if ( m_Owner == null || !m_Owner.Player )
 					from.SendLocalizedMessage( 1005036 ); // Looting this monster corpse will be a criminal act!
 				else
-					from.SendLocalizedMessage( 1005038 ); // Looting this corpse will be a criminal act!
+				*/	from.SendLocalizedMessage( 1005038 ); // Looting this corpse will be a criminal act!
 			}
 
 			return true;
