@@ -41,7 +41,7 @@ namespace Server.Items
 		private HairInfo m_Hair;					// This contains the hair of the owner
 		private FacialHairInfo m_FacialHair;		// This contains the facial hair of the owner
 
-		public static readonly TimeSpan MonsterLootRightSacrifice = TimeSpan.FromMinutes( 2.0 );
+		public static readonly TimeSpan MonsterLootRightSacrifice = TimeSpan.FromMinutes( 0.0 );
 
 		public static readonly TimeSpan InstancedCorpseTime = TimeSpan.FromMinutes( 3.0 );
 
