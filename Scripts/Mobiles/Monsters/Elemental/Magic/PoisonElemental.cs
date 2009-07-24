@@ -15,10 +15,10 @@ namespace Server.Mobiles
 			BaseSoundID = 263;
 
 			SetStr( 426, 515 );
-			SetDex( 166, 185 );
-			SetInt( 361, 435 );
+			SetDex( 166, 184 );
+			SetInt( 362, 431 );
 
-			SetHits( 256, 309 );
+			SetHits( 430, 515 );
 
 			SetDamage( 12, 18 );
 
@@ -31,13 +31,12 @@ namespace Server.Mobiles
 			SetResistance( ResistanceType.Poison, 100 );
 			SetResistance( ResistanceType.Energy, 40, 50 );
 
-			SetSkill( SkillName.EvalInt, 80.1, 95.0 );
-			SetSkill( SkillName.Magery, 80.1, 95.0 );
-			SetSkill( SkillName.Meditation, 80.2, 120.0 );
-			SetSkill( SkillName.Poisoning, 90.1, 100.0 );
-			SetSkill( SkillName.MagicResist, 85.2, 115.0 );
-			SetSkill( SkillName.Tactics, 80.1, 100.0 );
-			SetSkill( SkillName.Wrestling, 70.1, 90.0 );
+			SetSkill( SkillName.Magery, 83.6, 94.5 );
+			SetSkill( SkillName.Meditation, 87.0, 112.2 );
+			SetSkill( SkillName.Poisoning, 90.3, 100.0 );
+			SetSkill( SkillName.MagicResist, 92.4, 113.4 );
+			SetSkill( SkillName.Tactics, 80.3, 99.4 );
+			SetSkill( SkillName.Wrestling, 74.1, 89.5 );
 
 			Fame = 12500;
 			Karma = -12500;
@@ -45,7 +44,7 @@ namespace Server.Mobiles
 			VirtualArmor = 70;
 
 			PackItem( new Nightshade( 4 ) );
-			PackItem( new LesserPoisonPotion() );
+			PackItem( new PoisonPotion() );
 		}
 
 		public override void GenerateLoot()
