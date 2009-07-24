@@ -30,7 +30,7 @@ namespace Server.Mobiles
 			SetDex( 150 );
 			SetInt( 100 );
 
-			SetHits( ( Core.SE ) ? 160 : 80 );
+			SetHits( 1200 );
 			SetStam( 250 );
 			SetMana( 0 );
 
@@ -46,7 +46,7 @@ namespace Server.Mobiles
 			SetResistance( ResistanceType.Poison, 100 );
 			SetResistance( ResistanceType.Energy, 20, 30 );
 
-			SetSkill( SkillName.MagicResist, 70.0 );
+			SetSkill( SkillName.MagicResist, 0 );
 			SetSkill( SkillName.Tactics, 90.0 );
 			SetSkill( SkillName.Wrestling, 90.0 );
 
