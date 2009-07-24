@@ -44,7 +44,7 @@ namespace Server.Mobiles
 			VirtualArmor = 70;
 
 			PackItem( new Nightshade( 4 ) );
-			PackItem( new PoisonPotion() );
+			PackItem( new LesserPoisonPotion() );
 		}
 
 		public override void GenerateLoot()
