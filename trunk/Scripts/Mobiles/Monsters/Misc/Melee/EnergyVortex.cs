@@ -40,7 +40,7 @@ namespace Server.Mobiles
 			SetDex( 200 );
 			SetInt( 100 );
 
-			SetHits( ( Core.SE ) ? 140 : 70 );
+			SetHits( 1900 );
 			SetStam( 250 );
 			SetMana( 0 );
 
@@ -57,7 +57,7 @@ namespace Server.Mobiles
 
 			SetSkill( SkillName.MagicResist, 99.9 );
 			SetSkill( SkillName.Tactics, 90.0 );
-			SetSkill( SkillName.Wrestling, 100.0 );
+			SetSkill( SkillName.Wrestling, 120.0 );
 
 			Fame = 0;
 			Karma = 0;
