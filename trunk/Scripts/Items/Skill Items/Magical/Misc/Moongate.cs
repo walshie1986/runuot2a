@@ -54,7 +54,7 @@ namespace Server.Items
 			}
 		}
 
-		public virtual bool ShowFeluccaWarning{ get{ return false; } }
+		public virtual bool ShowFeluccaWarning{ get{ return true; } }
 
 		[Constructable]
 		public Moongate() : this( Point3D.Zero, null )
