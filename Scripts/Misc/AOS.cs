@@ -164,29 +164,29 @@ namespace Server
 	[Flags]
 	public enum AosAttribute
 	{
-		RegenHits=0x00000001,
-		RegenStam=0x00000002,
-		RegenMana=0x00000004,
-		DefendChance=0x00000008,
-		AttackChance=0x00000010,
-		BonusStr=0x00000020,
-		BonusDex=0x00000040,
-		BonusInt=0x00000080,
-		BonusHits=0x00000100,
-		BonusStam=0x00000200,
-		BonusMana=0x00000400,
-		WeaponDamage=0x00000800,
-		WeaponSpeed=0x00001000,
-		SpellDamage=0x00002000,
-		CastRecovery=0x00004000,
-		CastSpeed=0x00008000,
-		LowerManaCost=0x00010000,
-		LowerRegCost=0x00020000,
-		ReflectPhysical=0x00040000,
-		EnhancePotions=0x00080000,
-		Luck=0x00100000,
-		SpellChanneling=0x00200000,
-		NightSight=0x00400000
+		RegenHits=0x0//0x00000001,
+		RegenStam=0x0//0x00000002,
+		RegenMana=0x0//0x00000004,
+		DefendChance=0x0//0x00000008,
+		AttackChance=0x0//0x00000010,
+		BonusStr=0x0//0x00000020,
+		BonusDex=0x0//0x00000040,
+		BonusInt=0x0//0x00000080,
+		BonusHits=0x0//0x00000100,
+		BonusStam=0x0//0x00000200,
+		BonusMana=0x0//0x00000400,
+		WeaponDamage=0x0//0x00000800,
+		WeaponSpeed=0x0//0x00001000,
+		SpellDamage=0x0//0x00002000,
+		CastRecovery=0x0//0x00004000,
+		CastSpeed=0x0//0x00008000,
+		LowerManaCost=0x0//0x00010000,
+		LowerRegCost=0x0//0x00020000,
+		ReflectPhysical=0x0//0x00040000,
+		EnhancePotions=0x0//0x00080000,
+		Luck=0x0//0x00100000,
+		SpellChanneling=0x0//0x00200000,
+		NightSight=0x0//0x00400000
 	}
 
 	public sealed class AosAttributes : BaseAttributes
@@ -348,31 +348,31 @@ namespace Server
 	[Flags]
 	public enum AosWeaponAttribute
 	{
-		LowerStatReq=0x00000001,
-		SelfRepair=0x00000002,
-		HitLeechHits=0x00000004,
-		HitLeechStam=0x00000008,
-		HitLeechMana=0x00000010,
-		HitLowerAttack=0x00000020,
-		HitLowerDefend=0x00000040,
-		HitMagicArrow=0x00000080,
-		HitHarm=0x00000100,
-		HitFireball=0x00000200,
-		HitLightning=0x00000400,
-		HitDispel=0x00000800,
-		HitColdArea=0x00001000,
-		HitFireArea=0x00002000,
-		HitPoisonArea=0x00004000,
-		HitEnergyArea=0x00008000,
-		HitPhysicalArea=0x00010000,
-		ResistPhysicalBonus=0x00020000,
-		ResistFireBonus=0x00040000,
-		ResistColdBonus=0x00080000,
-		ResistPoisonBonus=0x00100000,
-		ResistEnergyBonus=0x00200000,
-		UseBestSkill=0x00400000,
-		MageWeapon=0x00800000,
-		DurabilityBonus=0x01000000
+		LowerStatReq=0x0//0x00000001,
+		SelfRepair=0x0//0x00000002,
+		HitLeechHits=0x0//0x00000004,
+		HitLeechStam=0x0//0x00000008,
+		HitLeechMana=0x0//0x00000010,
+		HitLowerAttack=0x0//0x00000020,
+		HitLowerDefend=0x0//0x00000040,
+		HitMagicArrow=0x0//0x00000080,
+		HitHarm=0x0//0x00000100,
+		HitFireball=0x0//0x00000200,
+		HitLightning=0x0//0x00000400,
+		HitDispel=0x0//0x00000800,
+		HitColdArea=0x0//0x00001000,
+		HitFireArea=0x0//0x00002000,
+		HitPoisonArea=0x0//0x00004000,
+		HitEnergyArea=0x0//0x00008000,
+		HitPhysicalArea=0x0//0x00010000,
+		ResistPhysicalBonus=0x0//0x00020000,
+		ResistFireBonus=0x0//0x00040000,
+		ResistColdBonus=0x0//0x00080000,
+		ResistPoisonBonus=0x0//0x00100000,
+		ResistEnergyBonus=0x0//0x00200000,
+		UseBestSkill=0x0//0x00400000,
+		MageWeapon=0x0//0x00800000,
+		DurabilityBonus=0x0//0x01000000
 	}
 
 	public sealed class AosWeaponAttributes : BaseAttributes
@@ -506,10 +506,10 @@ namespace Server
 	[Flags]
 	public enum AosArmorAttribute
 	{
-		LowerStatReq=0x00000001,
-		SelfRepair=0x00000002,
-		MageArmor=0x00000004,
-		DurabilityBonus=0x00000008
+		LowerStatReq=0x0//0x00000001,
+		SelfRepair=0x0//0x00000002,
+		MageArmor=0x0//0x00000004,
+		DurabilityBonus=0x0//0x00000008
 	}
 
 	public sealed class AosArmorAttributes : BaseAttributes
@@ -762,11 +762,11 @@ namespace Server
 	[Flags]
 	public enum AosElementAttribute
 	{
-		Physical=0x00000001,
-		Fire=0x00000002,
-		Cold=0x00000004,
-		Poison=0x00000008,
-		Energy=0x00000010
+		Physical=0x0//0x00000001,
+		Fire=0x0//0x00000002,
+		Cold=0x0//0x00000004,
+		Poison=0x0//0x00000008,
+		Energy=0x0//0x00000010
 	}
 
 	public sealed class AosElementAttributes : BaseAttributes
