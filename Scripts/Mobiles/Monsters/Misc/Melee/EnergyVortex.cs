@@ -68,6 +68,7 @@ namespace Server.Mobiles
 
 		public override bool BleedImmune{ get{ return true; } }
 		public override Poison PoisonImmune { get { return Poison.Lethal; } }
+		public override Poison HitPoison{ get{ return Poison.Greater; } }
 
 		public override int GetAngerSound()
 		{
