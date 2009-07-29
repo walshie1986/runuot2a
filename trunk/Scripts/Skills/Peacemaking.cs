@@ -24,10 +24,70 @@ namespace Server.SkillHandlers
 
 		public static void OnPickedInstrument( Mobile from, BaseInstrument instrument )
 		{
+			
+			//from.RevealingAction();
+			//from.SendLocalizedMessage( 1049525 ); // Whom do you wish to calm?
+			//from.Target = new InternalTarget( from, instrument );
+			//from.NextSkillTime = DateTime.Now + TimeSpan.FromHours( 6.0 );
 			from.RevealingAction();
-			from.SendLocalizedMessage( 1049525 ); // Whom do you wish to calm?
-			from.Target = new InternalTarget( from, instrument );
-			from.NextSkillTime = DateTime.Now + TimeSpan.FromHours( 6.0 );
+
+			if ( !instrument.IsChildOf( from.Backpack ) )
+			{
+				from.SendLocalizedMessage( 1062488 ); // The instrument you are trying to play is no longer in your backpack!
+			}
+			else
+			{
+				//m_SetSkillTime = false;
+				from.NextSkillTime = DateTime.Now + TimeSpan.FromSeconds( 10.0 );
+
+				if ( !BaseInstrument.CheckMusicianship( from ) )
+				{
+					from.SendLocalizedMessage( 500612 ); // You play poorly, and there is no effect.
+					instrument.PlayInstrumentBadly( from );
+					instrument.ConsumeUse( from );
+				}
+				else if ( !from.CheckSkill( SkillName.Peacemaking, 0.0, 100.0 ) )
+				{
+					from.SendLocalizedMessage( 500613 ); // You attempt to calm everyone, but fail.
+					instrument.PlayInstrumentBadly( from );
+					instrument.ConsumeUse( from );
+				}
+				else
+				{
+					from.NextSkillTime = DateTime.Now + TimeSpan.FromSeconds( 5.0 );
+					instrument.PlayInstrumentWell( from );
+					instrument.ConsumeUse( from );
+
+					Map map = from.Map;
+
+					if ( map != null )
+					{
+						int range = BaseInstrument.GetBardRange( from, SkillName.Peacemaking );
+
+						bool calmed = false;
+
+						foreach ( Mobile m in from.GetMobilesInRange( range ) )
+						{
+							if ( (m is BaseCreature && ((BaseCreature)m).Uncalmable) || m == from || !from.CanBeHarmful( m, false ) )
+								continue;
+
+							calmed = true;
+
+							m.SendLocalizedMessage( 500616 ); // You hear lovely music, and forget to continue battling!
+							m.Combatant = null;
+							m.Warmode = false;
+
+							if ( m is BaseCreature && !((BaseCreature)m).BardPacified )
+								((BaseCreature)m).Pacify( from, DateTime.Now + TimeSpan.FromSeconds( 1.0 ) );
+						}
+
+						if ( !calmed )
+							from.SendLocalizedMessage( 1049648 ); // You play hypnotic music, but there is nothing in range for you to calm.
+						else
+							from.SendLocalizedMessage( 500615 ); // You play your hypnotic music, stopping the battle.
+					}
+				}
+			}
 		}
 
 		private class InternalTarget : Target
@@ -73,7 +133,7 @@ namespace Server.SkillHandlers
 							m_Instrument.PlayInstrumentBadly( from );
 							m_Instrument.ConsumeUse( from );
 						}
-						else if ( !from.CheckSkill( SkillName.Peacemaking, 0.0, 120.0 ) )
+						else if ( !from.CheckSkill( SkillName.Peacemaking, 0.0, 100.0 ) )
 						{
 							from.SendLocalizedMessage( 500613 ); // You attempt to calm everyone, but fail.
 							m_Instrument.PlayInstrumentBadly( from );

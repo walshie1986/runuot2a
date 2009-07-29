@@ -489,6 +489,16 @@ namespace Server.Mobiles
 			Mobile c = m_Mobile.Combatant;
 			m_Mobile.Warmode = true;
 
+			if( AcquireFocusMob( m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true ) )
+			{
+				if(m_Mobile.FocusMob != c)
+				{
+					m_Mobile.DebugSay( "Found a better target, so I am going to fight {0}", m_Mobile.FocusMob.Name );
+					m_Mobile.Combatant = c = m_Mobile.FocusMob;
+					m_Mobile.FocusMob = null;
+				}
+			}
+			
 			if ( c == null || c.Deleted || !c.Alive || c.IsDeadBondedPet || !m_Mobile.CanSee( c ) || !m_Mobile.CanBeHarmful( c, false ) || c.Map != m_Mobile.Map )
 			{
 				// Our combatant is deleted, dead, hidden, or we cannot hurt them
@@ -508,24 +518,36 @@ namespace Server.Mobiles
 					Action = ActionType.Guard;
 					return true;
 				}
-			}
-
-			if ( !m_Mobile.InLOS( c ) )
+			} else if ( !m_Mobile.InLOS( c ) || !m_Mobile.InRange( c, m_Mobile.RangePerception ) )
 			{
 				m_Mobile.DebugSay( "I can't see my target" );
 
 				if ( AcquireFocusMob( m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true ) )
 				{
-					m_Mobile.DebugSay( "Nobody else is around" );
-					m_Mobile.Combatant = c = m_Mobile.FocusMob;
+					m_Mobile.DebugSay( "Sombody else is around" );
+					m_Mobile.Combatant = m_Mobile.FocusMob;
 					m_Mobile.FocusMob = null;
+				}
+				else if ( !m_Mobile.InRange( c, m_Mobile.RangePerception * 3 ) )
+				{
+					m_Mobile.Combatant = null;
+				}
+
+				c = m_Mobile.Combatant;
+				
+				if ( c == null )
+				{
+					m_Mobile.DebugSay( "My combatant has fled, so I am on guard" );
+					Action = ActionType.Guard;
+
+					return true;
 				}
 			}
 
 			if ( SmartAI && !m_Mobile.StunReady && m_Mobile.Skills[SkillName.Wrestling].Value >= 80.0 && m_Mobile.Skills[SkillName.Anatomy].Value >= 80.0 )
 				EventSink.InvokeStunRequest( new StunRequestEventArgs( m_Mobile ) );
 
-			if ( !m_Mobile.InRange( c, m_Mobile.RangePerception ) )
+			/*if ( !m_Mobile.InRange( c, m_Mobile.RangePerception ) )
 			{
 				// They are somewhat far away, can we find something else?
 
@@ -548,7 +570,7 @@ namespace Server.Mobiles
 
 					return true;
 				}
-			}
+			}*/
 
 			if ( !m_Mobile.Controlled && !m_Mobile.Summoned && !m_Mobile.IsParagon )
 			{
@@ -582,7 +604,7 @@ namespace Server.Mobiles
 				}
 			}
 
-			if ( m_Mobile.Spell == null && DateTime.Now > m_NextCastTime && m_Mobile.InRange( c, 12 ) )
+			if ( m_Mobile.Skills[SkillName.Magery].Value >= 10.0 && m_Mobile.Spell == null && DateTime.Now > m_NextCastTime && m_Mobile.InRange( c, 12 ) )
 			{
 				// We are ready to cast a spell
 
