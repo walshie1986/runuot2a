@@ -2577,7 +2577,7 @@ namespace Server.Mobiles
 			{
 				if(Aggressed[i].Defender == m)
 				{
-					points += 5;
+					points += 10; //Prefer targets I have attacked
 					break;
 				}
 			}
