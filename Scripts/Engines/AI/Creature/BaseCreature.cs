@@ -2559,13 +2559,50 @@ namespace Server.Mobiles
 						return -m.Hits; // returns weakest mobile
 
 					default : 
-						return -GetDistanceToSqrt( m ); // returns closest mobile
+						return GetHateRating( m ); //Use the hate system. Override this function for DragonAI.
+						//return -GetDistanceToSqrt( m ); // returns closest mobile
 				}
 			}
 			else
 			{
 				return double.MinValue;
 			}
+		}
+		
+		public virtual double GetHateRating( Mobile m)
+		{
+			double points = 0;
+			//TODO Look if this is an aggressor, add points if it is.
+			for(int i = 0; i < Aggressed.Count; i++)
+			{
+				if(Aggressed[i].Defender == m)
+				{
+					points += 5;
+					break;
+				}
+			}
+			if(points < 1)
+				for(int i = 0; i < Aggressors.Count; i++)
+				{
+					if(Aggressors[i].Attacker == m)
+					{
+						points += 5;
+						break;
+					}
+				}
+			//TODO Look at how much damage this has done. Add points for damage.
+			if(points > 1)
+			{
+				DamageEntry e = FindDamageEntryFor(m);
+				if(e != null)
+				{
+					points += e.DamageGiven;
+				}
+			}
+			
+			points -= GetDistanceToSqrt( m );
+			
+			return double.MinValue;
 		}
 
 		// Turn, - for left, + for right
@@ -4273,7 +4310,7 @@ namespace Server.Mobiles
 
 		public DateTime NextReacquireTime{ get{ return m_NextReacquireTime; } set{ m_NextReacquireTime = value; } }
 
-		public virtual TimeSpan ReacquireDelay{ get{ return TimeSpan.FromSeconds( 10.0 ); } }
+		public virtual TimeSpan ReacquireDelay{ get{ return TimeSpan.FromSeconds( 12.0 ); } }
 		public virtual bool ReacquireOnMovement{ get{ return false; } }
 
 		public void ForceReacquire()
@@ -4531,6 +4568,8 @@ namespace Server.Mobiles
 		{
 			BardPacified = true;
 			BardEndTime = endtime;
+			if(master != null)
+				TargetLocation = new Point2D(master.Location);
 		}
 
 		public override Mobile GetDamageMaster( Mobile damagee )
