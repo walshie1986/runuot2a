@@ -39,7 +39,7 @@ namespace Server.Spells
 		public virtual bool ClearHandsOnCast{ get{ return true; } }
 		public virtual bool ShowHandMovement{ get{ return true; } }
 
-		public virtual bool DelayedDamage{ get{ return true; } }
+		public virtual bool DelayedDamage{ get{ return false; } }
 
         public virtual bool DelayedDamageStacking { get { return true; } }
         //In reality, it's ANY delayed Damage spell Post-AoS that can't stack, but, only 
@@ -526,7 +526,7 @@ namespace Server.Spells
 			}
 			else if ( CheckNextSpellTime && DateTime.Now < m_Caster.NextSpellTime )
 			{
-		//		m_Caster.SendLocalizedMessage( 502644 ); // You have not yet recovered from casting a spell.
+				m_Caster.SendLocalizedMessage( 502644 ); // You have not yet recovered from casting a spell.
 			}
 			else if ( m_Caster.Mana >= ScaleMana( GetMana() ) )
 			{
