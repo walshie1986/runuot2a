@@ -604,7 +604,7 @@ namespace Server.Mobiles
 				}
 			}
 
-			if ( m_Mobile.Skills[SkillName.Magery].Value >= 10.0 && m_Mobile.Spell == null && DateTime.Now > m_NextCastTime && m_Mobile.InRange( c, 12 ) )
+			if ( m_Mobile.Skills[SkillName.Magery].Value >= 10.0 && (m_Mobile.Aggressors.Count > 0 || m_Mobile.FindLeastRecentDamageEntry(false) != null ) && m_Mobile.Spell == null && DateTime.Now > m_NextCastTime && m_Mobile.InRange( c, 12 ) )
 			{
 				// We are ready to cast a spell
 
