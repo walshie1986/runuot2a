@@ -32,7 +32,7 @@ namespace Server.Mobiles
 			SetResistance( ResistanceType.Poison, 10, 20 );
 			SetResistance( ResistanceType.Energy, 30, 40 );
 
-			SetSkill( SkillName.Anatomy, 30.3, 60.0 );
+			SetSkill( SkillName.Anatomy, 30.1, 60.0 );
 			SetSkill( SkillName.EvalInt, 70.1, 85.0 );
 			SetSkill( SkillName.Magery, 70.1, 85.0 );
 			SetSkill( SkillName.MagicResist, 60.1, 75.0 );
