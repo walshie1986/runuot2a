@@ -52,9 +52,14 @@ namespace Server.Mobiles
 			AddLoot( LootPack.Gems, 8 );
 		}
 
+		public override double GetHateRating( Mobile m)
+		{
+			return -GetDistanceToSqrt( m );
+		}
+		
 		public override bool ReacquireOnMovement{ get{ return !Controlled; } }
 		public override bool HasBreath{ get{ return true; } } // fire breath enabled
-		public override bool AutoDispel{ get{ return !Controlled; } }
+		//public override bool AutoDispel{ get{ return !Controlled; } }
 		public override int TreasureMapLevel{ get{ return 4; } }
 		public override int Meat{ get{ return 19; } }
 		public override int Hides{ get{ return 20; } }

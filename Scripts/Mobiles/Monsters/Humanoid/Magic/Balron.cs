@@ -54,7 +54,12 @@ namespace Server.Mobiles
 			AddLoot( LootPack.Rich );
 			AddLoot( LootPack.MedScrolls, 2 );
 		}
-
+		
+		public override double GetHateRating( Mobile m)
+		{
+			return -GetDistanceToSqrt( m );
+		}
+		public override bool ReacquireOnMovement{ get{ return !Controlled; } }
 		public override bool CanRummageCorpses{ get{ return true; } }
 		public override Poison PoisonImmune{ get{ return Poison.Deadly; } }
 		public override int TreasureMapLevel{ get{ return 5; } }

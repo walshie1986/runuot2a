@@ -180,7 +180,7 @@ namespace Server.Spells.Fifth
 				}
 				else
 				{
-					p = Poison.Regular;
+					p = Poison.Greater;
 				}
 
 				m.ApplyPoison( m_Caster, p );

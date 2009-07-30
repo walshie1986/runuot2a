@@ -53,6 +53,11 @@ namespace Server.Mobiles
 			AddLoot( LootPack.MedScrolls, 2 );
 		}
 
+		public override double GetHateRating( Mobile m)
+		{
+			return -GetDistanceToSqrt( m );
+		}
+				
 		public override bool ReacquireOnMovement{ get{ return true; } }
 		public override bool HasBreath{ get{ return true; } } // fire breath enabled
 		public override int TreasureMapLevel{ get{ return 2; } }

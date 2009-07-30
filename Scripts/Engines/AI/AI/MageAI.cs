@@ -611,13 +611,14 @@ namespace Server.Mobiles
 				Spell spell = null;
 				Mobile toDispel = FindDispelTarget( true );
 
-				if ( m_Mobile.Poisoned ) // Top cast priority is cure
+				/*if ( m_Mobile.Poisoned ) // Top cast priority is cure
 				{
 					m_Mobile.DebugSay( "I am going to cure myself" );
 
 					spell = new CureSpell( m_Mobile, null );
 				}
-				else if ( toDispel != null ) // Something dispellable is attacking us
+				else */
+				if ( toDispel != null ) // Something dispellable is attacking us
 				{
 					m_Mobile.DebugSay( "I am going to dispel {0}", toDispel );
 
@@ -700,8 +701,18 @@ namespace Server.Mobiles
 
 		public override bool DoActionFlee()
 		{
-			Mobile c = m_Mobile.Combatant;
+			Mobile c = m_Mobile.Combatant;			
 
+			if(true) //m_Mobile.NextReacquireTime < DateTime.Now) //Attack someone in range.
+			{
+				foreach(Mobile m in m_Mobile.Map.GetMobilesInRange(m_Mobile.Location, 1))
+				{
+					if ( m == this || !CanBeHarmful( m ) )
+						continue;
+					c = m_Mobile.Combatant = m;
+					break;
+				}
+			}
 			if ( (m_Mobile.Mana > 20 || m_Mobile.Mana == m_Mobile.ManaMax) && m_Mobile.Hits > (m_Mobile.HitsMax / 2) )
 			{
 				m_Mobile.DebugSay( "I am stronger now, my guard is up" );

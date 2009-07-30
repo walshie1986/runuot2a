@@ -954,9 +954,10 @@ namespace Server.Mobiles
 			if ( base.CheckPoisonImmunity( from, poison ) )
 				return true;
 
-			Poison p = this.PoisonImmune;
+			//Poison p = this.PoisonImmune;
 
-			return ( p != null && p.Level >= poison.Level );
+			//return ( p != null && p.Level >= poison.Level );
+			return false; //Nothing is poison immune
 		}
 
 		[CommandProperty( AccessLevel.GameMaster )]
