@@ -125,8 +125,8 @@ namespace Server
 
 					if ( damage < m_Poison.m_Minimum )
 						damage = m_Poison.m_Minimum;
-					//else if ( damage > m_Poison.m_Maximum )
-					//	damage = m_Poison.m_Maximum;
+					else if ( damage > m_Poison.m_Maximum )
+						damage = m_Poison.m_Maximum;
 
 					m_LastDamage = damage;
 				}
