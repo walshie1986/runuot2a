@@ -33,10 +33,10 @@ namespace Server.Mobiles
 
 			SetSkill( SkillName.EvalInt, 80.1, 100.0 );
 			SetSkill( SkillName.Magery, 80.1, 100.0 );
-			SetSkill( SkillName.Meditation, 52.5, 75.0 );
+			SetSkill( SkillName.Meditation, 50.1, 75.0 );
 			SetSkill( SkillName.MagicResist, 100.5, 150.0 );
-			SetSkill( SkillName.Tactics, 97.6, 100.0 );
-			SetSkill( SkillName.Wrestling, 97.6, 100.0 );
+			SetSkill( SkillName.Tactics, 95.1, 100.0 );
+			SetSkill( SkillName.Wrestling, 95.1, 100.0 );
 
 			Fame = 22500;
 			Karma = -22500;

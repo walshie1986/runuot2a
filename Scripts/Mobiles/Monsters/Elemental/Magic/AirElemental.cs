@@ -18,7 +18,7 @@ namespace Server.Mobiles
 			Hue = 0x4001;
 			BaseSoundID = 655;
 
-			SetStr( 126, 155 );
+			SetStr( 126, 152 );
 			SetDex( 166, 185 );
 			SetInt( 101, 125 );
 
@@ -40,7 +40,7 @@ namespace Server.Mobiles
 			SetSkill( SkillName.Magery, 60.1, 75.0 );
 			SetSkill( SkillName.MagicResist, 60.1, 75.0 );
 			SetSkill( SkillName.Tactics, 60.1, 80.0 );
-			SetSkill( SkillName.Wrestling, 60.1, 80.0 );
+			SetSkill( SkillName.Wrestling, 60.1, 75.0 );
 
 			Fame = 4500;
 			Karma = -4500;

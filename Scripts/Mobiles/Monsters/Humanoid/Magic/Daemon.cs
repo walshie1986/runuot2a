@@ -38,8 +38,8 @@ namespace Server.Mobiles
 			SetResistance( ResistanceType.Energy, 30, 40 );
 
 			SetSkill( SkillName.Magery, 75.1, 82.8.0 );
-			SetSkill( SkillName.MagicResist, 86.4, 95.0 );
-			SetSkill( SkillName.Tactics, 70.8, 79.6 );
+			SetSkill( SkillName.MagicResist, 85.1, 95.0 );
+			SetSkill( SkillName.Tactics, 70.1, 80.0 );
 			SetSkill( SkillName.Wrestling, 60.1, 80.0 );
 
 			Fame = 15000;
