@@ -718,23 +718,31 @@ namespace Server.Mobiles
 				m_Mobile.DebugSay( "I am stronger now, my guard is up" );
 				Action = ActionType.Guard;
 			}
-			else if ( AcquireFocusMob( m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true ) )
+			else if(c == null || !m_Mobile.InLOS( c ) || !m_Mobile.InRange( c, m_Mobile.RangePerception ))
 			{
-				if ( m_Mobile.Debug )
-					m_Mobile.DebugSay( "I am scared of {0}", m_Mobile.FocusMob.Name );
-
-				RunFrom( m_Mobile.FocusMob );
-				m_Mobile.FocusMob = null;
-
-				if ( m_Mobile.Poisoned && Utility.Random( 0, 5 ) == 0 )
-					new CureSpell( m_Mobile, null ).Cast();
+				m_Mobile.NextReacquireTime = DateTime.Now;
+				if ( AcquireFocusMob( m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true ) )
+				{
+					if ( m_Mobile.Debug )
+						m_Mobile.DebugSay( "I am scared of {0}", m_Mobile.FocusMob.Name );
+	
+					RunFrom( m_Mobile.FocusMob );
+					m_Mobile.FocusMob = null;
+				}
+				else
+				{
+					m_Mobile.DebugSay( "Area seems clear, but my guard is up" );
+	
+					Action = ActionType.Guard;
+					m_Mobile.Warmode = true;
+				}
+			} else if ( m_Mobile.Poisoned && Utility.Random( 0, 4 ) == 0 )
+			{
+				new CureSpell( m_Mobile, null ).Cast();
 			}
-			else
+			else if ( m_Mobile.Spell == null || !m_Mobile.Spell.IsCasting )
 			{
-				m_Mobile.DebugSay( "Area seems clear, but my guard is up" );
-
-				Action = ActionType.Guard;
-				m_Mobile.Warmode = true;
+				RunFrom( c );
 			}
 
 			return true;
