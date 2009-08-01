@@ -2603,7 +2603,7 @@ namespace Server.Mobiles
 			
 			points -= GetDistanceToSqrt( m );
 			
-			return double.MinValue;
+			return points;
 		}
 
 		// Turn, - for left, + for right

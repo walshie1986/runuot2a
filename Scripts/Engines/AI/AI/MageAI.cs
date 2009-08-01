@@ -620,7 +620,7 @@ namespace Server.Mobiles
 				else */
 				if ( toDispel != null ) // Something dispellable is attacking us
 				{
-					m_Mobile.DebugSay( "I am going to dispel {0}", toDispel );
+					m_Mobile.DebugSay( "I could dispel {0}", toDispel );
 
 					spell = DoDispel( toDispel );
 				}
@@ -940,6 +940,7 @@ namespace Server.Mobiles
 			{
 				if ( (targ.Range == -1 || m_Mobile.InRange( toTarget, targ.Range )) && m_Mobile.CanSee( toTarget ) && m_Mobile.InLOS( toTarget ) )
 				{
+					
 					targ.Invoke( m_Mobile, toTarget );
 				}
 				else if ( isDispel )

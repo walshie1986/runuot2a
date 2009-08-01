@@ -142,6 +142,7 @@ namespace Server.Mobiles
 			set{ m_Profession = value; }
 		}
 		
+		[CommandProperty( AccessLevel.GameMaster )]
 		public int EthyMaxStam
 		{
 			get
