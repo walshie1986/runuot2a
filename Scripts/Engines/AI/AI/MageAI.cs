@@ -707,7 +707,7 @@ namespace Server.Mobiles
 			{
 				foreach(Mobile m in m_Mobile.Map.GetMobilesInRange(m_Mobile.Location, 1))
 				{
-					if ( m == this || !CanBeHarmful( m ) )
+					if ( m_Mobile == m || !CanBeHarmful( m ) )
 						continue;
 					c = m_Mobile.Combatant = m;
 					break;
