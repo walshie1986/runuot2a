@@ -427,7 +427,11 @@ namespace Server.Mobiles
 			public override void OnCast()
 			{
 				if( !m_Mount.Deleted && m_Mount.Rider == null && m_Mount.Validate( m_Rider ) )
+				{
 					m_Mount.Rider = m_Rider;
+					if(m_Rider is PlayerMobile)
+						((PlayerMobile)m_Rider).EthyMaxStam = Utility.RandomMinMax(70, 100);
+				}
 
 				FinishSequence();
 			}
