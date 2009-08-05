@@ -9,8 +9,11 @@ namespace Server.Scripts.Customs
 	/// </summary>
 	public class UsersOnline
 	{
+		public static double seconds;
+		
 		public static void Initialize()
 		{
+			seconds = 0.0;
 			Timer.DelayCall( TimeSpan.FromSeconds( 20.0 ), TimeSpan.FromMinutes(5), new TimerCallback( Begin ) );
 		}
 	
@@ -18,7 +21,7 @@ namespace Server.Scripts.Customs
 		{
 			using ( StreamWriter op = new StreamWriter( "online.txt" ) )
 			{
-				op.Write(NetState.Instances.Count);
+				op.Write(String.Format("players:{0} save:{0:F2}", NetState.Instances.Count.ToString(), seconds));
 			}
 		}
 	}
