@@ -1320,8 +1320,8 @@ namespace Server.Multis
 				packKey.KeyValue = value;
 				bankKey.KeyValue = value;
 
-				packKey.LootType = LootType.Newbied;
-				bankKey.LootType = LootType.Newbied;
+				packKey.LootType = LootType.Regular;
+				bankKey.LootType = LootType.Regular;
 
 				BankBox box = m.BankBox;
 
