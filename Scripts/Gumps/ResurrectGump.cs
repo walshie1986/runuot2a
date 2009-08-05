@@ -220,7 +220,7 @@ namespace Server.Gumps
 					Misc.Titles.AwardFame( from, -amount, true );
 				}
 
-				if( !Core.AOS && from.ShortTermMurders >= 5 )
+				/*if( !Core.AOS && from.ShortTermMurders >= 5 )
 				{
 					double loss = (100.0 - (4.0 + (from.ShortTermMurders / 5.0))) / 100.0; // 5 to 15% loss
 
@@ -241,7 +241,7 @@ namespace Server.Gumps
 						if( from.Skills[s].Base * loss > 35 )
 							from.Skills[s].Base *= loss;
 					}
-				}
+				}*/
 
 				if( from.Alive && m_HitsScalar > 0 )
 					from.Hits = (int)(from.HitsMax * m_HitsScalar);
