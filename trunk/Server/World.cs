@@ -793,6 +793,7 @@ namespace Server {
 			strategy.ProcessDecay();
 
 			Console.WriteLine( "done in {0:F2} seconds.", watch.Elapsed.TotalSeconds );
+			Server.Scripts.Customs.UsersOnline.seconds = watch.Elapsed.TotalSeconds;
 
 			if ( message )
 				Broadcast( 0x35, true, "World save complete. The entire process took {0:F1} seconds.", watch.Elapsed.TotalSeconds );
