@@ -392,5 +392,15 @@ namespace Server.Scripts.Customs.AFK
 			from.SendMessage("You pressed buttonID " + info.ButtonID.ToString());
 			
 		}
+		
+		public string Center( string text )
+		{
+			return String.Format( "<CENTER>{0}</CENTER>", text );
+		}
+
+		public string Color( string text, int color )
+		{
+			return String.Format( "<BASEFONT COLOR=#{0:X6}>{1}</BASEFONT>", color, text );
+		}
 	}
 }
