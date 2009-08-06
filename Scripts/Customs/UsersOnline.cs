@@ -19,7 +19,7 @@ namespace Server.Scripts.Customs
 		{
 			using ( StreamWriter op = new StreamWriter( "online.txt" ) )
 			{
-				op.Write(String.Format("players:{0} save:{0:F2}", NetState.Instances.Count.ToString(), World.LastSave));
+				op.Write(String.Format("players:{0} save:{1:F2}", NetState.Instances.Count.ToString(), World.LastSave));
 			}
 		}
 	}
