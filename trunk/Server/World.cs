@@ -42,12 +42,16 @@ namespace Server {
 
 		private static Dictionary<Serial, Mobile> m_Mobiles;
 		private static Dictionary<Serial, Item> m_Items;
+		
+		private static double m_lastSaveSeconds = 0.0;
 
 		private static bool m_Loading;
 		private static bool m_Loaded;
 		private static bool m_Saving;
 
 		private static Queue<IEntity> _addQueue, _deleteQueue;
+		
+		public static double LastSave { get { return m_lastSaveSeconds; } }
 
 		public static bool Saving { get { return m_Saving; } }
 		public static bool Loaded { get { return m_Loaded; } }
@@ -792,11 +796,11 @@ namespace Server {
 
 			strategy.ProcessDecay();
 
-			Console.WriteLine( "done in {0:F2} seconds.", watch.Elapsed.TotalSeconds );
-			Server.Scripts.Customs.UsersOnline.seconds = watch.Elapsed.TotalSeconds;
+			m_lastSaveSeconds = watch.Elapsed.TotalSeconds;
+			Console.WriteLine( "done in {0:F2} seconds.", LastSave );			
 
 			if ( message )
-				Broadcast( 0x35, true, "World save complete. The entire process took {0:F1} seconds.", watch.Elapsed.TotalSeconds );
+				Broadcast( 0x35, true, "World save complete. The entire process took {0:F1} seconds.", LastSave );
 
 			NetState.Resume();
 		}

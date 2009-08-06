@@ -13,6 +13,7 @@ using Server.Mobiles;
 using Server.Accounting;
 using Server.Network;
 using Server.Commands;
+using Server.Gumps;
 
 namespace Server.Scripts.Customs.AFK
 {
@@ -65,9 +66,15 @@ namespace Server.Scripts.Customs.AFK
 		
 		public AFK()
 		{
-			Timer.DelayCall(TimeSpan.FromMinutes(10), TimeSpan.FromSeconds(30), new TimerCallback( Run ));
+			//Timer.DelayCall(TimeSpan.FromMinutes(10), TimeSpan.FromSeconds(30), new TimerCallback( Run ));
 			
 			CommandSystem.Register( "afk", AccessLevel.Player, new CommandEventHandler( ChallengeNow ) );
+			CommandSystem.Register( "afkTest", AccessLevel.Owner, new CommandEventHandler( ChallengeNow2 ) );
+		}
+		
+		public void ChallengeNow2( CommandEventArgs e )
+		{
+			e.Mobile.SendGump(new AFKGump(null));
 		}
 		
 		public void ChallengeNow( CommandEventArgs e )
@@ -301,7 +308,7 @@ namespace Server.Scripts.Customs.AFK
 						if(e.expire > DateTime.Now)
 						{
 							//e.m.SendSound( SomeLoudSound );
-							e.m.SendMessage(0x21, String.Format("You will be tested in {0:F1} minutes. Type [afk to take the test now.", e.expire.Subtract(DateTime.Now).TotalMinutes;
+							e.m.SendMessage(0x21, String.Format("You will be tested in {0:F1} minutes. Type [afk to take the test now.", e.expire.Subtract(DateTime.Now).TotalMinutes));
 							continue;
 						}
 						goto case CheckState.Reconnected;
@@ -351,7 +358,7 @@ namespace Server.Scripts.Customs.AFK
 		}
 	}
 	
-	public class AFKGump : Server.Gumps.Gump
+	public class AFKGump : Gump
 	{
 		private CheckEntry m_entry;
 		
@@ -363,18 +370,27 @@ namespace Server.Scripts.Customs.AFK
 
 			AddBackground( 0, 0, 400, 350, 2600 );
 
-			AddHtmlLocalized( 0, 20, 400, 35, 1011022, false, false ); // <center>Resurrection</center>
+			AddHtml( 10, 40, 400, 20, Color( Center( "Server" ), 0xFFFFFF ), false, false );
 
-			AddHtmlLocalized( 50, 55, 300, 140, 1011023 + (int)msg, true, true ); /* It is possible for you to be resurrected here by this healer. Do you wish to try?<br>
-																				   * CONTINUE - You chose to try to come back to life now.<br>
-																				   * CANCEL - You prefer to remain a ghost for now.
-																				   */
+			AddImageTiledButton( 50, 50, 4005, 4007, 2, GumpButtonType.Reply, 0, 0x01, 0, 10, 10);
+			//AddHtmlLocalized( 50, 55, 300, 140, 1011023 + (int)msg, true, true ); /* It is possible for you to be resurrected here by this healer. Do you wish to try?<br>
+			//																	   * CONTINUE - You chose to try to come back to life now.<br>
+			//																	   * CANCEL - You prefer to remain a ghost for now.
+			//																	   */
 
 			AddButton( 200, 227, 4005, 4007, 0, GumpButtonType.Reply, 0 );
 			AddHtmlLocalized( 235, 230, 110, 35, 1011012, false, false ); // CANCEL
 
 			AddButton( 65, 227, 4005, 4007, 1, GumpButtonType.Reply, 0 );
 			AddHtmlLocalized( 100, 230, 110, 35, 1011011, false, false ); // CONTINUE
+		}
+		
+		public override void OnResponse( NetState state, RelayInfo info )
+		{
+			Mobile from = state.Mobile;
+			
+			from.SendMessage("You pressed buttonID " + info.ButtonID.ToString());
+			
 		}
 	}
 }

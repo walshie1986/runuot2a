@@ -11,19 +11,7 @@ namespace Server.Misc
 		public static TimeSpan AntiMacroExpire = TimeSpan.FromMinutes( 5.0 ); //How long do we remember targets/locations?
 		public const int Allowance = 3;	//How many times may we use the same location/target for gain
 		private const int LocationSize = 5; //The size of eeach location, make this smaller so players dont have to move as far
-		private static int[] FasterGains = new int[]
-		{
-			5,
-			25,
-			26,
-			27,
-			31,
-			40,
-			41,
-			42,
-			43,
-			46
-		};
+		
 		private static bool[] UseAntiMacro = new bool[]
 		{
 			// true if this skill uses the anti-macro code, false if it does not
@@ -135,6 +123,8 @@ namespace Server.Misc
 			Point2D loc = new Point2D( from.Location.X / LocationSize, from.Location.Y / LocationSize );
 			return CheckSkill( from, skill, loc, chance );
 		}
+		
+		private static TimeSpan m_phLength = TimeSpan.FromHours(1);
 
 		public static bool CheckSkill( Mobile from, Skill skill, object amObj, double chance )
 		{
@@ -150,6 +140,10 @@ namespace Server.Misc
 			gc /= 2;
 
 			gc *= skill.Info.GainFactor;
+			
+			Server.Accounting.Account a = from.Account as Server.Accounting.Account;
+			if(a != null && a.PHStart != null && a.PHStart + m_phLength > DateTime.Now)
+				gc *= 2; //Double gains during power hour
 
 			if ( gc < 0.01 )
 				gc = 0.01;
@@ -224,15 +218,6 @@ namespace Server.Misc
 
 				if ( skill.Base <= 10.0)
 					toGain = Utility.Random( 4 ) + 1;
-				else if( skill.Base <= 65.0)
-				{
-					bool fast = false;
-					for(int i = 0; i < FasterGains.Length && !fast; i++)
-						if(skill.Info.SkillID == FasterGains[i])
-							fast = true;
-					if(fast)
-						toGain = Utility.Random( 4 ) + 1;
-				}
 
 				Skills skills = from.Skills;
 
@@ -353,7 +338,7 @@ namespace Server.Misc
 			}
 		}
 
-		private static TimeSpan m_StatGainDelay = TimeSpan.FromMinutes( 15.0 );
+		private static TimeSpan m_StatGainDelay = TimeSpan.FromMinutes( 1.0 );
 
 		public static void GainStat( Mobile from, Stat stat )
 		{

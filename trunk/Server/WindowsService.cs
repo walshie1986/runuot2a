@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.ServiceProcess;
 using System.Threading;
 
+#if !MONO
 namespace Server
 {
     class WindowsService : ServiceBase
@@ -228,3 +229,4 @@ namespace Server
         }
     }
 }
+#endif
