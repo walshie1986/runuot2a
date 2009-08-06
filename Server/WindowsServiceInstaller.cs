@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Configuration.Install;
 using System.ServiceProcess;
 
+#if !MONO
 namespace WindowsService
 {
     [RunInstaller(true)]
@@ -44,3 +45,4 @@ namespace WindowsService
         }
     }
 }
+#endif

@@ -21,7 +21,7 @@ namespace Server.Accounting
 		private string m_Username, m_PlainPassword, m_CryptPassword, m_NewCryptPassword;
 		private AccessLevel m_AccessLevel;
 		private int m_Flags;
-		private DateTime m_Created, m_LastLogin;
+		private DateTime m_Created, m_LastLogin, m_phStart;
 		private TimeSpan m_TotalGameTime;
 		private List<AccountComment> m_Comments;
 		private List<AccountTag> m_Tags;
@@ -215,7 +215,26 @@ namespace Server.Accounting
 		public DateTime LastLogin
 		{
 			get { return m_LastLogin; }
-			set { m_LastLogin = value; }
+			set
+			{
+				if(m_LastLogin != null && value != null)
+				{
+					if(m_LastLogin.Day != DateTime.Now.Day)
+					{
+						//First login of the day
+						m_phStart = value;
+					}
+				}
+				m_LastLogin = value;
+			}
+		}
+		
+		/// <summary>
+		/// Gets the date and time when power hour started for this account.
+		/// </summary>
+		public DateTime PHStart
+		{
+			get { return m_phStart; }
 		}
 
 		/// <summary>

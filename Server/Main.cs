@@ -328,7 +328,7 @@ namespace Server
 		public static void Kill( bool restart )
 		{
 			HandleClosed();
-
+#if !MONO
 			if ( !m_Service ) {
 				if( restart )
 					Process.Start( ExePath, Arguments );
@@ -342,6 +342,13 @@ namespace Server
 						service.Stop();
 				}
 			}	
+#else
+			if(restart && !m_Service)
+			{
+				Process.Start( ExePath, Arguments );
+			}
+			m_Process.Kill();
+#endif
 		}
 
 		private static void HandleClosed()
@@ -367,7 +374,7 @@ namespace Server
 
 		private static AutoResetEvent m_Signal = new AutoResetEvent( true );
 		public static void Set() { m_Signal.Set(); }
-		
+#if !MONO
 		public static void ServiceMain() {
 			System.ServiceProcess.ServiceBase.Run(new WindowsService());
 		}
@@ -375,7 +382,7 @@ namespace Server
 			m_Service = true;
 			Main(new string[0]);
 		}
-
+#endif
 		public static void Main( string[] args )
 		{
 			bool isService = !Insensitive.Equals(System.IO.Directory.GetCurrentDirectory().TrimEnd('\\'), System.AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\'));
@@ -400,11 +407,13 @@ namespace Server
 			}
 			
 			System.IO.Directory.SetCurrentDirectory(System.AppDomain.CurrentDomain.BaseDirectory);
+#if !MONO
 			if(isService)
 			{
 				ServiceMain();
 				return;
 			}
+#endif
 			
 			try
 			{
@@ -521,12 +530,15 @@ namespace Server
 					}
 				}
 			}
+#if !MONO
 			catch( ThreadAbortException e)
 			{
+				e.GetBaseException(); //Just to remove warning. I can't remember how to supress...
 				Thread.ResetAbort();
 				HandleClosed();
 				//Kill(false);
 			}
+#endif
 			catch( Exception e )
 			{
 				CurrentDomain_UnhandledException( null, new UnhandledExceptionEventArgs( e, true ) );
