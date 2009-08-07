@@ -22,7 +22,9 @@ namespace Server.Scripts.Customs.AFK
 		Picked,
 		Notified,
 		Challenged,
-		Reconnected
+		Reconnected,
+		BotCheck,
+		BotChallenge
 	}
 	public class CheckEntry
 	{
@@ -101,13 +103,11 @@ namespace Server.Scripts.Customs.AFK
 		
 		private static void EventSink_Login( LoginEventArgs args )
 		{
-			Mobile m = args.Mobile;
-			Account a = (Account)m.Account;
+			PlayerMobile pm = args.Mobile as PlayerMobile;
+			Account a = pm.Account as Account;
 			
-			if(m is PlayerMobile)
-			{
-				PlayerMobile pm = (PlayerMobile)m;
-				
+			if(pm != null && a != null)
+			{				
 				//Check for disconnected flag
 				if(a.GetTag("AFKTag-Selected") != null)
 				{
@@ -117,7 +117,14 @@ namespace Server.Scripts.Customs.AFK
 					String failedTime = a.GetTag("AFKTag-FailedTime");
 					if(failedTime != null)
 					{
-						if(DateTime.Parse(failedTime) > DateTime.Now + TimeSpan.FromMinutes(30))
+						pm.SendMessage(0x21, "Please confirm you are not a bot.");
+						CheckEntry e = new CheckEntry(pm);
+						e.state = CheckState.BotCheck;
+						if(Inst.checks.ContainsKey(pm))
+							Inst.checks[pm] = e;
+						else
+							Inst.checks.Add(pm, e);
+						/*if(Utility.GetDateTime( failedTime, DateTime.MinValue ) > DateTime.Now + TimeSpan.FromMinutes(30))
 						{
 							pm.SendMessage(0x21, "You have reconnected in the AFK grace period. Please authenticate now.");
 							Reconnected(pm);
@@ -128,7 +135,7 @@ namespace Server.Scripts.Customs.AFK
 							IncrementFlag(pm);
 							a.RemoveTag("AFKTag-FailedTime");
 							//Too bad
-						}
+						}*/
 					}
 				}
 			}
@@ -146,7 +153,10 @@ namespace Server.Scripts.Customs.AFK
 		
 		private static void IncrementFlag(PlayerMobile pm)
 		{
-			Account a = (Account)pm.Account;
+			Account a = pm.Account as Account;
+			if (a == null)
+				return;
+			
 			String flag = a.GetTag("AFKTag-Level");
 			int level = flag == null ? 0 : int.Parse(flag);
 			a.SetTag("AFKTag-LastInc", XmlConvert.ToString( DateTime.Now, XmlDateTimeSerializationMode.Local ));
@@ -202,18 +212,15 @@ namespace Server.Scripts.Customs.AFK
 			
 			foreach(NetState ns in NetState.Instances)
 			{
-				Account a = (Account)ns.Account;
+				Account a = ns.Account as Account;
+				PlayerMobile m = ns.Mobile as PlayerMobile;
 				
-				if(a.AccessLevel > AccessLevel.Player || a.GetTag("AFKTag-Excempt") != null || a.GetTag("AFKTag-Selected") != null || a.GetTag("AFKTag-FailedTime") != null )
+				if(a == null || m == null || a.AccessLevel > AccessLevel.Player || a.GetTag("AFKTag-Excempt") != null || a.GetTag("AFKTag-Selected") != null || a.GetTag("AFKTag-FailedTime") != null )
 					continue;
-				
-				if(ns.Mobile is PlayerMobile)
-				{
-					PlayerMobile m = (PlayerMobile)ns.Mobile;
-					SelectionEntry n = new SelectionEntry(m, AFKScore(m));
-					selection.Add(n);
-					//Add all logged in characters.
-				}
+
+				SelectionEntry n = new SelectionEntry(m, AFKScore(m));
+				selection.Add(n);
+				//Add all logged in characters.
 			}
 			
 			selection.Sort();
@@ -231,17 +238,21 @@ namespace Server.Scripts.Customs.AFK
 					continue;
 				count--;
 				
-				Account a = (Account)pm.Account;
+				Account a = pm.Account as Account;
 				
 				checks.Add(pm, new CheckEntry(pm));
-				a.AddTag("AFKTag-Selected", "true");		
+				if (a != null)
+					a.AddTag("AFKTag-Selected", "true");		
 			}
 		}
 		
 		//High score for ones that need to be checked.
 		private float AFKScore( PlayerMobile m )
 		{
-			Account a = (Account)m.Account;
+			Account a = m.Account as Account;
+			if(a == null)
+				return (float)-1.0;
+			
 			DateTime lastChecked, lastInc;
 			int flagLevel = 0;
 			
@@ -261,7 +272,7 @@ namespace Server.Scripts.Customs.AFK
 			if(sFlagLevel != null)
 			{
 				flagLevel = int.Parse(sFlagLevel);
-				if(sLastInc != null && DateTime.Now > lastInc + TimeSpan.FromDays(7))
+				if(sLastInc != null && DateTime.Now > lastInc.AddDays(7))
 				{
 					flagLevel--;
 					if(flagLevel == 0)
@@ -319,12 +330,21 @@ namespace Server.Scripts.Customs.AFK
 						//Challenge
 						e.m.SendGump(new AFKGump(e));
 						break;
+					case CheckState.BotChallenge:
+						goto case CheckState.Challenged;
 					case CheckState.Challenged:
 						if(e.expire < DateTime.Now)
 						{
 							e.param = 10;
 							BadAnswer(e);
 						}
+						break;
+					case CheckState.BotCheck:
+						e.expire = DateTime.Now + TimeSpan.FromMinutes(5);
+						e.param = 0;
+						e.state = CheckState.BotChallenge;
+						//Challenge
+						e.m.SendGump(new AFKGump(e));
 						break;
 					default:
 						break;
@@ -334,15 +354,29 @@ namespace Server.Scripts.Customs.AFK
 			
 		public void BadAnswer(CheckEntry e)
 		{
+			if(e == null)
+				return;
+			
 			e.param++;
 			if(e.param > 1)
 			{
-				Account a = (Account)e.m.Account;
-				a.RemoveTag("AFKTag-Selected");
-				if(a.GetTag("AFKTag-FailedTime") == null)
-					a.AddTag("AFKTag-FailedTime", DateTime.Now.ToString());
-				Kick(e.m);
 				checks.Remove(e.m);
+				Kick(e.m);
+				
+				Account a = e.m.Account as Account;
+				if( a == null)
+					return;
+				
+				if(e.state == CheckState.BotChallenge)
+				{
+					//Increment flag
+					IncrementFlag(e.m);
+				} else
+				{
+					a.RemoveTag("AFKTag-Selected");
+					if(a.GetTag("AFKTag-FailedTime") == null)
+						a.AddTag("AFKTag-FailedTime", XmlConvert.ToString( DateTime.Now, XmlDateTimeSerializationMode.Local ));
+				}
 			} else
 			{
 				e.m.SendGump(new AFKGump(e));
@@ -351,8 +385,14 @@ namespace Server.Scripts.Customs.AFK
 		
 		public void GoodAnswer(CheckEntry e)
 		{
+			if(e == null)
+				return;
+			
 			checks.Remove(e.m);
-			Account a = (Account)e.m.Account;
+			Account a = e.m.Account as Account;
+			
+			if(a == null)
+				return;
 			
 			a.SetTag("AFKTag-LastChecked", XmlConvert.ToString( DateTime.Now, XmlDateTimeSerializationMode.Local ));
 		}
@@ -360,11 +400,25 @@ namespace Server.Scripts.Customs.AFK
 	
 	public class AFKGump : Gump
 	{
+		private static int m_initX = 50;
+		private static int m_initY = 50;
+		private static int m_incrX = 20;
+		private static int m_incrY = 20;
+		
 		private CheckEntry m_entry;
 		
-		public AFKGump(CheckEntry e) : base(100, 0)
+		public AFKGump(CheckEntry e) : base(100, 20)
 		{
 			m_entry = e;
+			
+			Closable = false;
+			
+			
+			int answer = Utility.Random(10);
+			int spellAnswer = Utility.Random(64);
+			
+			if(e != null)
+				e.answer = spellAnswer;
 			
 			AddPage( 0 );
 
@@ -372,17 +426,21 @@ namespace Server.Scripts.Customs.AFK
 
 			AddHtml( 10, 40, 400, 20, Color( Center( "Server" ), 0xFFFFFF ), false, false );
 
-			AddImageTiledButton( 50, 50, 4005, 4007, 2, GumpButtonType.Reply, 0, 0x01, 0, 10, 10);
-			//AddHtmlLocalized( 50, 55, 300, 140, 1011023 + (int)msg, true, true ); /* It is possible for you to be resurrected here by this healer. Do you wish to try?<br>
-			//																	   * CONTINUE - You chose to try to come back to life now.<br>
-			//																	   * CANCEL - You prefer to remain a ghost for now.
-			//																	   */
-
-			AddButton( 200, 227, 4005, 4007, 0, GumpButtonType.Reply, 0 );
-			AddHtmlLocalized( 235, 230, 110, 35, 1011012, false, false ); // CANCEL
-
-			AddButton( 65, 227, 4005, 4007, 1, GumpButtonType.Reply, 0 );
-			AddHtmlLocalized( 100, 230, 110, 35, 1011011, false, false ); // CONTINUE
+			for(int i = 0; i < 10; i++)
+			{
+				int spell;
+				if(i == answer)
+				{
+					spell = spellAnswer;
+				} else
+				{
+					do
+					{
+						spell = Utility.Random(64);
+					} while(spell == spellAnswer);
+				}
+				AddButton(m_initX + (i%5)*m_incrX, m_initY + (i/5)*m_incrY, 7000 + spell, 7000 + spell, i, GumpButtonType.Reply, 0);
+			}
 		}
 		
 		public override void OnResponse( NetState state, RelayInfo info )
