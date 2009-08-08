@@ -40,6 +40,7 @@
     <Folder Include="Scripts\Commands\Generic\Implementors" />
     <Folder Include="Scripts\Context Menus" />
     <Folder Include="Scripts\Customs" />
+    <Folder Include="Scripts\Customs\AFK" />
     <Folder Include="Scripts\Customs\Knives Chat 3.0 Beta 9" />
     <Folder Include="Scripts\Customs\Knives Chat 3.0 Beta 9\Channels" />
     <Folder Include="Scripts\Customs\Knives Chat 3.0 Beta 9\Commands" />
@@ -482,6 +483,7 @@
     <Compile Include="Scripts\Context Menus\EatEntry.cs" />
     <Compile Include="Scripts\Context Menus\OpenBankEntry.cs" />
     <Compile Include="Scripts\Context Menus\TeachEntry.cs" />
+    <Compile Include="Scripts\Customs\AFK\AFK.cs" />
     <Compile Include="Scripts\Customs\Knives Chat 3.0 Beta 9\Channels\Alliance.cs" />
     <Compile Include="Scripts\Customs\Knives Chat 3.0 Beta 9\Channels\Channel.cs" />
     <Compile Include="Scripts\Customs\Knives Chat 3.0 Beta 9\Channels\Faction.cs" />
@@ -690,6 +692,7 @@
     <Compile Include="Scripts\Customs\Nerun\New\Mobiles\Hireables\HireSailor.cs" />
     <Compile Include="Scripts\Customs\Nerun\New\Mobiles\Hireables\HireThief.cs" />
     <Compile Include="Scripts\Customs\Nerun\SE\Mobiles\Icehound.cs" />
+    <Compile Include="Scripts\Customs\UsersOnline.cs" />
     <Compile Include="Scripts\Customs\XmlSpawner\BaseArtifact.cs" />
     <Compile Include="Scripts\Customs\XmlSpawner\BaseArtifact.cs" />
     <Compile Include="Scripts\Customs\XmlSpawner\BaseChallengeGame.cs" />

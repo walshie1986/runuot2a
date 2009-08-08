@@ -704,6 +704,39 @@ namespace Server.Mobiles
 				Name = null;
 		}
 	}
+	
+	public class EtherealPolarBear : EtherealMount
+	{
+		public override int LabelNumber { get { return 1076159; } } // Ridable Polar Bear
+
+		[Constructable]
+		public EtherealPolarBear()
+			: base( 0x20E1, 0x3EC5 )
+		{
+		}
+
+		public EtherealPolarBear( Serial serial )
+			: base( serial )
+		{
+		}
+
+		public override void Serialize( GenericWriter writer )
+		{
+			base.Serialize( writer );
+
+			writer.Write( (int)0 ); // version
+		}
+
+		public override void Deserialize( GenericReader reader )
+		{
+			base.Deserialize( reader );
+
+			int version = reader.ReadInt();
+
+			if( Name == "an ethereal polar bear" )
+				Name = null;
+		}
+	}
 
 	public class ChargerOfTheFallen : EtherealMount
 	{
