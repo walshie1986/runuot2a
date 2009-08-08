@@ -68,7 +68,7 @@ namespace Server.Scripts.Customs.AFK
 		
 		public AFK()
 		{
-			//Timer.DelayCall(TimeSpan.FromMinutes(10), TimeSpan.FromSeconds(30), new TimerCallback( Run ));
+			Timer.DelayCall(TimeSpan.FromMinutes(5), TimeSpan.FromSeconds(30), new TimerCallback( Tick ));
 			
 			CommandSystem.Register( "afk", AccessLevel.Player, new CommandEventHandler( ChallengeNow ) );
 			CommandSystem.Register( "afkTest", AccessLevel.Owner, new CommandEventHandler( ChallengeNow2 ) );
@@ -76,7 +76,11 @@ namespace Server.Scripts.Customs.AFK
 		
 		public void ChallengeNow2( CommandEventArgs e )
 		{
-			e.Mobile.SendGump(new AFKGump(null));
+			PlayerMobile pm = e.Mobile as PlayerMobile;
+			if(pm == null)
+				return;
+			CheckEntry en = new CheckEntry(pm);
+			checks.Add(pm, en);
 		}
 		
 		public void ChallengeNow( CommandEventArgs e )
@@ -89,7 +93,7 @@ namespace Server.Scripts.Customs.AFK
 					CheckEntry entry = checks[pm];
 					if(entry.state == CheckState.Notified)
 					{
-						entry.expire = DateTime.Now;
+						Challenge(entry);
 					} else
 					{
 						pm.SendMessage("This is the wrong time to send this command.");
@@ -314,7 +318,7 @@ namespace Server.Scripts.Customs.AFK
 						e.expire = DateTime.Now + TimeSpan.FromMinutes(30);
 						e.state = CheckState.Notified;
 						e.m.SendMessage(0x21, "You have been randomly selected for human operator testing.");
-						break;
+						goto case CheckState.Notified;
 					case CheckState.Notified:
 						if(e.expire > DateTime.Now)
 						{
@@ -324,11 +328,7 @@ namespace Server.Scripts.Customs.AFK
 						}
 						goto case CheckState.Reconnected;
 					case CheckState.Reconnected:
-						e.expire = DateTime.Now + TimeSpan.FromMinutes(5);
-						e.param = 0;
-						e.state = CheckState.Challenged;
-						//Challenge
-						e.m.SendGump(new AFKGump(e));
+						Challenge(e);
 						break;
 					case CheckState.BotChallenge:
 						goto case CheckState.Challenged;
@@ -340,16 +340,22 @@ namespace Server.Scripts.Customs.AFK
 						}
 						break;
 					case CheckState.BotCheck:
-						e.expire = DateTime.Now + TimeSpan.FromMinutes(5);
-						e.param = 0;
+						Challenge(e);
 						e.state = CheckState.BotChallenge;
-						//Challenge
-						e.m.SendGump(new AFKGump(e));
 						break;
 					default:
 						break;
 				}
 			}
+		}
+		
+		public void Challenge(CheckEntry e)
+		{
+			e.expire = DateTime.Now + TimeSpan.FromMinutes(5);
+			e.param = 0;
+			e.state = CheckState.Challenged;
+			//Challenge
+			e.m.SendGump(new AFKGump(e));
 		}
 			
 		public void BadAnswer(CheckEntry e)
@@ -360,6 +366,7 @@ namespace Server.Scripts.Customs.AFK
 			e.param++;
 			if(e.param > 1)
 			{
+				e.m.SendMessage("Too many wrong selections. Kicking.");
 				checks.Remove(e.m);
 				Kick(e.m);
 				
@@ -380,6 +387,7 @@ namespace Server.Scripts.Customs.AFK
 			} else
 			{
 				e.m.SendGump(new AFKGump(e));
+				e.m.SendMessage("Wrong selection. Please try again.");
 			}
 		}
 		
@@ -395,15 +403,17 @@ namespace Server.Scripts.Customs.AFK
 				return;
 			
 			a.SetTag("AFKTag-LastChecked", XmlConvert.ToString( DateTime.Now, XmlDateTimeSerializationMode.Local ));
+			
+			e.m.SendMessage("Confirmed. Thank you.");
 		}
 	}
 	
 	public class AFKGump : Gump
 	{
-		private static int m_initX = 50;
-		private static int m_initY = 50;
-		private static int m_incrX = 20;
-		private static int m_incrY = 20;
+		private static int m_initX = 45;
+		private static int m_initY = 125;
+		private static int m_incrX = 80;
+		private static int m_incrY = 80;
 		
 		private CheckEntry m_entry;
 		
@@ -414,19 +424,20 @@ namespace Server.Scripts.Customs.AFK
 			Closable = false;
 			
 			
-			int answer = Utility.Random(10);
+			int answer = Utility.Random(12);
 			int spellAnswer = Utility.Random(64);
 			
 			if(e != null)
-				e.answer = spellAnswer;
+				e.answer = answer;
 			
 			AddPage( 0 );
 
-			AddBackground( 0, 0, 400, 350, 2600 );
+			AddBackground( 0, 0, 400, 400, 2600 );
 
-			AddHtml( 10, 40, 400, 20, Color( Center( "Server" ), 0xFFFFFF ), false, false );
+			AddHtml( 10, 20, 390, 20, Color( Center( "Click this spell from the 16 below." ), 0xFFFFFF ), false, false );
+			AddImage(165, 45, 7000+spellAnswer);
 
-			for(int i = 0; i < 10; i++)
+			for(int i = 0; i < 12; i++)
 			{
 				int spell;
 				if(i == answer)
@@ -439,7 +450,7 @@ namespace Server.Scripts.Customs.AFK
 						spell = Utility.Random(64);
 					} while(spell == spellAnswer);
 				}
-				AddButton(m_initX + (i%5)*m_incrX, m_initY + (i/5)*m_incrY, 7000 + spell, 7000 + spell, i, GumpButtonType.Reply, 0);
+				AddButton(m_initX + (i%4)*m_incrX, m_initY + (i/4)*m_incrY, 7000 + spell, 7000 + spell, i, GumpButtonType.Reply, 0);
 			}
 		}
 		
@@ -447,8 +458,14 @@ namespace Server.Scripts.Customs.AFK
 		{
 			Mobile from = state.Mobile;
 			
-			from.SendMessage("You pressed buttonID " + info.ButtonID.ToString());
-			
+			//from.SendMessage("You have clicked button: " + info.ButtonID.ToString() + ". Answer is: " + m_entry.answer.ToString());
+			if(info.ButtonID == m_entry.answer)
+			{
+				AFK.Inst.GoodAnswer(m_entry);
+			} else
+			{
+				AFK.Inst.BadAnswer(m_entry);
+			}
 		}
 		
 		public string Center( string text )
