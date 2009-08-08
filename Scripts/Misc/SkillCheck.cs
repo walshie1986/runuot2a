@@ -32,7 +32,7 @@ namespace Server.Misc
 			true,// DetectHidden = 14,
 			true,// Discordance = 15,
 			false,// EvalInt = 16,
-			true,// Healing = 17,
+			false,// Healing = 17,
 			true,// Fishing = 18,
 			false,// Forensics = 19,
 			true,// Herding = 20,
