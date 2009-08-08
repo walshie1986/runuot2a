@@ -58,7 +58,7 @@ namespace Server.Spells.Sixth
 			private Mobile m_Attacker, m_Defender;
 
 			public InternalTimer( MagerySpell spell, Mobile attacker, Mobile defender, Mobile target )
-				: base( TimeSpan.FromSeconds( Core.AOS ? 3.0 : 3.5 ) )
+				: base( TimeSpan.FromSeconds( Core.AOS ? 3.0 : 2.5 ) )
 			{
 				m_Spell = spell;
 				m_Attacker = attacker;
