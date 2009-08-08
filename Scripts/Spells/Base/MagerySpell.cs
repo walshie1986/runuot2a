@@ -100,7 +100,7 @@ namespace Server.Spells
 				return TimeSpan.Zero;
 
 			if( !Core.AOS )
-				return return TimeSpan.FromSeconds( 0.5 + (0.25 * (int)Circle) );
+				return TimeSpan.FromSeconds( 0.5 + (0.25 * (int)Circle) );
 
 			return base.GetCastDelay();
 		}
