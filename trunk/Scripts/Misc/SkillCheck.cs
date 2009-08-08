@@ -31,7 +31,7 @@ namespace Server.Misc
 			false,// Cooking = 13,
 			true,// DetectHidden = 14,
 			true,// Discordance = 15,
-			true,// EvalInt = 16,
+			false,// EvalInt = 16,
 			true,// Healing = 17,
 			true,// Fishing = 18,
 			false,// Forensics = 19,
