@@ -630,12 +630,13 @@ namespace Server.Spells
 			if ( Core.AOS )
 				return TimeSpan.Zero;
 
-			double delay = 1.0 - Math.Sqrt( (DateTime.Now - m_StartCastTime).TotalSeconds / GetCastDelay().TotalSeconds );
+			//double delay = 1.0 - Math.Sqrt( (DateTime.Now - m_StartCastTime).TotalSeconds / GetCastDelay().TotalSeconds );
+			return  GetCastDelay() - (DateTime.Now - m_StartCastTime);
 
-			if ( delay < 0.2 )
-				delay = 0.2;
+			//if ( delay < 0.2 )
+			//	delay = 0.2;
 
-			return TimeSpan.FromSeconds( delay );
+			//return TimeSpan.FromSeconds( delay );
 		}
 
 		public virtual int CastRecoveryBase{ get{ return 6; } }
