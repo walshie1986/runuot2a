@@ -1350,7 +1350,7 @@ namespace Server.Mobiles
 
 			m_Owners = new List<Mobile>();
 
-			m_NextReacquireTime = DateTime.Now + TimeSpan.FromMinutes(Utility.RandomMinMax(1, 12)); //ReacquireDelay;
+			m_NextReacquireTime = DateTime.Now + TimeSpan.FromSeconds(Utility.RandomMinMax(1, 12)); //ReacquireDelay;
 
 			ChangeAIType(AI);
 
