@@ -402,6 +402,7 @@ namespace Server.Scripts.Customs.AFK
 			if(a == null)
 				return;
 			
+			a.RemoveTag("AFKTag-Selected");
 			a.SetTag("AFKTag-LastChecked", XmlConvert.ToString( DateTime.Now, XmlDateTimeSerializationMode.Local ));
 			
 			e.m.SendMessage("Confirmed. Thank you.");
