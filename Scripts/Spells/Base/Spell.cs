@@ -435,7 +435,7 @@ namespace Server.Spells
 				OnDisturb( type, true );
 
 				if(type == DisturbType.EquipRequest) {
-					//m_Caster.NextSpellTime = DateTime.Now - TimeSpan.FromSeconds(0.5);
+					m_Caster.NextSpellTime = DateTime.Now;
 				} else
 				{
 					//m_Caster.NextSpellTime = DateTime.Now + GetCastRecovery();
@@ -541,7 +541,7 @@ namespace Server.Spells
 					SayMantra();
 
 					TimeSpan castDelay = this.GetCastDelay();
-					//m_Caster.NextSpellTime = m_StartCastTime + castDelay - TimeSpan.FromSeconds(0.5);
+					m_Caster.NextSpellTime = m_StartCastTime + TimeSpan.FromSeconds(2.25);
 
 					if ( ShowHandMovement && m_Caster.Body.IsHuman )
 					{
@@ -797,9 +797,9 @@ namespace Server.Spells
 					}
 				}
 				
-				if(m_Caster.NextSpellTime + TimeSpan.FromSeconds(2.2) > DateTime.Now ) {
-					m_Caster.NextSpellTime = DateTime.Now + TimeSpan.FromSeconds(0.5);
-				}
+				//if(m_Caster.NextSpellTime + TimeSpan.FromSeconds(2.2) > DateTime.Now ) {
+				//	m_Caster.NextSpellTime = DateTime.Now + TimeSpan.FromSeconds(0.5);
+				//}
 
 				return true;
 			}
@@ -898,7 +898,7 @@ namespace Server.Spells
 					m_Spell.m_CastTimer = null;
 					m_Spell.m_Caster.OnSpellCast( m_Spell );
 					m_Spell.m_Caster.Region.OnSpellCast( m_Spell.m_Caster, m_Spell );
-					m_Spell.m_Caster.NextSpellTime = DateTime.Now;// Spell.NextSpellDelay;
+					//m_Spell.m_Caster.NextSpellTime = DateTime.Now;// Spell.NextSpellDelay;
 					//m_Spell.m_Caster.NextSpellTime = DateTime.Now + m_Spell.GetCastRecovery();
 
 					Target originalTarget = m_Spell.m_Caster.Target;
