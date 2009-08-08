@@ -61,7 +61,7 @@ namespace Server.Spells
 	public class SpellHelper
 	{
 		private static TimeSpan AosDamageDelay = TimeSpan.FromSeconds( 1.0 );
-		private static TimeSpan OldDamageDelay = TimeSpan.FromSeconds( 0.5 );
+		private static TimeSpan OldDamageDelay = TimeSpan.FromSeconds( 1.0 );
 
 		public static TimeSpan GetDamageDelayForSpell( Spell sp )
 		{
