@@ -71,7 +71,7 @@ namespace Server.Scripts.Customs.AFK
 			Timer.DelayCall(TimeSpan.FromMinutes(5), TimeSpan.FromSeconds(30), new TimerCallback( Tick ));
 			
 			CommandSystem.Register( "afk", AccessLevel.Player, new CommandEventHandler( ChallengeNow ) );
-			CommandSystem.Register( "afkTest", AccessLevel.Owner, new CommandEventHandler( ChallengeNow2 ) );
+			CommandSystem.Register( "afkTest", AccessLevel.Administrator, new CommandEventHandler( ChallengeNow2 ) );
 		}
 		
 		public void ChallengeNow2( CommandEventArgs e )
@@ -434,7 +434,7 @@ namespace Server.Scripts.Customs.AFK
 
 			AddBackground( 0, 0, 400, 400, 2600 );
 
-			AddHtml( 10, 20, 390, 20, Color( Center( "Click this spell from the 16 below." ), 0xFFFFFF ), false, false );
+			AddHtml( 10, 20, 390, 20, Color( Center( "Click this spell from the 12 below." ), 0xFFFFFF ), false, false );
 			AddImage(165, 45, 7000+spellAnswer);
 
 			for(int i = 0; i < 12; i++)
