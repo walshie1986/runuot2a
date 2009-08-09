@@ -79,6 +79,7 @@ namespace Server.Scripts.Customs.AFK
 			PlayerMobile pm = e.Mobile as PlayerMobile;
 			if(pm == null)
 				return;
+			checks.Remove(pm);
 			CheckEntry en = new CheckEntry(pm);
 			checks.Add(pm, en);
 		}
@@ -178,7 +179,7 @@ namespace Server.Scripts.Customs.AFK
 					pm.SendMessage(0x21, "You have been banned for 5 minutes for AFK macroing");
 					a.SetBanTags(null, DateTime.Now, TimeSpan.FromMinutes(5));
 					Timer.DelayCall(TimeSpan.FromSeconds(15), new TimerStateCallback<PlayerMobile>(Kick), pm);
-					//a.SetTag("AFKTag-Level", "3"); //disable for now. Max 5 minute ban.
+					a.SetTag("AFKTag-Level", "3"); //disable for now. Max 5 minute ban.
 					break;
 				case 1:
 					//Permanent note
@@ -289,7 +290,7 @@ namespace Server.Scripts.Customs.AFK
 				}
 			}
 			
-			return (float)((Math.Max(1, flagLevel)*DateTime.Now.Subtract(lastChecked).TotalHours)-2.0); //2 hours grace if recently checked.
+			return (float)((Math.Max(1, flagLevel)*DateTime.Now.Subtract(lastChecked).TotalHours)-4.0); //4 hours grace if recently checked.
 		}
 		
 		public static void Kick(PlayerMobile pm)
