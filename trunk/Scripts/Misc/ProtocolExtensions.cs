@@ -38,7 +38,9 @@ namespace Server.Misc
 			Mobile mobile = args.Mobile;
 			if(m_NegTimers.ContainsKey(mobile.Account.Username.ToString()))
 			{
-				m_NegTimers[mobile.Account.Username.ToString()].Stop();
+				NegotiateTimer timer = m_NegTimers[mobile.Account.Username.ToString()];
+				if(timer != null)
+					timer.Stop();
 				m_NegTimers.Remove(mobile.Account.Username.ToString());
 			}
 			if(mobile.AccessLevel == AccessLevel.Player) 
