@@ -1118,7 +1118,7 @@ namespace Server.Mobiles
 					SayTo( buyer, true, "The total of thy purchase is {0} gold.  My thanks for the patronage.  Unfortunately, I could not sell you all the goods you requested.", totalCost );
 			}
 			
-			goldHeld = Math.Min(MaxGold, heldGold + totalCost);
+			heldGold = Math.Min(MaxGold, heldGold + totalCost);
 
 			return true;
 		}
