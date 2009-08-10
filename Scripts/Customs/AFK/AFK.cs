@@ -323,7 +323,7 @@ namespace Server.Scripts.Customs.AFK
 					case CheckState.Notified:
 						if(e.expire > DateTime.Now)
 						{
-							//e.m.SendSound( SomeLoudSound );
+							e.m.SendSound( 0x5CF );
 							e.m.SendMessage(0x21, String.Format("You will be tested in {0:F1} minutes. Type [afk to take the test now.", e.expire.Subtract(DateTime.Now).TotalMinutes));
 							continue;
 						}
