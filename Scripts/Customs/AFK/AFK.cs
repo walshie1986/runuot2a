@@ -405,7 +405,7 @@ namespace Server.Scripts.Customs.AFK
 			
 			a.RemoveTag("AFKTag-Selected");
 			a.SetTag("AFKTag-LastChecked", XmlConvert.ToString( DateTime.Now, XmlDateTimeSerializationMode.Local ));
-			
+			a.RemoveTag("AFKTag-FailedTime");
 			e.m.SendMessage("Confirmed. Thank you.");
 		}
 	}
