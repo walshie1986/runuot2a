@@ -173,6 +173,14 @@ namespace Server.Mobiles
 			}
 			else
 			{
+				//Attack people in range
+				foreach(Mobile m in m_Mobile.Map.GetMobilesInRange(m_Mobile.Location, 1))
+				{
+					if ( m_Mobile == m || !m_Mobile.CanBeHarmful( m ) )
+						continue;
+					m_Mobile.Combatant = m;
+					break;
+				}
 				m_Mobile.FocusMob = m_Mobile.Combatant;
 				base.DoActionFlee();
 			}
