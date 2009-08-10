@@ -61,9 +61,13 @@ namespace Server.Spells.Third
 			else if ( !SpellHelper.CheckTravel( Caster, TravelCheckType.TeleportFrom ) )
 			{
 			}
-			else if ( !SpellHelper.CheckTravel( Caster, map, new Point3D( p ), TravelCheckType.TeleportTo ) )
+			else if ( !SpellHelper.CheckTravel( Caster, map, new Point3D( p ), TravelCheckType.TeleportTo ) && ( Caster.Location.X != p.X || Caster.Location.Y != p.Y ) )
 			{
 			}
+			else if( EnergyField(Caster.Location, new Point3D(p)))
+	        {
+				SpellHelper.SendInvalidMessage(Caster, TravelCheckType.TeleportTo);
+	        }
 			else if ( map == null || !map.CanSpawnMobile( p.X, p.Y, p.Z ) )
 			{
 				Caster.SendLocalizedMessage( 501942 ); // That location is blocked.
@@ -98,6 +102,34 @@ namespace Server.Spells.Third
 			}
 
 			FinishSequence();
+		}
+		
+		private bool EnergyField(Point3D from, Point3D to)
+		{
+			int diffX = from.X - to.X;
+			int diffY = from.Y - to.Y;
+			int steps = Math.Max(Math.Abs(diffX), Math.Abs(diffY));
+			
+			float incX = diffX/((float)steps);
+			float incY = diffY/((float)steps);
+			
+			bool ret = false;
+			
+			for(int i = 0; i < steps && !ret; i++)
+			{
+				IPooledEnumerable eable = Caster.Map.GetItemsInBounds(new Rectangle2D((int)Math.Round(to.X+i*incX), (int)Math.Round(to.Y+i*incY), 1, 1));
+				
+				foreach( Item item in eable )
+				{
+					if(item is Server.Spells.Seventh.EnergyFieldSpell.InternalItem)
+					{
+						ret = true;
+						break;
+					}
+				}
+			}
+			
+			return ret;
 		}
 
 		public class InternalTarget : Target

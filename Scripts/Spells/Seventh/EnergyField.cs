@@ -96,7 +96,7 @@ namespace Server.Spells.Seventh
 		}
 
 		[DispellableField]
-		private class InternalItem : Item
+		public class InternalItem : Item
 		{
 			private Timer m_Timer;
 

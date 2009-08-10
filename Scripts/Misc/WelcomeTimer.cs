@@ -26,7 +26,9 @@ namespace Server.Misc
 			new string[]
 				{	//Yes, this message is a pathetic message, It's suggested that you change it.
 					"ResurrectionUO: Australian Ultima Online Shard",
-					"This shard is currently in BETA."
+					"Welcome! You can access chat menu by typing [c",
+					"To type a global message use [c Hello",
+					"Visit our forums at www.resurrectionuo.net"
 				} );
 
 		public WelcomeTimer( Mobile m ) : this( m, m_Messages.Length )

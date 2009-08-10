@@ -24,6 +24,7 @@ namespace Server.Mobiles
 	public abstract class BaseVendor : BaseCreature, IVendor
 	{
 		private const int MaxSell = 500;
+		private const int MaxGold = 2000;
 
 		protected abstract ArrayList SBInfos { get; }
 
@@ -31,6 +32,8 @@ namespace Server.Mobiles
 		private ArrayList m_ArmorSellInfo = new ArrayList();
 
 		private DateTime m_LastRestock;
+		
+		private int heldGold;
 
 		public override bool CanTeach { get { return true; } }
 
@@ -169,6 +172,8 @@ namespace Server.Mobiles
 			pack.Movable = false;
 			pack.Visible = false;
 			AddItem( pack );
+			
+			heldGold = 1000;
 
 			m_LastRestock = DateTime.Now;
 		}
@@ -516,7 +521,9 @@ namespace Server.Mobiles
 		public virtual void Restock()
 		{
 			m_LastRestock = DateTime.Now;
-
+			if(1.0 > Utility.RandomDouble()) //Change this to change how many restocks get more gold
+				heldGold = Math.Min(MaxGold, Math.Max(0, heldGold)+Utility.RandomMinMax(100, 300)); //Change this to change the amount of gold on restock
+			
 			IBuyItemInfo[] buyInfo = this.GetBuyInfo();
 
 			foreach ( IBuyItemInfo bii in buyInfo )
@@ -698,6 +705,15 @@ namespace Server.Mobiles
 			if ( !CheckVendorAccess( from ) )
 			{
 				Say( 501522 ); // I shall not treat with scum like thee!
+				return;
+			}
+			
+			if( DateTime.Now - m_LastRestock > RestockDelay )
+				Restock();
+			
+			if(heldGold <= 0)
+			{
+				Say("Sorry, I am currently broke.");
 				return;
 			}
 
@@ -1101,6 +1117,8 @@ namespace Server.Mobiles
 				else
 					SayTo( buyer, true, "The total of thy purchase is {0} gold.  My thanks for the patronage.  Unfortunately, I could not sell you all the goods you requested.", totalCost );
 			}
+			
+			goldHeld = Math.Min(MaxGold, heldGold + totalCost);
 
 			return true;
 		}
@@ -1174,6 +1192,8 @@ namespace Server.Mobiles
 
 			foreach ( SellItemResponse resp in list )
 			{
+				if(heldGold <= 0)
+					break;
 				if ( resp.Item.RootParent != seller || resp.Amount <= 0 || !resp.Item.IsStandardLoot() || !resp.Item.Movable || ( resp.Item is Container && ( (Container)resp.Item ).Items.Count != 0 ) )
 					continue;
 
@@ -1234,8 +1254,10 @@ namespace Server.Mobiles
 							else
 								resp.Item.Delete();
 						}
-
-						GiveGold += ssi.GetSellPriceFor( resp.Item ) * amount;
+						
+						int price = ssi.GetSellPriceFor( resp.Item ) * amount;
+						heldGold -= price;
+						GiveGold += price;
 						break;
 					}
 				}
@@ -1248,6 +1270,9 @@ namespace Server.Mobiles
 					seller.AddToBackpack( new Gold( 60000 ) );
 					GiveGold -= 60000;
 				}
+				
+				if(heldGold <= 0)
+					Say("I am out of funds. I have bought all I can afford.");
 
 				seller.AddToBackpack( new Gold( GiveGold ) );
 
@@ -1273,7 +1298,9 @@ namespace Server.Mobiles
 		{
 			base.Serialize( writer );
 
-			writer.Write( (int)1 ); // version
+			writer.Write( (int)2 ); // version
+			
+			writer.Write( heldGold );
 
 			ArrayList sbInfos = this.SBInfos;
 
@@ -1322,9 +1349,15 @@ namespace Server.Mobiles
 
 			switch ( version )
 			{
+				case 2:
+					heldGold = reader.ReadInt();
+					goto case 1;
 				case 1:
 					{
 						int index;
+						
+						if( version == 1 )
+							heldGold = 1000;
 
 						while ( ( index = reader.ReadEncodedInt() ) > 0 )
 						{
