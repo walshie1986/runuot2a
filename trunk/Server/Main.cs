@@ -386,7 +386,7 @@ namespace Server
 		public static void Main( string[] args )
 		{
 			bool isService = !Insensitive.Equals(System.IO.Directory.GetCurrentDirectory().TrimEnd('\\'), System.AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\'));
-			//Console.WriteLine("{0}, {1}, {2}", System.IO.Directory.GetCurrentDirectory(), System.AppDomain.CurrentDomain.BaseDirectory, isService);
+		
 			AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler( CurrentDomain_UnhandledException );
 			AppDomain.CurrentDomain.ProcessExit += new EventHandler( CurrentDomain_ProcessExit );
 
@@ -405,7 +405,7 @@ namespace Server
 				else if ( Insensitive.Equals( args[i], "-vb" ) )
 					m_VBdotNET = true;
 			}
-			
+			Console.WriteLine("{0}, {1}, {2}", System.IO.Directory.GetCurrentDirectory(), System.AppDomain.CurrentDomain.BaseDirectory, isService);
 			System.IO.Directory.SetCurrentDirectory(System.AppDomain.CurrentDomain.BaseDirectory);
 #if !MONO
 			if(isService)
