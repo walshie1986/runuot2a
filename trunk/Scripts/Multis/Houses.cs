@@ -17,7 +17,7 @@ namespace Server.Multis
 
 		public override HousePlacementEntry ConvertEntry{ get{ return HousePlacementEntry.TwoStoryFoundations[0]; } }
 
-		public SmallOldHouse( Mobile owner, int id ) : base( id, owner, 425, 3 )
+		public SmallOldHouse( Mobile owner, int id ) : base( id, owner, 25, 1 )
 		{
 			uint keyValue = CreateKeys( owner );
 
@@ -70,7 +70,7 @@ namespace Server.Multis
 		public override Rectangle2D[] Area{ get{ return AreaArray; } }
 		public override Point3D BaseBanLocation{ get{ return new Point3D( 4, 8, 0 ); } }
 
-		public GuildHouse( Mobile owner ) : base( 0x74, owner, 1100, 8 )
+		public GuildHouse( Mobile owner ) : base( 0x74, owner, 86, 4 )
 		{
 			uint keyValue = CreateKeys( owner );
 
@@ -110,7 +110,7 @@ namespace Server.Multis
 
 		public override int DefaultPrice{ get{ return 192400; } }
 
-		public TwoStoryHouse( Mobile owner, int id ) : base( id, owner, 1370, 10 )
+		public TwoStoryHouse( Mobile owner, int id ) : base( id, owner, 108, 5 )
 		{
 			uint keyValue = CreateKeys( owner );
 
@@ -161,7 +161,7 @@ namespace Server.Multis
 		public override Rectangle2D[] Area{ get{ return AreaArray; } }
 		public override Point3D BaseBanLocation{ get{ return new Point3D( 5, 8, 0 ); } }
 
-		public Tower( Mobile owner ) : base( 0x7A, owner, 2119, 15 )
+		public Tower( Mobile owner ) : base( 0x7A, owner, 244, 12 )
 		{
 			uint keyValue = CreateKeys( owner );
 
@@ -202,7 +202,7 @@ namespace Server.Multis
 		public override Rectangle2D[] Area{ get{ return AreaArray; } }
 		public override Point3D BaseBanLocation{ get{ return new Point3D( 5, 13, 0 ); } }
 
-		public Keep( Mobile owner ) : base( 0x7C, owner, 2625, 18 )
+		public Keep( Mobile owner ) : base( 0x7C, owner, 375, 19 )
 		{
 			uint keyValue = CreateKeys( owner );
 
@@ -239,7 +239,7 @@ namespace Server.Multis
 		public override Rectangle2D[] Area{ get{ return AreaArray; } }
 		public override Point3D BaseBanLocation{ get{ return new Point3D( 5, 17, 0 ); } }
 
-		public Castle( Mobile owner ) : base( 0x7E, owner, 4076, 28 )
+		public Castle( Mobile owner ) : base( 0x7E, owner, 577, 29 )
 		{
 			uint keyValue = CreateKeys( owner );
 
