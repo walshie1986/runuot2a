@@ -1850,7 +1850,7 @@ namespace Server.Mobiles
 					m_Mobile.OnThink();
 					Think();
 				}
-			//}
+			}
 
 			return true;
 		}
