@@ -37,11 +37,11 @@ namespace Server.Spells.First
 
 				SpellHelper.CheckReflect( (int)this.Circle, Caster, ref m );
 
-				if(SpellHelper.AddStatCurse( Caster, m, StatType.Dex )) {
+				//if(SpellHelper.AddStatCurse( Caster, m, StatType.Dex )) {
 
 					if ( m.Spell != null )
 						m.Spell.OnCasterHurt();
-				}
+				//}
 
 				m.Paralyzed = false;
 

@@ -246,13 +246,13 @@ namespace Server.SkillHandlers
 						m_Creature.PrivateOverheadMessage( MessageType.Regular, 0x3B2, 502796, m_Tamer.NetState ); // You are dead, and cannot continue taming.
 						Stop();
 					}
-					else if ( !m_Tamer.CanSee( m_Creature ) || !m_Tamer.InLOS( m_Creature ) )
+					/*else if ( !m_Tamer.CanSee( m_Creature ) || !m_Tamer.InLOS( m_Creature ) )
 					{
 						m_BeingTamed.Remove( m_Creature );
 						m_Tamer.NextSkillTime = DateTime.Now;
 						m_Creature.PrivateOverheadMessage( MessageType.Regular, 0x3B2, 1049654, m_Tamer.NetState ); // You do not have a clear path to the animal you are taming, and must cease your attempt.
 						Stop();
-					}
+					}*/
 					else if ( !m_Creature.Tamable )
 					{
 						m_BeingTamed.Remove( m_Creature );

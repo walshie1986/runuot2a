@@ -220,9 +220,11 @@ namespace Server.Gumps
 					Misc.Titles.AwardFame( from, -amount, true );
 				}
 
-				/*if( !Core.AOS && from.ShortTermMurders >= 5 )
+				if( !Core.AOS && from.ShortTermMurders >= 5 )
 				{
-					double loss = (100.0 - (4.0 + (from.ShortTermMurders / 5.0))) / 100.0; // 5 to 15% loss
+					ApplySkillLoss(from);
+				}
+					/*double loss = (100.0 - (4.0 + (from.ShortTermMurders / 5.0))) / 100.0; // 5 to 15% loss
 
 					if( loss < 0.85 )
 						loss = 0.85;
@@ -247,5 +249,76 @@ namespace Server.Gumps
 					from.Hits = (int)(from.HitsMax * m_HitsScalar);
 			}
 		}
+		
+		#region Skill Loss
+		private static Hashtable m_SkillLoss = new Hashtable();
+
+		private class SkillLossContext
+		{
+			public Timer m_Timer;
+			public ArrayList m_Mods;
+		}
+
+		public static void ApplySkillLoss( Mobile mob )
+		{			
+			SkillLossContext context = (SkillLossContext)m_SkillLoss[mob];
+
+			if ( context != null )
+				return;
+
+			context = new SkillLossContext();
+			m_SkillLoss[mob] = context;
+
+			ArrayList mods = context.m_Mods = new ArrayList();
+			
+			int ShortsLost = mob.ShortTermMurders/2;
+			double SkillLossFactor = Math.Min(ShortsLost*0.01,0.5); //1 percent per short. Max 50%.
+			TimeSpan SkillLossPeriod = TimeSpan.FromMinutes(10 + Math.Min(50, ShortsLost)); //10 to 60 minutes.
+			mob.ShortTermMurders -= ShortsLost; //Lose half your shorts.
+			
+			for ( int i = 0; i < mob.Skills.Length; ++i )
+			{
+				Skill sk = mob.Skills[i];
+				double baseValue = sk.Base;
+
+				if ( baseValue > 0 )
+				{
+					SkillMod mod = new DefaultSkillMod( sk.SkillName, true, -(baseValue * SkillLossFactor) );
+
+					mods.Add( mod );
+					mob.AddSkillMod( mod );
+				}
+			}
+			
+			mob.SendMessage(String.Format("You have lost {0}% of your skill for {1} minutes for being a criminal.", (int)(SkillLossFactor*100), 10 + Math.Min(50, ShortsLost)));
+
+			context.m_Timer = Timer.DelayCall( SkillLossPeriod, new TimerStateCallback( ClearSkillLoss_Callback ), mob );
+		}
+
+		private static void ClearSkillLoss_Callback( object state )
+		{
+			ClearSkillLoss( (Mobile) state );
+		}
+
+		public static bool ClearSkillLoss( Mobile mob )
+		{
+			SkillLossContext context = (SkillLossContext)m_SkillLoss[mob];
+
+			if ( context == null ) {
+				return false;
+			}
+
+			m_SkillLoss.Remove( mob );
+
+			ArrayList mods = context.m_Mods;
+
+			for ( int i = 0; i < mods.Count; ++i )
+				mob.RemoveSkillMod( (SkillMod) mods[i] );
+
+			context.m_Timer.Stop();
+
+			return true;
+		}
+		#endregion
 	}
 }
