@@ -126,10 +126,10 @@ namespace Server.Items
 			{
 				m.SendLocalizedMessage( 1019004 ); // You are not allowed to travel there.
 			}
-			else if ( m.Spell != null )
+			/*else if ( m.Spell != null )
 			{
 				m.SendLocalizedMessage( 1049616 ); // You are too busy to do that at the moment.
-			}
+			}*/
 			else if ( m_TargetMap != null && m_TargetMap != Map.Internal )
 			{
 				BaseCreature.TeleportPets( m, m_Target, m_TargetMap );
@@ -218,7 +218,8 @@ namespace Server.Items
 				return;
 
 			if ( m_TargetMap != null )
-				BeginConfirmation( from );
+				UseGate( from );
+				//BeginConfirmation( from );
 			else
 				from.SendMessage( "This moongate does not seem to go anywhere." );
 		}
