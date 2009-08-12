@@ -267,7 +267,7 @@ namespace Server.Mobiles
 			{
 				if ( ScaleByMagery( DispelChance ) > Utility.RandomDouble() )
 					return new DispelSpell( m_Mobile, null );
-
+				m_Mobile.DebugSay( "Decided no to dispel." );
 				return ChooseSpell( toDispel );
 			}
 
