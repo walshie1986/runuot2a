@@ -260,7 +260,7 @@ namespace Server.Mobiles
 			}
 		}
 		
-		public DateTime LastInteraction
+		//public DateTime LastInteraction //Incomplete
 		
 		public virtual bool HoldSmartSpawning
         {
