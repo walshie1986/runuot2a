@@ -144,7 +144,7 @@ namespace Server.Gumps
 					if ( killer != null && !killer.Deleted )
 					{
 						killer.Kills++;
-						killer.ShortTermMurders++;
+						killer.ShortTermMurders++;  //Only if not recently killed
 
 						if ( killer is PlayerMobile )
 							((PlayerMobile)killer).ResetKillTime();

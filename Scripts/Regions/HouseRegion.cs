@@ -186,7 +186,8 @@ namespace Server.Regions
 
 		public override bool OnDecay( Item item )
 		{
-			if ( (m_House.IsLockedDown( item ) || m_House.IsSecure( item )) && m_House.IsInside( item ) )
+			//if ( (m_House.IsLockedDown( item ) || m_House.IsSecure( item )) && m_House.IsInside( item ) )
+			if ( m_House.IsInside( item ) ) //Items inside houses don't decay
 				return false;
 			else
 				return base.OnDecay(item );

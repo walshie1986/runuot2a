@@ -631,7 +631,7 @@ namespace Server.Spells
 				return TimeSpan.Zero;
 
 			//double delay = 1.0 - Math.Sqrt( (DateTime.Now - m_StartCastTime).TotalSeconds / GetCastDelay().TotalSeconds );
-			return  GetCastDelay() - (DateTime.Now - m_StartCastTime);
+			return GetCastDelay() - (DateTime.Now - m_StartCastTime);
 
 			//if ( delay < 0.2 )
 			//	delay = 0.2;

@@ -274,7 +274,7 @@ namespace Server.Gumps
 			int ShortsLost = mob.ShortTermMurders/2;
 			double SkillLossFactor = Math.Min(ShortsLost*0.01,0.5); //1 percent per short. Max 50%.
 			TimeSpan SkillLossPeriod = TimeSpan.FromMinutes(10 + Math.Min(50, ShortsLost)); //10 to 60 minutes.
-			mob.ShortTermMurders -= ShortsLost; //Lose half your shorts.
+			//mob.ShortTermMurders -= ShortsLost; //Lose half your shorts. Disable till title system set up.
 			
 			for ( int i = 0; i < mob.Skills.Length; ++i )
 			{

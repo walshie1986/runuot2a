@@ -1842,7 +1842,7 @@ namespace Server.Multis
 					// The maximum number of secure items has been reached : 
 					m.SendLocalizedMessage( 1008142, true, MaxSecures.ToString() );
 				}
-				else if ( IsAosRules ? !CheckAosLockdowns( 1 ) : ((LockDownCount + 125) >= MaxLockDowns) )
+				else if ( IsAosRules ? !CheckAosLockdowns( 1 ) : ((LockDownCount + 1) >= MaxLockDowns) ) //Change 125 to 1 for new lockdowns
 				{
 					m.SendLocalizedMessage( 1005379 ); // That would exceed the maximum lock down limit for this house
 				}
@@ -2776,7 +2776,7 @@ namespace Server.Multis
 						else if ( info.Item is StrongBox )
 							count += 1;
 						else
-							count += 125;
+							count += 1; //125 to 1 foor new lockdowns
 					}
 				}
 
