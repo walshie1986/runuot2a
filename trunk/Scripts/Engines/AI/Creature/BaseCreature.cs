@@ -256,7 +256,7 @@ namespace Server.Mobiles
 		public virtual bool Decays
 		{
 			get {
-				return !Controlled && !Stabled && Owners != null && Owners.Count > 0;
+				return !Controlled && !IsStabled && Owners != null && Owners.Count > 0;
 			}
 		}
 		
