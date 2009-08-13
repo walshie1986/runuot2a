@@ -862,6 +862,9 @@ namespace Server.Spells
 
 		public static void Damage( Spell spell, TimeSpan delay, Mobile target, Mobile from, double damage )
 		{
+			if(target is BaseCreature && from is PlayerMobile) //Spells do double damage to creeps.
+				damage *= 2;
+			
 			int iDamage = (int)damage;
 
 			if( delay == TimeSpan.Zero )
@@ -914,6 +917,9 @@ namespace Server.Spells
 
 		public static void Damage( Spell spell, TimeSpan delay, Mobile target, Mobile from, double damage, int phys, int fire, int cold, int pois, int nrgy, DFAlgorithm dfa )
 		{
+			if(target is BaseCreature && from is PlayerMobile) //Spells do double damage to creeps.
+				damage *= 2;
+						
 			int iDamage = (int)damage;
 
 			if( delay == TimeSpan.Zero )
@@ -996,7 +1002,7 @@ namespace Server.Spells
 				if( m_Target is BaseCreature )
 					((BaseCreature)m_Target).AlterSpellDamageFrom( m_From, ref m_Damage );
 
-				m_Target.Damage( m_Damage );
+				m_Target.Damage( m_Damage, m_From );
 				if( m_Spell != null )
 					m_Spell.RemoveDelayedDamageContext( m_Target );
 			}

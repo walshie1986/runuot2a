@@ -1360,6 +1360,9 @@ namespace Server.Items
 
 			int damage = ComputeDamage( attacker, defender );
 
+			if (attacker is PlayerMobile && defender is BaseCreature) //Attacks do double damage to creeps.
+				damage *= 2;
+			
 			#region Damage Multipliers
 			/*
 			 * The following damage bonuses multiply damage by a factor.

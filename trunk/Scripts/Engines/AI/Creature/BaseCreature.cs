@@ -238,10 +238,29 @@ namespace Server.Mobiles
 		private bool		m_HasGeneratedLoot; // have we generated our loot yet?
 
 		private bool		m_Paragon;
+		
+		private DateTime	m_LastInteraction;
+		private static TimeSpan	m_DefaultDecayTime = TimeSpan.FromHours(1.0);
 
 		#endregion
 
 		public virtual InhumanSpeech SpeechType{ get{ return null; } }
+		
+		public virtual TimeSpan DecayTime
+		{
+			get{
+				return m_DefaultDecayTime;
+			}
+		}
+		
+		public virtual bool Decays
+		{
+			get {
+				return !Controlled && !Stabled && Owners != null && Owners.Count > 0;
+			}
+		}
+		
+		public DateTime LastInteraction
 		
 		public virtual bool HoldSmartSpawning
         {

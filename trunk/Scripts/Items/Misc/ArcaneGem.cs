@@ -31,8 +31,10 @@ namespace Server.Items
 			}
 			else
 			{
-				from.BeginTarget( 2, false, TargetFlags.None, new TargetCallback( OnTarget ) );
-				from.SendMessage( "What do you wish to use the gem on?" );
+				//Disable arcane gems
+				from.SendMessage("This is out of its time period. You cannot use it.");
+				//from.BeginTarget( 2, false, TargetFlags.None, new TargetCallback( OnTarget ) );
+				//from.SendMessage( "What do you wish to use the gem on?" );
 			}
 		}
 

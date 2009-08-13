@@ -135,8 +135,9 @@ namespace Server.Mobiles
 
 		public static bool CheckConvert( BaseCreature bc, Point3D location, Map m )
 		{
-			if ( !Core.AOS )
-				return false;
+			//Enable paragon spawns
+			//if ( !Core.AOS )
+			//	return false;
 
 			if ( Array.IndexOf( Maps, m ) == -1 )
 				return false;

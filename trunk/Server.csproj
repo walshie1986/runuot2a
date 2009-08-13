@@ -484,6 +484,7 @@
     <Compile Include="Scripts\Context Menus\OpenBankEntry.cs" />
     <Compile Include="Scripts\Context Menus\TeachEntry.cs" />
     <Compile Include="Scripts\Customs\AFK\AFK.cs" />
+    <Compile Include="Scripts\Customs\CreatureDecay.cs" />
     <Compile Include="Scripts\Customs\Knives Chat 3.0 Beta 9\Channels\Alliance.cs" />
     <Compile Include="Scripts\Customs\Knives Chat 3.0 Beta 9\Channels\Channel.cs" />
     <Compile Include="Scripts\Customs\Knives Chat 3.0 Beta 9\Channels\Faction.cs" />

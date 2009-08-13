@@ -139,7 +139,7 @@ namespace Server
 		#region Old Magic Items
 		public static readonly LootPackItem[] OldMagicItems = new LootPackItem[]
 			{
-				new LootPackItem( typeof( BaseJewel ), 1 ),
+				//new LootPackItem( typeof( BaseJewel ), 1 ),
 				new LootPackItem( typeof( BaseArmor ), 4 ),
 				new LootPackItem( typeof( BaseWeapon ), 3 ),
 				new LootPackItem( typeof( BaseRanged ), 1 ),
