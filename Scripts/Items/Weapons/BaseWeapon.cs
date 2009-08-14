@@ -23,6 +23,20 @@ namespace Server.Items
 
 	public abstract class BaseWeapon : Item, IWeapon, IFactionItem, ICraftable, ISlayer, IDurability
 	{
+	public enum PreUORMagAff
+		{
+			None,
+			Clumsiness,
+			Feeblemindedness,
+			Weakness,
+			Burning,
+			Wounding,
+			DaemonBreath,
+			Thunder,
+			MagesBane,
+			GhoulTouch,
+			Evil
+		}
 		#region Factions
 		private FactionItem m_FactionState;
 
@@ -145,6 +159,21 @@ namespace Server.Items
 		public override int ColdResistance{ get{ return m_AosWeaponAttributes.ResistColdBonus; } }
 		public override int PoisonResistance{ get{ return m_AosWeaponAttributes.ResistPoisonBonus; } }
 		public override int EnergyResistance{ get{ return m_AosWeaponAttributes.ResistEnergyBonus; } }
+		private PreUORMagAff m_PreUORMagAff;
+		private int MagAffCharges;
+		
+		[CommandProperty( AccessLevel.GameMaster )]
+		public PreUORMagAff MagicAffect
+		{
+			get{ return m_PreUORMagAff; }
+			set{ m_PreUORMagAff = value; InvalidateProperties(); }
+		}
+		[CommandProperty( AccessLevel.GameMaster )]
+		public int AffectCharges
+		{
+			get{ return MagAffCharges; }
+			set{ MagAffCharges = value; InvalidateProperties(); }
+		}
 
 		public virtual SkillName AccuracySkill { get { return SkillName.Tactics; } }
 		public virtual double AccuracySkillBonus { get { return 5; } }
@@ -1359,10 +1388,11 @@ namespace Server.Items
 			defender.PlaySound( GetHitDefendSound( attacker, defender ) );
 
 			int damage = ComputeDamage( attacker, defender );
-
-			if (attacker is PlayerMobile && defender is BaseCreature) //Attacks do double damage to creeps.
-				damage *= 2;
 			
+			if (attacker is PlayerMobile && defender is BaseCreature) //Attacks do double damage to creeps.
+			
+			damage *= 2;
+
 			#region Damage Multipliers
 			/*
 			 * The following damage bonuses multiply damage by a factor.
@@ -1702,7 +1732,176 @@ namespace Server.Items
 
 			if ( defender is BaseCreature )
 				((BaseCreature)defender).OnGotMeleeAttack( attacker );
+				
+			if (m_PreUORMagAff != PreUORMagAff.None && MagAffCharges != 0)
+			{
+				Mobile from = defender;
+				if (m_PreUORMagAff == PreUORMagAff.Clumsiness )
+				{
+					if( Utility.RandomDouble() <= 0.35 ) //35% chance for this to hit defender successfully
+					{
+						string name = String.Format( "[Magic] {0} Offset", StatType.Dex );
+						StatMod mod = from.GetStatMod( name );
+						
+						if ( mod != null && mod.Offset < 0 )
+						{
+							from.AddStatMod( new StatMod( StatType.Dex, name, mod.Offset + -10, TimeSpan.FromSeconds( 60.0 ) ) );
+						}
+						else if ( mod == null || mod.Offset < -10 )
+						{
+							from.AddStatMod( new StatMod( StatType.Dex, name, -10, TimeSpan.FromSeconds( 60.0 ) ) );
+						}
+						MagAffCharges --;
+					from.FixedParticles( 0x3779, 10, 15, 5002, EffectLayer.Head );
+					from.PlaySound( 0x1DF );
+					}
+				}
+				else if (m_PreUORMagAff == PreUORMagAff.Feeblemindedness)
+				{
+					if( Utility.RandomDouble() <= 0.35 ) //35% chance for this to hit defender successfully
+					{
+						string name = String.Format( "[Magic] {0} Offset", StatType.Int );
+						
+						StatMod mod = from.GetStatMod( name );
+						
+						if ( mod != null && mod.Offset < 0 )
+						{
+							from.AddStatMod( new StatMod( StatType.Int, name, mod.Offset + -10, TimeSpan.FromSeconds( 60.0 ) ) );
+						}
+						else if ( mod == null || mod.Offset < 10 )
+						{
+							from.AddStatMod( new StatMod( StatType.Int, name, -10, TimeSpan.FromSeconds( 60.0 ) ) );
+						}
+						MagAffCharges --;
+					from.FixedParticles( 0x3779, 10, 15, 5004, EffectLayer.Head );
+					from.PlaySound( 0x1E4 );
+					}
 
+				}
+				else if (m_PreUORMagAff == PreUORMagAff.Weakness)
+				{
+					if( Utility.RandomDouble() <= 0.35 ) //35% chance for this to hit defender successfully
+					{
+						string name = String.Format( "[Magic] {0} Offset", StatType.Str );
+						
+						StatMod mod = from.GetStatMod( name );
+						
+						if ( mod != null && mod.Offset < 0 )
+						{
+							from.AddStatMod( new StatMod( StatType.Str, name, mod.Offset + -10, TimeSpan.FromSeconds( 60.0 ) ) );
+						}
+						else if ( mod == null || mod.Offset < 10 )
+						{
+							from.AddStatMod( new StatMod( StatType.Str, name, -10, TimeSpan.FromSeconds( 60.0 ) ) );
+						}
+						MagAffCharges --;
+					from.FixedParticles( 0x3779, 10, 15, 5009, EffectLayer.Waist );
+					from.PlaySound( 0x1E6 );
+					}
+
+				}
+				else if (m_PreUORMagAff == PreUORMagAff.Burning)
+				{
+					if( Utility.RandomDouble() <= 0.35 ) //35% chance for this to hit defender successfully
+					{
+						DoMagicArrow( attacker, defender );
+						MagAffCharges --;
+						attacker.MovingParticles( defender, 0x36E4, 5, 0, false, true, 3006, 4006, 0 );
+						attacker.PlaySound( 0x1E5 );
+					}
+				}
+				else if (m_PreUORMagAff == PreUORMagAff.Wounding)
+				{
+					if( Utility.RandomDouble() <= 0.35 ) //35% chance for this to hit defender successfully
+					{
+						DoHarm( attacker, defender );
+						MagAffCharges --;
+						defender.FixedParticles( 0x374A, 10, 15, 5013, EffectLayer.Waist );
+						defender.PlaySound( 0x1F1 );
+					}
+				}
+				else if (m_PreUORMagAff == PreUORMagAff.DaemonBreath)
+				{
+					if( Utility.RandomDouble() <= 0.35 ) //35% chance for this to hit defender successfully
+					{
+						DoFireball( attacker, defender );
+						MagAffCharges --;
+						attacker.MovingParticles( defender, 0x36D4, 7, 0, false, true, 9502, 4019, 0x160 );
+						attacker.PlaySound( 0x15E );
+					}
+				}
+				else if (m_PreUORMagAff == PreUORMagAff.Thunder)
+				{
+					if( Utility.RandomDouble() <= 0.35 ) //35% chance for this to hit defender successfully
+					{
+						DoLightning( attacker, defender );
+						MagAffCharges --;
+						defender.BoltEffect( 0 );
+					}
+				}
+				else if (m_PreUORMagAff == PreUORMagAff.MagesBane)
+				{
+					if( Utility.RandomDouble() <= 0.25 ) //25% chance for this to hit defender successfully
+					{
+						defender.Mana -= 10;
+						MagAffCharges --;
+						defender.FixedParticles( 0x374A, 10, 15, 5032, EffectLayer.Head );
+						defender.PlaySound( 0x1F8 );
+					}
+				}
+				else if (m_PreUORMagAff == PreUORMagAff.GhoulTouch)
+				{
+					if( Utility.RandomDouble() <= 0.25 ) //25% chance for this to hit defender successfully
+					{
+						defender.Paralyze( TimeSpan.FromSeconds( 7 ) );
+						MagAffCharges --;
+					defender.PlaySound( 0x204 );
+					defender.FixedEffect( 0x376A, 6, 1 );
+					}
+
+				}
+				else if (m_PreUORMagAff == PreUORMagAff.Evil)
+				{
+					if( Utility.RandomDouble() <= 0.35 ) //35% chance for this to hit defender successfully
+					{
+						string nameS = String.Format( "[Magic] {0} Offset", StatType.Str );
+						string nameD = String.Format( "[Magic] {0} Offset", StatType.Dex );
+						string nameI = String.Format( "[Magic] {0} Offset", StatType.Int );
+						StatMod strmod = from.GetStatMod( nameS );
+						StatMod dexmod = from.GetStatMod( nameD );
+						StatMod intmod = from.GetStatMod( nameI );
+						
+						if ( strmod != null && strmod.Offset > 0 )
+						{
+							from.AddStatMod( new StatMod( StatType.Str, nameS, strmod.Offset + -10, TimeSpan.FromSeconds( 60.0 ) ) );
+						}
+						else if ( strmod == null || strmod.Offset > 10 )
+						{
+							from.AddStatMod( new StatMod( StatType.Str, nameS, -10, TimeSpan.FromSeconds( 60.0 ) ) );
+						}
+						if ( dexmod != null && dexmod.Offset > 0 )
+						{
+							from.AddStatMod( new StatMod( StatType.Dex, nameD, dexmod.Offset + -10, TimeSpan.FromSeconds( 60.0 ) ) );
+						}
+						else if ( dexmod == null || dexmod.Offset > 10 )
+						{
+							from.AddStatMod( new StatMod( StatType.Dex, nameD, -10, TimeSpan.FromSeconds( 60.0 ) ) );
+						}
+						if ( intmod != null && intmod.Offset > 0 )
+						{
+							from.AddStatMod( new StatMod( StatType.Int, nameI, intmod.Offset + -10, TimeSpan.FromSeconds( 60.0 ) ) );
+						}
+						else if ( intmod == null || intmod.Offset > 10 )
+						{
+							from.AddStatMod( new StatMod( StatType.Int, nameI, -10, TimeSpan.FromSeconds( 60.0 ) ) );
+						}		
+						
+						MagAffCharges --;
+					from.FixedParticles( 0x374A, 10, 15, 5028, EffectLayer.Waist );
+					from.PlaySound( 0x1EA );
+					}
+				}
+			}
 			if ( a != null )
 				a.OnHit( attacker, defender, damage );
 
@@ -2463,6 +2662,8 @@ namespace Server.Items
 			SetSaveFlag( ref flags, SaveFlag.SkillBonuses,		!m_AosSkillBonuses.IsEmpty );
 			SetSaveFlag( ref flags, SaveFlag.Slayer2,			m_Slayer2 != SlayerName.None );
 			SetSaveFlag( ref flags, SaveFlag.ElementalDamages,	!m_AosElementDamages.IsEmpty );
+			SetSaveFlag( ref flags, SaveFlag.MagicAffect,		m_PreUORMagAff != PreUORMagAff.None );
+			SetSaveFlag( ref flags, SaveFlag.AffectCharges,		MagAffCharges != 0 );
 
 			writer.Write( (int) flags );
 
@@ -2549,6 +2750,12 @@ namespace Server.Items
 
 			if( GetSaveFlag( flags, SaveFlag.ElementalDamages ) )
 				m_AosElementDamages.Serialize( writer );
+				
+			if ( GetSaveFlag( flags, SaveFlag.MagicAffect ) )
+				writer.Write( (int) m_PreUORMagAff );
+				
+			if ( GetSaveFlag( flags, SaveFlag.AffectCharges ) )
+				writer.Write( (int) MagAffCharges );	
 		}
 
 		[Flags]
@@ -2584,7 +2791,9 @@ namespace Server.Items
 			PlayerConstructed		= 0x04000000,
 			SkillBonuses			= 0x08000000,
 			Slayer2					= 0x10000000,
-			ElementalDamages		= 0x20000000
+			ElementalDamages		= 0x20000000,
+			MagicAffect				= 0x10000000,
+			AffectCharges			= 0x20000000
 		}
 
 		public override void Deserialize( GenericReader reader )
@@ -2757,6 +2966,16 @@ namespace Server.Items
 						m_AosElementDamages = new AosElementAttributes( this, reader );
 					else
 						m_AosElementDamages = new AosElementAttributes( this );
+						
+					if ( GetSaveFlag( flags, SaveFlag.MagicAffect ) )
+						m_PreUORMagAff = (PreUORMagAff)reader.ReadInt();
+					else
+						m_PreUORMagAff = PreUORMagAff.None;
+					
+					if ( GetSaveFlag( flags, SaveFlag.AffectCharges ) )
+						MagAffCharges = reader.ReadInt();
+					else
+						MagAffCharges = 0;		
 
 					break;
 				}
@@ -2802,6 +3021,7 @@ namespace Server.Items
 
 					m_MinDamage = reader.ReadInt();
 					m_MaxDamage = reader.ReadInt();
+					MagAffCharges = reader.ReadInt();
 
 					m_Speed = reader.ReadInt();
 
@@ -2815,6 +3035,7 @@ namespace Server.Items
 					m_AccuracyLevel = (WeaponAccuracyLevel)reader.ReadInt();
 					m_DurabilityLevel = (WeaponDurabilityLevel)reader.ReadInt();
 					m_Quality = (WeaponQuality)reader.ReadInt();
+					m_PreUORMagAff = (PreUORMagAff)reader.ReadInt();
 
 					m_Crafter = reader.ReadMobile();
 
@@ -3340,10 +3561,190 @@ namespace Server.Items
 
 			if ( attrs.Count == 0 && Crafter == null && Name != null )
 				return;
-
+				
 			EquipmentInfo eqInfo = new EquipmentInfo( number, m_Crafter, false, attrs.ToArray() );
+             //EquipmentInfo eqInfo = new EquipmentInfo( number, m_Crafter, false, (EquipInfoAttribute[])attrs.ToArray( typeof( EquipInfoAttribute ) ) );
+			//this.LabelTo( from, m_Crafter);
+//			wepinfo.EnsureCapacity( 17 + (eqInfo.Crafter == null ? 0 : 6 + eqInfo.Crafter.Name == null ? 0 : eqInfo.Crafter.Name.Length) + (eqInfo.Unidentified ? 4 : 0) + (attrs.Length * 6) );
+			if ( m_Poison != null && m_PoisonCharges > 0 )
+				this.LabelTo( from, " [Poisoned : " + m_PoisonCharges.ToString() + "]" );
+			StringBuilder wepinfo = new StringBuilder();
+			string wepname = this.ItemData.Name;
+			if ( eqInfo.Crafter != null )
+			{
+				string crafter = eqInfo.Crafter.Name;
+				wepinfo.AppendFormat( "an exceptional {0} crafted by {1}", wepname, crafter );
+			}
+			else if (m_Quality == WeaponQuality.Exceptional)
+				wepinfo.AppendFormat( "an exceptional {0}", wepname );
+			else
+				wepinfo.AppendFormat( "a {0}", wepname );
+			if ( m_Identified )
+			{
+				string dur = "";
+				string dam = "";
+				string acc = "";
+				string gram1 = "";
+				string gram3 = "";
+				string gram4 = "";
+				string gram5 = "";
+				string slayer = "";
+				string magaff = "";
 
-			from.Send( new DisplayEquipmentInfo( this, eqInfo ) );
+				if ( m_Slayer == SlayerName.Silver )
+					slayer = "silver ";
+				else
+					slayer = "";
+				string gram2 = "";
+				if ( m_DurabilityLevel != WeaponDurabilityLevel.Regular )
+				{
+					switch( (int)m_DurabilityLevel )
+					{
+						case 1:
+							dur = "durable";
+							break;
+						case 2:
+							dur = "substantial";
+							break;
+						case 3:
+							dur = "massive";
+							break;
+						case 4:
+							dur = "fortified";
+							break;
+						case 5:
+							dur = "indestructible";
+							break; 					
+					}
+					gram1 = " ";
+				}
+				else
+				{
+					gram1 = "";
+					dur = "";
+				}
+
+				if ( m_DamageLevel != WeaponDamageLevel.Regular )
+				{
+					switch( (int)m_DamageLevel )
+					{
+						case 1:
+							dam = "ruin";
+							break;
+						case 2:
+							dam = "might";
+							break;
+						case 3:
+							dam = "force";
+							break;
+						case 4:
+							dam = "power";
+							break;
+						case 5:
+							dam = "vanquishing";
+							break; 					
+					}
+					gram3 = " of ";
+				}
+				else
+				{
+					gram3 = "";
+					dam = "";
+				}
+
+				if ( m_AccuracyLevel != WeaponAccuracyLevel.Regular )
+				{
+					switch( (int)m_AccuracyLevel )
+					{
+						case 1:
+							acc = "clumsiness";
+							break;
+						case 2:
+							acc = "surpassingly ";
+							break;
+						case 3:
+							acc = "eminently ";
+							break;
+						case 4:
+							acc = "exceedingly ";
+							break;
+						case 5:
+							acc = "supremely ";
+							break; 					
+					}
+					if ( m_DurabilityLevel != WeaponDurabilityLevel.Regular )
+					gram2 = ", ";
+					gram1 = "";
+					gram4 = "accurate ";
+				}
+				else 
+				{
+					gram4 = "";
+					gram2 = "";
+					acc = "";
+				}
+				if ( m_PreUORMagAff != PreUORMagAff.None )
+				{
+					switch( (int)m_PreUORMagAff )
+					{
+						case 1:
+							magaff = " clumsiness";
+							break;
+						case 2:
+							magaff = " feeblemindness";
+							break;
+						case 3:
+							magaff = " weakness";
+							break;
+						case 4:
+							magaff = " burning";
+							break;
+						case 5:
+							magaff = " wounding";
+							break;
+						case 6:
+							magaff = " daemon's breath";
+							break;
+						case 7:
+							magaff = " thunder";
+							break;
+						case 8:
+							magaff = " mages bane";
+							break;
+						case 9:
+							magaff = " ghoul's touch";
+							break;
+						case 10:
+							magaff = " evil";
+							break; 					
+					}
+					if ( m_DamageLevel != WeaponDamageLevel.Regular )
+						gram5 = " and ";
+					gram3 = " of ";	
+					}
+				wepinfo = new StringBuilder();
+				if ( m_PreUORMagAff != PreUORMagAff.None )
+					wepinfo.AppendFormat( "a {0}{1}{2}{3}{4}{5}{6}{7}{8}{9}{10}{11}", slayer, dur, gram1, gram2, acc, gram4, wepname, gram3, MagAffCharges, magaff, gram5, dam );
+				else
+					wepinfo.AppendFormat( "a {0}{1}{2}{3}{4}{5}{6}{7}{8}", slayer, dur, gram1, gram2, acc, gram4, wepname, gram3, dam );
+			}
+			else if ( m_Slayer != SlayerName.None || m_DurabilityLevel != WeaponDurabilityLevel.Regular || m_DamageLevel != WeaponDamageLevel.Regular || m_AccuracyLevel != WeaponAccuracyLevel.Regular || m_PreUORMagAff != PreUORMagAff.None )
+			{
+				string magic = " magic";
+				wepinfo.Insert( 1, magic );
+			}
+			if ( DisplayLootType )
+			{
+				if ( LootType == LootType.Blessed )
+					wepinfo.Append( " [Blessed]" );
+				else if ( LootType == LootType.Cursed )
+					wepinfo.Append( " [Cursed]" );
+			}
+
+			this.LabelTo( from, "{0}", wepinfo );			
+
+
+			//from.Send( new DisplayEquipmentInfo( this, eqInfo ) );
 		}
 
 		private static BaseWeapon m_Fists; // This value holds the default--fist--weapon
