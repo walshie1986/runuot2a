@@ -119,8 +119,8 @@ namespace Server.Spells.First
 
 						if ( value < 0 )
 							value = 1;
-						else if ( value > 75 )
-							value = 75;
+						else if ( value > 50 )
+							value = 50;
 
 						m.MeleeDamageAbsorb = value;
 
