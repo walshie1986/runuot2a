@@ -6,7 +6,7 @@ using Server.Mobiles;
 
 namespace Server.Items
 {
-	public abstract class BaseRanged : BaseMeleeWeapon
+	public abstract class BaseRanged : BaseWeapon
 	{
 		public abstract int EffectID{ get; }
 		public abstract Type AmmoType{ get; }

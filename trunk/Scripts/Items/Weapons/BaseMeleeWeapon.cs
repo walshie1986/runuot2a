@@ -13,6 +13,8 @@ namespace Server.Items
 		public BaseMeleeWeapon( Serial serial ) : base( serial )
 		{
 		}
+		
+		private static double ReactPercent = 0.5; //How much damage gets through
 
 		public override int AbsorbDamage( Mobile attacker, Mobile defender, int damage )
 		{
@@ -27,27 +29,20 @@ namespace Server.Items
 
 			if ( absorb > 0 )
 			{
-				if ( absorb > damage )
-				{
-					int react = damage / 5;
-
-					if ( react <= 0 )
-						react = 1;
-
-					defender.MeleeDamageAbsorb -= damage;
-					damage = 0;
-
-					attacker.Damage( react, defender );
-
-					attacker.PlaySound( 0x1F1 );
-					attacker.FixedEffect( 0x374A, 10, 16 );
-				}
-				else
+				int absorbed = Math.Min(damage, absorb);
+				
+				defender.MeleeDamageAbsorb -= absorbed;
+				if(defender.MeleeDamageAbsorb <= 0)
 				{
 					defender.MeleeDamageAbsorb = 0;
 					defender.SendLocalizedMessage( 1005556 ); // Your reactive armor spell has been nullified.
-					DefensiveSpell.Nullify( defender );
 				}
+				
+				damage -= (int)(absorbed * ReactPercent);
+				attacker.Damage( (int)(absorbed * (1 - ReactPercent)), defender);
+				
+				attacker.PlaySound( 0x1F1 );
+				attacker.FixedEffect( 0x374A, 10, 16 );
 			}
 
 			return damage;
