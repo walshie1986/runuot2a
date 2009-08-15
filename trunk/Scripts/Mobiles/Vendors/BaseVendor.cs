@@ -520,9 +520,13 @@ namespace Server.Mobiles
 
 		public virtual void Restock()
 		{
-			m_LastRestock = DateTime.Now;
-			if(1.0 > Utility.RandomDouble()) //Change this to change how many restocks get more gold
-				heldGold = Math.Min(MaxGold, Math.Max(0, heldGold)+Utility.RandomMinMax(100, 300)); //Change this to change the amount of gold on restock
+			DateTime endRestock = DateTime.Now.AddHours(-1);
+			while(m_LastRestock < endRestock)
+			{
+				m_LastRestock += TimeSpan.FromHours(1);
+				if(1.0 > Utility.RandomDouble()) //Change this to change how many restocks get more gold
+					heldGold = Math.Min(MaxGold, Math.Max(0, heldGold)+Utility.RandomMinMax(100, 300)); //Change this to change the amount of gold on restock
+			}
 			
 			IBuyItemInfo[] buyInfo = this.GetBuyInfo();
 
