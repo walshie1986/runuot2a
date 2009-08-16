@@ -153,13 +153,13 @@ namespace Server.Mobiles
 				max = 2;
 
 			if ( taming >= 100.0 )
-				max += (int)((taming - 90.0) / 10);
+				max += 4;
 
 			if ( anlore >= 100.0 )
-				max += (int)((anlore - 90.0) / 10);
+				max += 3;
 
 			if ( vetern >= 100.0 )
-				max += (int)((vetern - 90.0) / 10);
+				max += 3;
 
 			return max;
 		}
