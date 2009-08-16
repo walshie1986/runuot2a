@@ -24,11 +24,11 @@ namespace Server
 			}
 			else
 			{
-				Register( new PoisonImpl( "Lesser",		0, 0, 26,  2.00, 3.5, 5.0, 12, 2 ) ); //4 3.0  Remove minimum damage
-				Register( new PoisonImpl( "Regular",	1, 0, 26,  5.0, 3.5, 5.0, 12, 2 ) ); //5 3.0
-				Register( new PoisonImpl( "Greater",	2, 0, 26,  15.0, 3.5, 5.0, 12, 2 ) ); //6 3.0
-				Register( new PoisonImpl( "Deadly",		3, 0, 26, 10.00, 3.5, 5.0, 12, 2 ) ); //7 4.0
-				Register( new PoisonImpl( "Lethal",		4, 0, 26, 35.000, 3.5, 5.0, 12, 2 ) ); //9 5.0
+				Register( new PoisonImpl( "Lesser",		0, 0, 26,  2.5, 15.0, 15.0, 12, 2 ) ); //4 3.0  Remove minimum damage
+				Register( new PoisonImpl( "Regular",	1, 0, 26,  3.125, 10.0, 10.0, 12, 2 ) ); //5 3.0
+				Register( new PoisonImpl( "Greater",	2, 0, 26,  6.25, 10.0, 10.0, 12, 2 ) ); //6 3.0
+				Register( new PoisonImpl( "Deadly",		3, 0, 26, 12.5, 5.0, 5.0, 12, 2 ) ); //7 4.0
+				Register( new PoisonImpl( "Lethal",		4, 0, 26, 25.0, 5.0, 5.0, 12, 2 ) ); //9 5.0
 			}
 		}
 
@@ -74,6 +74,7 @@ namespace Server
 			private Mobile m_Mobile;
 			private Mobile m_From;
 			private int m_LastDamage;
+			private int m_StartHP;
 			private int m_Index;
 
 			public Mobile From{ get{ return m_From; } set{ m_From = value; } }
@@ -83,6 +84,7 @@ namespace Server
 				m_From = m;
 				m_Mobile = m;
 				m_Poison = p;
+				m_StartHP = m.Hits;
 			}
 
 			protected override void OnTick()
@@ -104,7 +106,7 @@ namespace Server
 					}
 				}
 
-				if ( m_Index++ == m_Poison.m_Count )
+				if ( ++m_Index == m_Poison.m_Count )
 				{
 					m_Mobile.SendLocalizedMessage( 502136 ); // The poison seems to have worn off.
 					m_Mobile.Poison = null;
@@ -121,7 +123,7 @@ namespace Server
 				}
 				else
 				{
-					damage = 1 + (int)(m_Mobile.Hits * m_Poison.m_Scalar);
+					damage = 1 + (int)(m_StartHP * m_Poison.m_Scalar);
 
 					if ( damage < m_Poison.m_Minimum )
 						damage = m_Poison.m_Minimum;
@@ -130,6 +132,7 @@ namespace Server
 
 					m_LastDamage = damage;
 				}
+				m_StartHP = m_Mobile.Hits;
 
 				if ( m_From != null )
 					m_From.DoHarmful( m_Mobile, true );

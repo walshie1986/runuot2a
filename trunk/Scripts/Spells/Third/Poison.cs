@@ -71,7 +71,7 @@ namespace Server.Spells.Third
 					}
 					else
 					{
-						double total = Caster.Skills[SkillName.Magery].Value + Caster.Skills[SkillName.Poisoning].Value;
+						/*double total = Caster.Skills[SkillName.Magery].Value + Caster.Skills[SkillName.Poisoning].Value;
 
 						double dist = Caster.GetDistanceToSqrt( m );
 
@@ -85,7 +85,9 @@ namespace Server.Spells.Third
 						else if ( total > (Core.AOS ? 130.1 : 130.0) )
 							level = 1;
 						else
-							level = 0;
+							level = 0;*/
+						
+						level = 2; //Greater poison by most accounts.
 					}
 
 					m.ApplyPoison( Caster, Poison.GetPoison( level ) );

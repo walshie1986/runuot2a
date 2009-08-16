@@ -53,6 +53,20 @@ namespace Server.Items
 			base.Serialize( writer );
 		}
 
+		
+		public override void OnHit( Mobile attacker, Mobile defender, double damageBonus )
+		{
+			base.OnHit( attacker, defender, damageBonus );
+
+			if ( !Core.AOS && Poison != null && PoisonCharges > 0 )
+			{
+				--PoisonCharges;
+
+				if ( Utility.RandomDouble() >= 0.25 ) // 25% chance to poison (At GM poisoning applyer. TODO Add skill remembering)
+					defender.ApplyPoison( attacker, Poison );
+			}
+		}
+		
 		public override void Deserialize( GenericReader reader )
 		{
 			base.Deserialize( reader );

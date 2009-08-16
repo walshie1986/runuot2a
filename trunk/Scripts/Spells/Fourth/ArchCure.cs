@@ -79,7 +79,6 @@ namespace Server.Spells.Fourth
 						{
 							int chanceToCure = 10000 + (int)(Caster.Skills[SkillName.Magery].Value * 75) - ((poison.Level + 1) * 1750);
 							chanceToCure /= 100;
-							chanceToCure -= 1;
 
 							if ( chanceToCure > Utility.Random( 100 ) && m.CurePoison( Caster ) )
 								++cured;
