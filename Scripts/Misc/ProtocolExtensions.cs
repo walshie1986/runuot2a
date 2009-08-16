@@ -45,7 +45,7 @@ namespace Server.Misc
 					timer.Stop();
 				m_NegTimers.Remove(mobile.Account.Username.ToString());
 			}
-			if(mobile.AccessLevel == AccessLevel.Player || (a != null && a.GetTag("RazorSystemDebug") != null))
+			if(mobile.AccessLevel == AccessLevel.Player && (a == null || a.GetTag("RazorSystemDebug") == null))
 			{
 				args.Mobile.NetState.Send(new RazorFeatures());
 				(new LightTimer(args.Mobile)).Start();
