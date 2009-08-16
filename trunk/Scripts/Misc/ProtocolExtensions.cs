@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Server;
 using Server.Network;
+using Server.Accounting;
 using Server.Mobiles;
 using Server.Engines.PartySystem;
 using Server.Commands;
@@ -36,6 +37,7 @@ namespace Server.Misc
 		private static void EventSink_Login( LoginEventArgs args )
 		{
 			Mobile mobile = args.Mobile;
+			Account a = args.Mobile.Account as Account;
 			if(m_NegTimers.ContainsKey(mobile.Account.Username.ToString()))
 			{
 				NegotiateTimer timer = m_NegTimers[mobile.Account.Username.ToString()];
@@ -43,7 +45,7 @@ namespace Server.Misc
 					timer.Stop();
 				m_NegTimers.Remove(mobile.Account.Username.ToString());
 			}
-			if(mobile.AccessLevel == AccessLevel.Player) 
+			if(mobile.AccessLevel == AccessLevel.Player || (a != null && a.GetTag("RazorSystemDebug") != null))
 			{
 				args.Mobile.NetState.Send(new RazorFeatures());
 				(new LightTimer(args.Mobile)).Start();
