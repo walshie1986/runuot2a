@@ -259,6 +259,9 @@ namespace Server.Misc
 
 				if( !(target.Owner is PlayerMobile) && !IsPet( target.Owner as BaseCreature ) )
 					return Notoriety.CanBeAttacked;
+				
+				if( DateTime.Now >= target.TimeOfDeath.AddMinutes(7.0) )
+					return Notoriety.CanBeAttacked;
 
 				List<Mobile> list = target.Aggressors;
 
