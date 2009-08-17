@@ -9,7 +9,7 @@ namespace Server.Mobiles
 		public static double ChestChance = .10;         // Chance that a paragon will carry a paragon chest
 		public static Map[] Maps         = new Map[]    // Maps that paragons will spawn on
 		{
-			Map.Ilshenar
+			Map.Felucca
 		};
 
 		public static Type[] Artifacts = new Type[]
