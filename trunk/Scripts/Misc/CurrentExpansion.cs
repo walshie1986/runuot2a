@@ -19,7 +19,7 @@ namespace Server
 			Mobile.GuildClickMessage = !Enabled;
 			Mobile.AsciiClickMessage = !Enabled;
 
-			//ExpansionInfo.Table[0] = new ExpansionInfo( 0, "Mondain's Legacy", new ClientVersion( "5.0.0a" ),	0x82DF, 0x008, 0x2E0 );
+			ExpansionInfo.Table[0] = new ExpansionInfo( 0, "Mondain's Legacy", new ClientVersion( "5.0.0a" ),	0x82DF, 0x008, 0x2E0 );
 
 			if ( Enabled )
 			{
