@@ -41,6 +41,7 @@
     <Folder Include="Scripts\Context Menus" />
     <Folder Include="Scripts\Customs" />
     <Folder Include="Scripts\Customs\AFK" />
+    <Folder Include="Scripts\Customs\EventEngines" />
     <Folder Include="Scripts\Customs\Knives Chat 3.0 Beta 9" />
     <Folder Include="Scripts\Customs\Knives Chat 3.0 Beta 9\Channels" />
     <Folder Include="Scripts\Customs\Knives Chat 3.0 Beta 9\Commands" />
@@ -3398,6 +3399,7 @@
     <Compile Include="Server\WindowsService.cs" />
     <Compile Include="Server\WindowsServiceInstaller.cs" />
     <Compile Include="Server\World.cs" />
+    <None Include="Scripts\Customs\EventEngines\Tourney.cs" />
     <None Include="Scripts\Customs\Knives Chat 3.0 Beta 9\Beta 9.doc" />
     <None Include="Scripts\Customs\Knives Chat 3.0 Beta 9\Read.doc" />
     <None Include="Scripts\Customs\Knives Chat 3.0 Beta 9\Text Data Files\ChatAvatars.txt" />

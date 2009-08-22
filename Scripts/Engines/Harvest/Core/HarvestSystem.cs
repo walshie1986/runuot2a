@@ -443,7 +443,15 @@ namespace Server.Engines.Harvest
 
 			new HarvestTimer( from, tool, this, def, toHarvest, toLock ).Start();
 			OnHarvestStarted( from, tool, def, toHarvest );
+			
+			//Chance of being selected for AFK check.
+			if(Utility.RandomDouble() < def.AFKChance )
+			{
+				Server.Scripts.Customs.AFK.AFK.Inst.Challenge(from as Server.Mobiles.PlayerMobile, m_ChallengeTimeout);
+			}
 		}
+		
+		private static TimeSpan m_ChallengeTimeout = TimeSpan.FromMinutes(1.0);
 
 		public virtual bool GetHarvestDetails( Mobile from, Item tool, object toHarvest, out int tileID, out Map map, out Point3D loc )
 		{

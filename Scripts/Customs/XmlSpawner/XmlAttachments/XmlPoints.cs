@@ -667,16 +667,16 @@ namespace Server.Engines.XmlSpawner2
 			EventSink.Speech += new SpeechEventHandler( EventSink_Speech );
 
 			CommandSystem.Register( "PointsLanguage", AccessLevel.Player, new CommandEventHandler( Language_OnCommand ) );
-			CommandSystem.Register( "Challenge", AccessLevel.Player, new CommandEventHandler( Challenge_OnCommand ) );
-			CommandSystem.Register( "LMSChallenge", AccessLevel.Player, new CommandEventHandler( LMSChallenge_OnCommand ) );
-			CommandSystem.Register( "TeamLMSChallenge", AccessLevel.Player, new CommandEventHandler( TeamLMSChallenge_OnCommand ) );
-			CommandSystem.Register( "Deathmatch", AccessLevel.Player, new CommandEventHandler( Deathmatch_OnCommand ) );
-			CommandSystem.Register( "TeamDeathmatch", AccessLevel.Player, new CommandEventHandler( TeamDeathmatch_OnCommand ) );
-			CommandSystem.Register( "DeathBall", AccessLevel.Player, new CommandEventHandler( DeathBall_OnCommand ) );
-			CommandSystem.Register( "KingOfTheHill", AccessLevel.Player, new CommandEventHandler( KingOfTheHill_OnCommand ) );
-			CommandSystem.Register( "TeamDeathBall", AccessLevel.Player, new CommandEventHandler( TeamDeathBall_OnCommand ) );
-			CommandSystem.Register( "TeamKotH", AccessLevel.Player, new CommandEventHandler( TeamKotH_OnCommand ) );
-			CommandSystem.Register( "CTFChallenge", AccessLevel.Player, new CommandEventHandler( CTFChallenge_OnCommand ) );
+			//CommandSystem.Register( "Challenge", AccessLevel.Player, new CommandEventHandler( Challenge_OnCommand ) );
+			//CommandSystem.Register( "LMSChallenge", AccessLevel.Player, new CommandEventHandler( LMSChallenge_OnCommand ) );
+			//CommandSystem.Register( "TeamLMSChallenge", AccessLevel.Player, new CommandEventHandler( TeamLMSChallenge_OnCommand ) );
+			//CommandSystem.Register( "Deathmatch", AccessLevel.Player, new CommandEventHandler( Deathmatch_OnCommand ) );
+			//CommandSystem.Register( "TeamDeathmatch", AccessLevel.Player, new CommandEventHandler( TeamDeathmatch_OnCommand ) );
+			//CommandSystem.Register( "DeathBall", AccessLevel.Player, new CommandEventHandler( DeathBall_OnCommand ) );
+			//CommandSystem.Register( "KingOfTheHill", AccessLevel.Player, new CommandEventHandler( KingOfTheHill_OnCommand ) );
+			//CommandSystem.Register( "TeamDeathBall", AccessLevel.Player, new CommandEventHandler( TeamDeathBall_OnCommand ) );
+			//CommandSystem.Register( "TeamKotH", AccessLevel.Player, new CommandEventHandler( TeamKotH_OnCommand ) );
+			//CommandSystem.Register( "CTFChallenge", AccessLevel.Player, new CommandEventHandler( CTFChallenge_OnCommand ) );
 			CommandSystem.Register( "SystemBroadcastKills", AccessLevel.GameMaster, new CommandEventHandler( SystemBroadcastKills_OnCommand ) );
 			CommandSystem.Register( "SeeKills", AccessLevel.Player, new CommandEventHandler( SeeKills_OnCommand ) );
 			CommandSystem.Register( "BroadcastKills", AccessLevel.Player, new CommandEventHandler( BroadcastKills_OnCommand ) );
