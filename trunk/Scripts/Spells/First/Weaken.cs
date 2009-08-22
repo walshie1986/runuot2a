@@ -37,8 +37,8 @@ namespace Server.Spells.First
 
 				SpellHelper.CheckReflect( (int)this.Circle, Caster, ref m );
 
-				//if(SpellHelper.AddStatCurse( Caster, m, StatType.Str )) {
-
+				if(SpellHelper.AddStatCurse( Caster, m, StatType.Str )) {
+				}
 					if ( m.Spell != null )
 						m.Spell.OnCasterHurt();
 				//}

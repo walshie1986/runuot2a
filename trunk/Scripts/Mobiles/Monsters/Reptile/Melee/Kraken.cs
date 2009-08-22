@@ -51,8 +51,10 @@ namespace Server.Mobiles
 			
 			if( Utility.RandomDouble() < .05 )
 				PackItem( new MessageInABottle() );
-				
-			PackItem( new SpecialFishingNet() ); //Confirm?
+			if( Utility.RandomDouble() < .05 )		
+				PackItem( new SpecialFishingNet() ); //Confirm?
+			if( Utility.RandomDouble() < .05 )	
+				PackItem( rope );
 		}
 
 		public override void GenerateLoot()
