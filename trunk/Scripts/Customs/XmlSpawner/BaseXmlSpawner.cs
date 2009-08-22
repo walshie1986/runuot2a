@@ -287,7 +287,8 @@ namespace Server.Mobiles
             TAKEN,
             GIVEN,
             ITEM,
-            MULTIADDON
+            MULTIADDON,
+            ONEOF
         }
 
         private enum valueKeyword
@@ -624,6 +625,7 @@ namespace Server.Mobiles
             AddItemKeyword("GIVEN");
             AddItemKeyword("ITEM");
             AddItemKeyword("MULTIADDON");
+            AddItemKeyword("ONEOF");
 
         }
 
@@ -7138,8 +7140,82 @@ namespace Server.Mobiles
                                         status_str = "LOOTPACK takes 1 arg : " + itemtypestr;
                                         return false;
                                     }
-                                    break;
+                                    break;                                    
                                 }
+                           case itemKeyword.ONEOF:
+	                            {
+                            	// syntax is ONEOF,item1,item2,item3
+	                            	int index = 1;
+	                            	String added = null;
+	                            	while(index < itemkeywordargs.Length && added == null)
+	                            	{
+	                            		bool haschance = true;
+	                            		double chance = 0.0;
+                                        try
+                                        {
+                                            chance = double.Parse(itemkeywordargs[index]);
+                                        }
+                                        catch
+                                        {
+                                            haschance = false;
+                                        }
+
+                                        if (haschance)
+                                        {
+                                        	index++;
+                                        	if(Utility.RandomDouble() > chance)
+                                        	{
+                                        		//If chance fails, go to next
+                                        		index++;
+                                        		continue;
+                                        	}
+                                        }
+                                        added = itemkeywordargs[index];
+	                            	}
+	                            	if(added != null)
+	                            	{
+	                            		Type type = null;
+				                        try
+				                        {
+				                            type = SpawnerType.GetType(ParseObjectType(added));
+				                        }
+				                        catch { }
+				
+				                        // if so then create it
+				                        if (type != null)
+				                        {
+				                            object newo = XmlSpawner.CreateObject(type, added);
+				                            if (newo is Item)
+				                            {
+				                                Item item = newo as Item;
+				
+				                                if (equip && m != null)
+				                                {
+				                                    if (!m.EquipItem(item)) pack.DropItem(item);
+				                                }
+				                                else
+				                                    pack.DropItem(item);
+				
+				                                // could call applyobjectstringproperties on a nested propertylist here to set item attributes
+				                                if (itemargstring != null)
+				                                {
+				                                    ApplyObjectStringProperties(spawner, itemargstring, item, trigmob, refobject, out status_str);
+				                                }
+				                            }
+				                            else
+				                            {
+				                                status_str = "Invalid ADD. No such item : " + itemtypestr;
+				
+				                                if (newo is BaseCreature)
+				                                    ((BaseCreature)newo).Delete();
+				
+				                                return false;
+				                            }
+				
+				                        }
+	                            	}
+	                            	break;
+	                            }
                         }
 
                     }
@@ -7357,7 +7433,7 @@ namespace Server.Mobiles
             char[] delims = delimstr.ToCharArray();
             string[] args = null;
             str = str.Trim();
-            args = str.Split(delims, nitems);
+            args = str.Split(delims); //, nitems);
 
             return args;
         }
@@ -10757,6 +10833,71 @@ namespace Server.Mobiles
                                     return false;
                                 }
                                 break;
+                            }
+                    	case itemKeyword.ONEOF:
+                            {
+                        	// syntax is ONEOF,item1,item2,item3
+                            	int index = 1;
+                            	String added = null;
+                            	while(index < itemkeywordargs.Length && added == null)
+                            	{
+                            		bool haschance = true;
+                            		double chance = 0.0;
+                                    try
+                                    {
+                                        chance = double.Parse(itemkeywordargs[index]);
+                                    }
+                                    catch
+                                    {
+                                        haschance = false;
+                                    }
+
+                                    if (haschance)
+                                    {
+                                    	index++;
+                                    	if(Utility.RandomDouble() > chance)
+                                    	{
+                                    		//If chance fails, go to next
+                                    		index++;
+                                    		continue;
+                                    	}
+                                    }
+                                    added = itemkeywordargs[index];
+                            	}
+                            	if(added != null)
+                            	{
+                            		Type type = null;
+			                        try
+			                        {
+			                            type = SpawnerType.GetType(ParseObjectType(added));
+			                        }
+			                        catch { }
+			
+			                        // if so then create it
+			                        if (type != null)
+			                        {
+			                            object newo = XmlSpawner.CreateObject(type, added);
+			                            if (newo is Item)
+			                            {
+			                                Item item = newo as Item;
+		                                    if (item != null)
+		                                    {
+		                                        AddSpawnItem(spawner, TheSpawn, item, location, map, triggermob, requiresurface, spawnpositioning, substitutedtypeName, out status_str);
+		                                    }
+			                            }
+			                            else
+			                            {
+			                                status_str = "Invalid ONEOF. No such item : " + added;
+			
+			                                if (newo is BaseCreature)
+			                                    ((BaseCreature)newo).Delete();
+			
+			                                return false;
+			                            }
+			
+			                        }
+                            	}
+                            	break;
                             }
                         default:
                             {
