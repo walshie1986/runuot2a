@@ -72,6 +72,7 @@ namespace Server.Engines.Harvest
 			oreAndStone.EffectCounts = new int[]{ 1 };
 			oreAndStone.EffectDelay = TimeSpan.FromSeconds( 1.6 );
 			oreAndStone.EffectSoundDelay = TimeSpan.FromSeconds( 0.9 );
+			oreAndStone.AFKChance = ( ( 1.6 + 0.9 ) / 60 ) / 30;
 
 			oreAndStone.NoResourcesMessage = 503040; // There is no metal here to mine.
 			oreAndStone.DoubleHarvestMessage = 503042; // Someone has gotten to the metal before you.
@@ -164,6 +165,7 @@ namespace Server.Engines.Harvest
 			sand.EffectCounts = new int[]{ 6 };
 			sand.EffectDelay = TimeSpan.FromSeconds( 1.6 );
 			sand.EffectSoundDelay = TimeSpan.FromSeconds( 0.9 );
+			sand.AFKChance = ( ( 1.6 + 0.9) / 60 ) / 30; //Once every 30 minutes;
 
 			sand.NoResourcesMessage = 1044629; // There is no sand here to mine.
 			sand.DoubleHarvestMessage = 1044629; // There is no sand here to mine.

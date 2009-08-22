@@ -65,6 +65,7 @@ namespace Server.Engines.Harvest
 			lumber.EffectCounts = (Core.AOS ? new int[]{ 1 } : new int[]{ 1, 2, 2, 2, 3 });
 			lumber.EffectDelay = TimeSpan.FromSeconds( 1.6 );
 			lumber.EffectSoundDelay = TimeSpan.FromSeconds( 0.9 );
+			lumber.AFKChance = ( (1.6 * 2 + 0.9) /60 ) /30; //Approx once every 30 minutes.
 
 			lumber.NoResourcesMessage = 500493; // There's not enough wood here to harvest.
 			lumber.FailMessage = 500495; // You hack at the tree for a while, but fail to produce any useable wood.

@@ -76,12 +76,31 @@ namespace Server.Scripts.Customs.AFK
 		
 		public void ChallengeNow2( CommandEventArgs e )
 		{
-			PlayerMobile pm = e.Mobile as PlayerMobile;
-			if(pm == null)
-				return;
-			checks.Remove(pm);
-			CheckEntry en = new CheckEntry(pm);
-			checks.Add(pm, en);
+			double length = 1.0;
+			if(e.Length > 0)
+			{
+				length = e.GetDouble(0);
+			}
+			length = Math.Min(length, 0.5);
+			e.Mobile.Target = new AFKTarget(this, TimeSpan.FromMinutes(length));
+		}
+		
+		public class AFKTarget : Server.Targeting.Target
+		{
+			private AFK m_Inst;
+			private TimeSpan m_Limit;
+			
+			public AFKTarget(AFK inst, TimeSpan limit) : base(-1, false, Server.Targeting.TargetFlags.None)
+			{
+				m_Inst = inst;
+				m_Limit = limit;
+				DisallowMultis = true;
+			}
+			
+			protected override void OnTarget( Mobile from, object targeted )
+			{
+				m_Inst.Challenge(targeted as PlayerMobile, m_Limit);
+			}
 		}
 		
 		public void ChallengeNow( CommandEventArgs e )
@@ -301,8 +320,9 @@ namespace Server.Scripts.Customs.AFK
 		
 		public void Tick()
 		{
-			if(nexCheck < DateTime.Now)
-				Run();
+			//Disable random selection
+			//if(nexCheck < DateTime.Now)
+			//	Run();
 						
 			foreach(CheckEntry e in GetChecks)
 			{
@@ -350,6 +370,22 @@ namespace Server.Scripts.Customs.AFK
 			}
 		}
 		
+		public void Challenge( PlayerMobile m, TimeSpan length )
+		{
+			if(m == null)
+				return;
+			
+			if(checks.ContainsKey(m))
+				return;
+			
+			CheckEntry e = new CheckEntry(m);
+			e.expire = DateTime.Now + length;
+			e.param = 0;
+			e.state = CheckState.Challenged;
+			checks.Add(m, e);
+			m.SendGump( new AFKGump(e));
+		}
+		
 		public void Challenge(CheckEntry e)
 		{
 			e.expire = DateTime.Now + TimeSpan.FromMinutes(5);
@@ -367,6 +403,7 @@ namespace Server.Scripts.Customs.AFK
 			e.param++;
 			if(e.param > 1)
 			{
+				SayToGM(e.m, "I got AFK wrong too many times. I'm being kicked.");
 				e.m.SendMessage("Too many wrong selections. Kicking.");
 				checks.Remove(e.m);
 				Kick(e.m);
@@ -387,6 +424,7 @@ namespace Server.Scripts.Customs.AFK
 				}
 			} else
 			{
+				SayToGM(e.m, String.Format("I answered AFK incorrectly ({1}). {0:F2} minutes left.", e.expire.Subtract(DateTime.Now).TotalMinutes, e.param));
 				e.m.SendGump(new AFKGump(e));
 				e.m.SendMessage("Wrong selection. Please try again.");
 			}
@@ -396,6 +434,8 @@ namespace Server.Scripts.Customs.AFK
 		{
 			if(e == null)
 				return;
+
+			SayToGM(e.m, String.Format("I answered the AFK with {0:F2} minutes to spare", e.expire.Subtract(DateTime.Now).TotalMinutes));
 			
 			checks.Remove(e.m);
 			Account a = e.m.Account as Account;
@@ -407,6 +447,23 @@ namespace Server.Scripts.Customs.AFK
 			a.SetTag("AFKTag-LastChecked", XmlConvert.ToString( DateTime.Now, XmlDateTimeSerializationMode.Local ));
 			a.RemoveTag("AFKTag-FailedTime");
 			e.m.SendMessage("Confirmed. Thank you.");
+		}
+		
+		public void SayToGM(PlayerMobile m, String text)
+		{
+			if( m != null && m.Map != null )
+			{
+				IPooledEnumerable eable = m.Map.GetClientsInRange( m.Location );
+
+				foreach( NetState state in eable )
+				{
+					if( state.Account.AccessLevel > AccessLevel.Player )
+					{
+						m.SayTo(state.Mobile, text);
+					}
+				}
+				eable.Free();
+			}
 		}
 	}
 	

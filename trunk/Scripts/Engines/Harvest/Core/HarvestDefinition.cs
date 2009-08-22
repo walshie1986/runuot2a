@@ -25,6 +25,7 @@ namespace Server.Engines.Harvest
 		private BonusHarvestResource[] m_BonusResources;
 		private bool m_RaceBonus;
 		private bool m_RandomizeVeins;
+		private double m_AFKChance;
 
 		public int BankWidth{ get{ return m_BankWidth; } set{ m_BankWidth = value; } }
 		public int BankHeight{ get{ return m_BankHeight; } set{ m_BankHeight = value; } }
@@ -56,6 +57,7 @@ namespace Server.Engines.Harvest
 		public BonusHarvestResource[] BonusResources{ get { return m_BonusResources; } set { m_BonusResources = value; } }
 		public bool RaceBonus { get { return m_RaceBonus; } set { m_RaceBonus = value; } }
 		public bool RandomizeVeins { get { return m_RandomizeVeins; } set { m_RandomizeVeins = value; } }
+		public double AFKChance { get { return m_AFKChance; } set { m_AFKChance = value; } }
 
 		private Dictionary<Map, Dictionary<Point2D, HarvestBank>> m_BanksByMap;
 
