@@ -438,14 +438,14 @@ namespace Server.Items
 
 				if ( onSelf )
 				{
-					/*if ( Core.AOS )
+					if ( Core.AOS )
 						seconds = 5.0 + (0.5 * ((double)(120 - dex) / 10)); // TODO: Verify algorithm
 					else
-						seconds = 9.4 + (0.6 * ((double)(120 - dex) / 10));*/
-					if(healer.Poisoned)
+						seconds = 9.4 + (0.6 * ((double)(120 - dex) / 10));
+					/*if(healer.Poisoned)
 						seconds = 18.0;
 					else
-						seconds = 15.0;
+						seconds = 15.0;*/
 				}
 				else
 				{
@@ -458,11 +458,11 @@ namespace Server.Items
 					}
 					else
 					{
-						/*if ( dex >= 100 )
+						if ( dex >= 100 )
 							seconds = 3.0 + resDelay;
 						else if ( dex >= 40 )
 							seconds = 4.0 + resDelay;
-						else*/
+						else
 						seconds = 5.0 + resDelay + (patient.Poisoned ? 1.0 : 0.0);
 					}
 				}
