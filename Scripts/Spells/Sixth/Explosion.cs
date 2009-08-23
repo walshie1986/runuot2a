@@ -36,8 +36,10 @@ namespace Server.Spells.Sixth
 			{
 				Caster.SendLocalizedMessage( 500237 ); // Target can not be seen.
 			}
-			else if ( Caster.CanBeHarmful( m ) && CheckSequence() )
+			//else if ( Caster.CanBeHarmful( m ) && CheckSequence() )
+			else if ( CheckHSequence( m ) ) //Flag on cast
 			{
+				
 				Mobile attacker = Caster, defender = m;
 
 				SpellHelper.Turn( Caster, m );

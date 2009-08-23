@@ -80,6 +80,7 @@ namespace Server.Scripts.Customs.AFK
 			if(e.Length > 0)
 			{
 				length = e.GetDouble(0);
+				e.Mobile.SendMessage(String.Format("{0:F2} ({1}) minute(s) AFK test.", length, e.Arguments[0]));
 			}
 			length = Math.Min(length, 0.5);
 			e.Mobile.Target = new AFKTarget(this, TimeSpan.FromMinutes(length));

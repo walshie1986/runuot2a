@@ -1968,6 +1968,13 @@ namespace Server.Mobiles
 			EndAction( typeof( IncognitoSpell ) );
 
 			MeerMage.StopEffect( this, false );
+			
+			if(Holding != null)
+			{
+				Holding.Bounce(this);
+				Holding.ClearBounce();
+				Holding = null;
+			}
 
 			SkillHandlers.StolenItem.ReturnOnDeath( this, c );
 

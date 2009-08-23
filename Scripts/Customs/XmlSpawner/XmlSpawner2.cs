@@ -7937,7 +7937,7 @@ public static void _TraceEnd(int index)
                             BaseCreature b = (BaseCreature)m;
                             // Check if the creature has been tamed or previously tamed and released
                             // and if it is, remove it from the list of spawns
-                            if (b.Controlled || b.IsStabled || (b.Owners != null && b.Owners.Count > 0))
+                            if ((b.Controlled || b.IsStabled || (b.Owners != null && b.Owners.Count > 0)) && (b.Map != Map || b.GetDistanceToSqrt(Location) > HomeRange*10 ))
                             {
                                 so.SpawnedObjects.Remove(o);
                                 x--;
@@ -10792,7 +10792,7 @@ public static void _TraceEnd(int index)
             {
                 if (o is Item)
                     ((Item)o).Delete();
-                else if (o is Mobile)
+                else if (o is Mobile && !(o is BaseCreature && (((BaseCreature)o).Controlled || ((BaseCreature)o).IsStabled)))
                     ((Mobile)o).Delete();
             }
         }
