@@ -653,7 +653,8 @@ namespace Server.Items
 					m.AddStatMod( new StatMod( StatType.Int, modName + "Int", intBonus, TimeSpan.Zero ) );
 			}
 
-			//from.NextCombatTime = DateTime.Now + GetDelay( from );
+			if(from.NextCombatTime > DateTime.Now.AddSeconds(20)) //Just encase NextCombatTime gets out of sync
+				from.NextCombatTime = DateTime.Now.AddSeconds(20);
 
 			if ( UseSkillMod && m_AccuracyLevel != WeaponAccuracyLevel.Regular )
 			{
