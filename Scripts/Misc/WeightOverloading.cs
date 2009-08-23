@@ -120,7 +120,12 @@ namespace Server.Misc
 							from.SendLocalizedMessage( 500133 ); // Your mount is very fatigued.
 					}
 				} else {
-					if ( (++pm.StepsTaken % amt) == 0 )
+					if( from.Stam == 0 )
+					{
+						from.SendLocalizedMessage( 500110 ); // You are too fatigued to move.
+						e.Blocked = true;
+						return;
+					}else if ( (++pm.StepsTaken % amt) == 0 )
 						--from.Stam;
 				}
 			} else if( from.Stam == 0 )
