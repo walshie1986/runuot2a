@@ -1820,7 +1820,7 @@ namespace Server.Mobiles
 
 		public virtual bool DoBardProvoked()
 		{
-			if( DateTime.Now >= m_Mobile.BardEndTime )// && (m_Mobile.BardMaster == null || m_Mobile.BardMaster.Deleted || m_Mobile.BardMaster.Map != m_Mobile.Map || m_Mobile.GetDistanceToSqrt( m_Mobile.BardMaster ) > m_Mobile.RangePerception) )
+			/*if( DateTime.Now >= m_Mobile.BardEndTime )// && (m_Mobile.BardMaster == null || m_Mobile.BardMaster.Deleted || m_Mobile.BardMaster.Map != m_Mobile.Map || m_Mobile.GetDistanceToSqrt( m_Mobile.BardMaster ) > m_Mobile.RangePerception) )
 			{
 				m_Mobile.DebugSay( "I have lost my provoker" );
 				m_Mobile.BardProvoked = false;
@@ -1830,8 +1830,8 @@ namespace Server.Mobiles
 				m_Mobile.Combatant = null;
 				m_Mobile.Warmode = false;
 			}
-			else
-			{
+			else*/
+			//{
 				if( m_Mobile.BardTarget == null || m_Mobile.BardTarget.Deleted || m_Mobile.BardTarget.Map != m_Mobile.Map || m_Mobile.GetDistanceToSqrt( m_Mobile.BardTarget ) > m_Mobile.RangePerception )
 				{
 					m_Mobile.DebugSay( "I have lost my provoke target" );
@@ -1850,7 +1850,7 @@ namespace Server.Mobiles
 					m_Mobile.OnThink();
 					Think();
 				}
-			}
+			//}
 
 			return true;
 		}

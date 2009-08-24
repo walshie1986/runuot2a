@@ -324,7 +324,7 @@ namespace Server.Items
 				}
 			}
 
-			return val;
+			return val*0.75;  //Make it a little easier
 		}
 
 		public static void SetInstrument( Mobile from, BaseInstrument item )
