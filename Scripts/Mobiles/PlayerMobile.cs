@@ -1854,14 +1854,7 @@ namespace Server.Mobiles
 		{
 			m_InsuranceCost = 0;
 			m_InsuranceAward = base.FindMostRecentDamager( false );
-			
-			if(Holding != null)
-			{
-				Holding.Bounce(this);
-				Holding.ClearBounce();
-				Holding = null;
-			}
-
+	
 			if ( m_InsuranceAward is BaseCreature )
 			{
 				Mobile master = ((BaseCreature)m_InsuranceAward).GetMaster();
