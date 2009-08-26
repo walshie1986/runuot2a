@@ -44,7 +44,7 @@ namespace Server.Mobiles
 		
 		public override void GenerateLoot()
 		{
-			AddLoot( LootPack.AosRich, 3 );
+			AddLoot( LootPack.OldRich, 3 );
 		}
 		
 		public override double WeaponAbilityChance{ get{ return 0.05; } }

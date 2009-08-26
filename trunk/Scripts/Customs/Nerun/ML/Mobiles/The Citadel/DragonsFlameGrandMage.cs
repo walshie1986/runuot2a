@@ -21,7 +21,7 @@ namespace Server.Mobiles
 		
 		public override void GenerateLoot()
 		{
-			AddLoot( LootPack.AosFilthyRich, 6 );
+			AddLoot( LootPack.OldFilthyRich, 6 );
 		}
 
 		public override void Serialize( GenericWriter writer )

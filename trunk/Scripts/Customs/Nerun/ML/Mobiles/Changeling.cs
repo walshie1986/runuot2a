@@ -59,7 +59,7 @@ namespace Server.Mobiles
 		
 		public override void GenerateLoot()
 		{
-			AddLoot( LootPack.AosAverage );
+			AddLoot( LootPack.OldAverage );
 		}
 		
 		private Timer m_Timer;

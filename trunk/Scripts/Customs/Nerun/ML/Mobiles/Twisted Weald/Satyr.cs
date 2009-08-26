@@ -46,7 +46,7 @@ namespace Server.Mobiles
 		
 		public override void GenerateLoot()
 		{
-			AddLoot( LootPack.AosRich, 3 );
+			AddLoot( LootPack.OldRich, 3 );
 		}
 		
 		public override void OnThink()

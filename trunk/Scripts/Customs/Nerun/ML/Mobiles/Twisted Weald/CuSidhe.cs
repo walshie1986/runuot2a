@@ -52,7 +52,7 @@ namespace Server.Mobiles
 			MinTameSkill = 101.1;					
 			
 			if ( Utility.RandomDouble() < 0.2 )
-				PackItem( new TreasureMap( 5, Map.Trammel ) );
+				PackItem( new TreasureMap( 5, Map.Felucca ) );
 /*
 			if ( Utility.RandomDouble() < 0.1 )				
 				PackItem( new ParrotItem() );
@@ -65,7 +65,7 @@ namespace Server.Mobiles
 		
 		public override void GenerateLoot()
 		{
-			AddLoot( LootPack.AosFilthyRich, 5 );
+			AddLoot( LootPack.OldFilthyRich, 5 );
 		}	
 		
 		public override void OnDoubleClick( Mobile from )

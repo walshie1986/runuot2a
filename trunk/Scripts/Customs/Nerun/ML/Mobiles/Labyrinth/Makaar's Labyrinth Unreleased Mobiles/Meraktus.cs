@@ -80,7 +80,7 @@ namespace Server.Mobiles
 
 		public override void GenerateLoot()
 		{
-			AddLoot( LootPack.AosSuperBoss, 5 );	
+			AddLoot( LootPack.OldSuperBoss, 5 );	
 		}
 		
 		

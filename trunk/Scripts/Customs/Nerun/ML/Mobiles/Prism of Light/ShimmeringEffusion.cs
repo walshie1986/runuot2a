@@ -51,7 +51,7 @@ namespace Server.Mobiles
 
 		public override void GenerateLoot()
 		{
-			AddLoot( LootPack.AosSuperBoss, 8 );
+			AddLoot( LootPack.OldSuperBoss, 8 );
 		}
 
 		public override bool CanRummageCorpses{ get{ return true; } }

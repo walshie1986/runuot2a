@@ -41,7 +41,7 @@ namespace Server.Mobiles
 			Karma = 1000;
 			
 			PackItem( new Bandage( Utility.RandomMinMax( 6, 17 ) ) );
-			PackItem( new TreasureMap( 2, Map.Trammel ) );
+			PackItem( new TreasureMap( 2, Map.Felucca ) );
 		}
 
 		public Troglodyte( Serial serial ) : base( serial )
@@ -50,7 +50,7 @@ namespace Server.Mobiles
 		
 		public override void GenerateLoot()
 		{
-			AddLoot( LootPack.AosRich, 3 );
+			AddLoot( LootPack.OldRich, 3 );
 		}
 		
 		public override void OnDeath( Container c )
