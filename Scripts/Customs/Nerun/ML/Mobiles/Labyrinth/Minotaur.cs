@@ -36,7 +36,7 @@ namespace Server.Mobiles
 				
 		public override void GenerateLoot()
 		{
-			AddLoot( LootPack.AosFilthyRich );
+			AddLoot( LootPack.OldFilthyRich );
 		}
 		
 		public override WeaponAbility GetWeaponAbility()

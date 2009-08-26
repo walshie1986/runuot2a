@@ -44,7 +44,7 @@ namespace Server.Mobiles
 		
 		public override void GenerateLoot()
 		{
-			AddLoot( LootPack.AosUltraRich, 3 );
+			AddLoot( LootPack.OldUltraRich, 3 );
 		}
 				
 //OFF		public override bool GivesMinorArtifact{ get{ return true; } }

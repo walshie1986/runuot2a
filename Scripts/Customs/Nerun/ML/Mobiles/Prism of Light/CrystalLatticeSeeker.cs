@@ -44,7 +44,7 @@ namespace Server.Mobiles
 		
 		public override void GenerateLoot()
 		{
-			AddLoot( LootPack.AosFilthyRich, 3 );
+			AddLoot( LootPack.OldFilthyRich, 3 );
 		}
 
 		public override void OnGaveMeleeAttack( Mobile defender )

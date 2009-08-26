@@ -36,7 +36,7 @@ namespace Server.Mobiles
 				
 		public override void GenerateLoot()
 		{
-			AddLoot( LootPack.AosFilthyRich, 2 );
+			AddLoot( LootPack.OldFilthyRich, 2 );
 		}
 
 		public MinotaurCaptain( Serial serial ) : base( serial )

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Server.Network;
 using Server.Gumps;
 
@@ -70,7 +70,7 @@ namespace Server.Items
 		}
 
 		[Constructable]
-		public SOS() : this( Map.Trammel )
+		public SOS() : this( Map.Felucca )
 		{
 		}
 

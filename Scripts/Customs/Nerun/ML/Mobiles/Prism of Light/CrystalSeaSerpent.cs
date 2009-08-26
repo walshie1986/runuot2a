@@ -42,7 +42,7 @@ namespace Server.Mobiles
 		
 		public override void GenerateLoot()
 		{
-			AddLoot( LootPack.AosAverage );
+			AddLoot( LootPack.OldAverage );
 		}		
 		
 		public override void OnDeath( Container c )

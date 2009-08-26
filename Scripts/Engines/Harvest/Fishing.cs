@@ -226,7 +226,7 @@ namespace Server.Engines.Harvest
 				else
 					level = 1;
 
-				return new TreasureMap( level, from.Map == Map.Felucca ? Map.Felucca : Map.Trammel );
+				return new TreasureMap( level, Map.Felucca );
 			}
 			else if ( type == typeof( MessageInABottle ) )
 			{

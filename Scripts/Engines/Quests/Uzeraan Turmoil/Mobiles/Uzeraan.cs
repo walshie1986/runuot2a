@@ -237,7 +237,7 @@ namespace Server.Engines.Quests.Haven
 						{
 							Container cont = GetNewContainer();
 
-							cont.DropItem( new TreasureMap( player.Young ? 0 : 1, Map.Trammel ) );
+							cont.DropItem( new TreasureMap( player.Young ? 0 : 1, Map.Felucca ) );
 							cont.DropItem( new Shovel() );
 							cont.DropItem( new UzeraanTurmoilHorn() );
 
