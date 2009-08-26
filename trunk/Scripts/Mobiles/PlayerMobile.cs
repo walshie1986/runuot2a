@@ -1854,6 +1854,13 @@ namespace Server.Mobiles
 		{
 			m_InsuranceCost = 0;
 			m_InsuranceAward = base.FindMostRecentDamager( false );
+			
+			if(Holding != null)
+			{
+				Holding.Bounce(this);
+				Holding.ClearBounce();
+				Holding = null;
+			}
 
 			if ( m_InsuranceAward is BaseCreature )
 			{
@@ -1968,13 +1975,7 @@ namespace Server.Mobiles
 			EndAction( typeof( IncognitoSpell ) );
 
 			MeerMage.StopEffect( this, false );
-			
-			if(Holding != null)
-			{
-				Holding.Bounce(this);
-				Holding.ClearBounce();
-				Holding = null;
-			}
+		
 
 			SkillHandlers.StolenItem.ReturnOnDeath( this, c );
 
