@@ -61,7 +61,7 @@ namespace Server.Spells.Third
 			else if ( !SpellHelper.CheckTravel( Caster, TravelCheckType.TeleportFrom ) )
 			{
 			}
-			else if ( !SpellHelper.CheckTravel( Caster, map, new Point3D( p ), TravelCheckType.TeleportTo ) && ( Caster.Location.X != p.X || Caster.Location.Y != p.Y ) )
+			else if ( !SpellHelper.CheckTravel( Caster, map, new Point3D( p ), TravelCheckType.TeleportTo ) && ( Caster.Location.X != p.X || Caster.Location.Y != p.Y || Caster.Location.Z > p.Z) )
 			{
 			}
 			else if( EnergyField(Caster.Location, new Point3D(p)))
