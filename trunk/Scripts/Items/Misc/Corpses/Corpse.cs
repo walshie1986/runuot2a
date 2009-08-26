@@ -684,6 +684,9 @@ namespace Server.Items
 		{
 			if ( !IsCriminalAction( from ) )
 				return true;
+			
+			if(Region.Find(Location, Map) is Server.Regions.GuardedRegion)
+				return false; //I give up
 
 			Map map = this.Map;
 
