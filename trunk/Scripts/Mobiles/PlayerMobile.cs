@@ -105,6 +105,12 @@ namespace Server.Mobiles
 
 		private DateTime m_LastOnline;
 		private Server.Guilds.RankDefinition m_GuildRank;
+		private Container m_TempBackpack;
+		
+		public Container TempBackpack {
+			get { return m_TempBackpack; }
+			set { m_TempBackpack = value; }
+		}
 
 		private int m_GuildMessageHue, m_AllianceMessageHue;
 
