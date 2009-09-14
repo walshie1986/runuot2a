@@ -76,5 +76,16 @@ namespace Server.Engines.XmlSpawner2
 
 			base.OnExit(m);
 		}
+		
+		public override bool OnBeforeDeath( Mobile m )
+		{
+			TourneyController cont = m_ChallengeGame as TourneyController;
+			if(cont != null && cont.GameType == GameType.FreezeTag) //Override for freezetag
+			{
+				cont.OnPlayerKilled( null, m) ;
+				return false;
+			}
+			return true;
+		}
 	}
 }
