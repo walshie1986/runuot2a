@@ -1,0 +1,1 @@
+This project aims to make a RunUO 2.0 based server that mimics the ruleset of The Second Age era of Ultima Online. Any commonly contested setting will be located in a separate file for easy tweaking.
